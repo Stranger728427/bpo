@@ -1,0 +1,25 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+
+  &--fullWidth {
+    width: 100%;
+  }
+}
+
+.label {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: var(--color-text-primary, $color-gray-700);
+}
+
+.error {
+  font-size: $font-size-sm;
+  color: $color-error;
+}
+
+.helperText {
+  font-size: $font-size-sm;
+  color: var(--color-text-secondary, $color-gray-500);
+}

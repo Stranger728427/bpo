@@ -1,0 +1,182 @@
+@use '@/styles/abstracts' as *;
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: $color-gray-50;
+}
+
+// Top Header - spans full width
+.topHeader {
+  background-color: $color-white;
+  border-bottom: 1px solid $color-gray-200;
+  padding: $spacing-sm $spacing-lg;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: $z-index-sticky;
+  height: 60px;
+}
+
+.topHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.topHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.menuButton {
+  display: flex;
+  background: none;
+  border: none;
+  padding: $spacing-sm;
+  cursor: pointer;
+  color: $color-gray-600;
+  border-radius: $border-radius-md;
+
+  &:hover {
+    background-color: $color-gray-100;
+  }
+}
+
+.logo {
+  display: flex;
+  align-items: baseline;
+}
+
+.logoText {
+  font-size: 1.5rem;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+  letter-spacing: -0.02em;
+}
+
+.logoSuperscript {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: $color-gray-500;
+  margin-left: 2px;
+  vertical-align: super;
+}
+
+.credits {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: $spacing-xs $spacing-md;
+  background-color: $color-primary-bg;
+  border-radius: $border-radius-full;
+  color: $color-primary;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+}
+
+.notificationBtn {
+  background: none;
+  border: none;
+  padding: $spacing-sm;
+  cursor: pointer;
+  color: $color-gray-400;
+  border-radius: $border-radius-full;
+  transition: all $transition-fast;
+
+  &:hover {
+    background-color: $color-gray-100;
+    color: $color-gray-700;
+  }
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: $border-radius-full;
+  overflow: hidden;
+  border: 2px solid $color-gray-200;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+// Content Wrapper - contains sidebar and main
+.contentWrapper {
+  display: flex;
+  flex: 1;
+}
+
+// Sidebar
+.sidebar {
+  width: 220px;
+  background-color: $color-white;
+  border-right: 1px solid $color-gray-200;
+  padding: $spacing-lg $spacing-md;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 60px;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+
+  @include media-down('md') {
+    display: none;
+  }
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-sm $spacing-md;
+  border-radius: $border-radius-lg;
+  color: $color-gray-600;
+  text-decoration: none;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  transition: all $transition-fast;
+
+  svg {
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background-color: $color-gray-100;
+    color: $color-gray-900;
+  }
+
+  &.active {
+    background-color: $color-sidebar-active;
+    color: $color-primary;
+
+    svg {
+      color: $color-primary;
+    }
+  }
+}
+
+// Main Content
+.main {
+  flex: 1;
+  padding: $spacing-lg $spacing-xl;
+  overflow-y: auto;
+  background-color: $color-gray-50;
+
+  @include media-down('md') {
+    padding: $spacing-md;
+  }
+}

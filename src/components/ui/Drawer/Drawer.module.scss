@@ -1,0 +1,15 @@
+@use '@/styles/abstracts' as *;
+
+.drawer {
+  :global(.ant-drawer-header) {
+    padding: var(--spacing-lg);
+  }
+
+  :global(.ant-drawer-body) {
+    padding: var(--spacing-lg);
+  }
+
+  :global(.ant-drawer-footer) {
+    padding: var(--spacing-lg);
+  }
+}

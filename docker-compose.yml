@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  # Development environment
+  dev:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dev
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - VITE_API_BASE_URL=http://localhost:8080/api
+    stdin_open: true
+    tty: true
+
+  # Production environment
+  prod:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.prod
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+  # Storybook
+  storybook:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.dev
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "6006:6006"
+    command: npm run storybook -- --host 0.0.0.0
+    environment:
+      - NODE_ENV=development

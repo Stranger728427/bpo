@@ -1,0 +1,30 @@
+@use '@/styles/abstracts' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.tooltip {
+  background-color: $color-gray-900;
+  padding: 6px 10px;
+  border-radius: $border-radius-md;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  box-shadow: $shadow-md;
+}
+
+.tooltipLabel {
+  font-size: 10px;
+  color: $color-gray-400;
+}
+
+.tooltipValue {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-white;
+}

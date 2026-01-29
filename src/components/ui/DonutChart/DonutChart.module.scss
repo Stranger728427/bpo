@@ -1,0 +1,67 @@
+@use '@/styles/abstracts' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chartWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.segment {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+.centerContent {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.centerValue {
+  font-size: 1.75rem;
+  font-weight: $font-weight-bold;
+  color: $color-gray-900;
+  line-height: 1;
+}
+
+.centerLabel {
+  font-size: $font-size-xs;
+  color: $color-gray-500;
+  margin-top: 2px;
+}
+
+.tooltip {
+  background-color: $color-gray-900;
+  padding: 6px 10px;
+  border-radius: $border-radius-md;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  box-shadow: $shadow-md;
+}
+
+.tooltipName {
+  font-size: 10px;
+  color: $color-gray-400;
+}
+
+.tooltipValue {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-white;
+}

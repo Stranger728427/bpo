@@ -1,0 +1,27 @@
+.mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: $color-gray-50;
+  transition: margin-left $transition-normal;
+
+  &.sidebarCollapsed {
+    margin-left: $sidebar-width-collapsed;
+  }
+
+  &.sidebarExpanded {
+    margin-left: $sidebar-width-expanded;
+  }
+}
+
+// Mobile: no margin, full width
+@include media-down('md') {
+  .mainContent {
+    &.sidebarCollapsed,
+    &.sidebarExpanded {
+      margin-left: 0;
+    }
+  }
+}

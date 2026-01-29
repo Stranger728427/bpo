@@ -1,0 +1,14 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $header-height;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 $spacing-lg;
+  background-color: $color-white;
+  border-bottom: $border-width-thin solid $color-gray-200;
+  z-index: $z-index-fixed;
+}

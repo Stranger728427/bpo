@@ -1,0 +1,354 @@
+.drawer {
+  :global(.ant-drawer-body) {
+    padding: 0;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: $spacing-lg;
+}
+
+// Header
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-lg;
+}
+
+.title {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-gray-900;
+  margin: 0;
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: $border-radius-full;
+  color: $color-gray-500;
+  cursor: pointer;
+  transition: background-color $transition-fast, color $transition-fast;
+
+  &:hover {
+    background: $color-gray-100;
+    color: $color-gray-700;
+  }
+}
+
+// Info Section
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  margin-bottom: $spacing-lg;
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-md;
+}
+
+.infoLabel {
+  font-size: $font-size-sm;
+  color: $color-gray-500;
+  flex-shrink: 0;
+}
+
+.infoValue {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-gray-900;
+  text-align: right;
+}
+
+// Status Badge
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+
+  &.success {
+    background: rgba($color-success, 0.1);
+    color: $color-success;
+  }
+
+  &.error {
+    background: rgba($color-error, 0.1);
+    color: $color-error;
+  }
+
+  &.warning {
+    background: rgba($color-warning, 0.1);
+    color: $color-warning;
+  }
+
+  &.default {
+    background: $color-gray-100;
+    color: $color-gray-600;
+  }
+}
+
+// Audio Player
+.audioPlayer {
+  background: $color-gray-50;
+  border-radius: $border-radius-md;
+  padding: $spacing-md;
+  margin-bottom: $spacing-lg;
+}
+
+.progressContainer {
+  margin-bottom: $spacing-md;
+}
+
+.progressBar {
+  position: relative;
+  height: 4px;
+  background: $color-gray-200;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.progressFill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: $color-primary;
+  border-radius: 2px;
+}
+
+.progressThumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  background: $color-primary;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: $shadow-sm;
+}
+
+.timeLabels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: $spacing-xs;
+  font-size: $font-size-xs;
+  color: $color-gray-500;
+}
+
+.audioControls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-md;
+}
+
+.playButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xs;
+  padding: $spacing-sm $spacing-lg;
+  background: $color-primary;
+  color: $color-white;
+  border: none;
+  border-radius: $border-radius-md;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: background-color $transition-fast;
+
+  &:hover {
+    background: $color-primary-dark;
+  }
+}
+
+.downloadButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xs;
+  padding: $spacing-sm $spacing-lg;
+  background: transparent;
+  color: $color-gray-700;
+  border: $border-width-thin solid $color-gray-300;
+  border-radius: $border-radius-md;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: background-color $transition-fast, border-color $transition-fast;
+
+  &:hover {
+    background: $color-gray-100;
+    border-color: $color-gray-400;
+  }
+}
+
+// Tabs
+.tabs {
+  display: flex;
+  gap: $spacing-xs;
+  background: $color-gray-100;
+  border-radius: $border-radius-md;
+  padding: $spacing-xs;
+  margin-bottom: $spacing-md;
+}
+
+.tab {
+  flex: 1;
+  padding: $spacing-sm;
+  background: transparent;
+  border: none;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-gray-600;
+  cursor: pointer;
+  transition: background-color $transition-fast, color $transition-fast;
+
+  &:hover:not(.active) {
+    color: $color-gray-800;
+  }
+
+  &.active {
+    background: $color-white;
+    color: $color-primary;
+    box-shadow: $shadow-sm;
+  }
+}
+
+// Tab Content
+.tabContent {
+  flex: 1;
+  overflow-y: auto;
+}
+
+// Transcript
+.transcript {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.message {
+  background: $color-gray-50;
+  border-radius: $border-radius-md;
+  padding: $spacing-md;
+}
+
+.messageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+}
+
+.speakerInfo {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.speakerIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: $color-primary-bg;
+  color: $color-primary;
+  border-radius: $border-radius-sm;
+}
+
+.speakerName {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-gray-900;
+}
+
+.messageTime {
+  font-size: $font-size-xs;
+  color: $color-gray-400;
+}
+
+.messageText {
+  font-size: $font-size-sm;
+  color: $color-gray-600;
+  line-height: $line-height-relaxed;
+  margin: 0;
+}
+
+.emptyState {
+  text-align: center;
+  color: $color-gray-400;
+  font-size: $font-size-sm;
+  padding: $spacing-xl;
+}
+
+// Notes
+.notes {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+}
+
+.callSummary,
+.userNotes {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.sectionTitle {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-gray-900;
+  margin: 0;
+}
+
+.summaryText {
+  font-size: $font-size-sm;
+  color: $color-gray-600;
+  line-height: $line-height-relaxed;
+  margin: 0;
+}
+
+.notesTextarea {
+  width: 100%;
+  min-height: 120px;
+  padding: $spacing-md;
+  background: $color-gray-50;
+  border: $border-width-thin solid $color-gray-200;
+  border-radius: $border-radius-md;
+  font-size: $font-size-sm;
+  font-family: inherit;
+  color: $color-gray-700;
+  resize: vertical;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+
+  &::placeholder {
+    color: $color-gray-400;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+    box-shadow: 0 0 0 2px rgba($color-primary, 0.1);
+  }
+}

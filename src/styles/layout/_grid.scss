@@ -1,0 +1,85 @@
+@use '../abstracts' as *;
+
+.grid {
+  display: grid;
+  gap: $spacing-md;
+
+  &--2 {
+    grid-template-columns: repeat(1, 1fr);
+
+    @include media-up('md') {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  &--3 {
+    grid-template-columns: repeat(1, 1fr);
+
+    @include media-up('sm') {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include media-up('lg') {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &--4 {
+    grid-template-columns: repeat(1, 1fr);
+
+    @include media-up('sm') {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include media-up('lg') {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  &--gap-sm {
+    gap: $spacing-sm;
+  }
+
+  &--gap-lg {
+    gap: $spacing-lg;
+  }
+
+  &--gap-xl {
+    gap: $spacing-xl;
+  }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-inline: -$spacing-sm;
+
+  > * {
+    padding-inline: $spacing-sm;
+  }
+}
+
+.col {
+  flex: 1;
+  min-width: 0;
+
+  @for $i from 1 through 12 {
+    &-#{$i} {
+      flex: 0 0 calc($i / 12 * 100%);
+      max-width: calc($i / 12 * 100%);
+    }
+  }
+
+  @each $breakpoint, $value in $breakpoints {
+    @if $value > 0 {
+      @include media-up($breakpoint) {
+        @for $i from 1 through 12 {
+          &-#{$breakpoint}-#{$i} {
+            flex: 0 0 calc($i / 12 * 100%);
+            max-width: calc($i / 12 * 100%);
+          }
+        }
+      }
+    }
+  }
+}

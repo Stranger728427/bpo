@@ -1,0 +1,36 @@
+@use '@/styles/abstracts' as *;
+
+.datePickerWrapper {
+  display: inline-block;
+
+  &--fullWidth {
+    display: block;
+    width: 100%;
+  }
+}
+
+.label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.datePicker {
+  width: 100%;
+}
+
+.error {
+  display: block;
+  margin-top: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  color: var(--color-error);
+}
+
+.helperText {
+  display: block;
+  margin-top: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}

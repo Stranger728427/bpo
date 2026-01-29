@@ -1,0 +1,29 @@
+.container {
+  min-height: 100vh;
+  @include flex-center;
+  padding: $spacing-xl;
+  background-color: $color-gray-50;
+}
+
+.content {
+  @include flex-column-center;
+  text-align: center;
+  max-width: 400px;
+}
+
+.icon {
+  color: $color-error;
+  margin-bottom: $spacing-lg;
+}
+
+.title {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: $color-gray-900;
+  margin-bottom: $spacing-sm;
+}
+
+.message {
+  color: $color-gray-600;
+  margin-bottom: $spacing-lg;
+}

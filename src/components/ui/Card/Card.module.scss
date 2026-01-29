@@ -1,0 +1,39 @@
+.card {
+  // Variants
+  &--elevated {
+    box-shadow: $shadow-md;
+  }
+
+  &--outlined {
+    // Border handled by antd's bordered prop
+  }
+
+  &--filled {
+    background-color: var(--color-bg-secondary, $color-gray-50);
+  }
+
+  // Padding overrides (antd uses bodyStyle, but we override via CSS)
+  &--padding-none {
+    :global(.ant-card-body) {
+      padding: 0;
+    }
+  }
+
+  &--padding-sm {
+    :global(.ant-card-body) {
+      padding: $spacing-sm;
+    }
+  }
+
+  &--padding-md {
+    :global(.ant-card-body) {
+      padding: $spacing-md;
+    }
+  }
+
+  &--padding-lg {
+    :global(.ant-card-body) {
+      padding: $spacing-lg;
+    }
+  }
+}

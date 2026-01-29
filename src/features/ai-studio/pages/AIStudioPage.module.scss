@@ -1,0 +1,299 @@
+.container {
+  padding: $spacing-lg;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+// Header
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-xl;
+  flex-wrap: wrap;
+  gap: $spacing-md;
+}
+
+.title {
+  @include heading-2;
+  color: $color-gray-900;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+// Search
+.searchWrapper {
+  position: relative;
+  width: 200px;
+}
+
+.searchInput {
+  width: 100%;
+  padding: $spacing-sm $spacing-md;
+  padding-right: $spacing-xl;
+  border: $border-width-thin solid $color-gray-200;
+  border-radius: $border-radius-md;
+  font-size: $font-size-sm;
+  background: $color-white;
+  color: $color-gray-900;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+
+  &::placeholder {
+    color: $color-gray-400;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+    box-shadow: 0 0 0 2px rgba($color-primary, 0.1);
+  }
+}
+
+.searchIcon {
+  position: absolute;
+  right: $spacing-md;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $color-gray-400;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+// Create Button
+.createButton {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: $spacing-sm $spacing-md;
+  background: $color-primary;
+  color: $color-white;
+  border: none;
+  border-radius: $border-radius-md;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: background-color $transition-fast;
+
+  &:hover {
+    background: $color-primary-dark;
+  }
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+// Grid
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $spacing-lg;
+  flex: 1;
+
+  @include media-down('xl') {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include media-down('lg') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include media-down('sm') {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Card
+.card {
+  background: $color-white;
+  border: $border-width-thin solid $color-gray-200;
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+  transition: box-shadow $transition-fast, transform $transition-fast;
+
+  &:hover {
+    box-shadow: $shadow-md;
+    transform: translateY(-2px);
+  }
+}
+
+.cardImage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+
+  // Add some visual interest with pseudo-elements simulating abstract art
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 30% 50%, rgba(139, 92, 246, 0.3) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 70% 60%, rgba(99, 102, 241, 0.2) 0%, transparent 50%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      45deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.05) 50%,
+      transparent 70%
+    );
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.cardImageOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 60%, rgba(0, 0, 0, 0.1) 100%);
+}
+
+.cardContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-md;
+  gap: $spacing-md;
+}
+
+.cardInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.cardTitle {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-gray-900;
+  margin: 0 0 $spacing-xs 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cardMeta {
+  font-size: $font-size-xs;
+  color: $color-gray-500;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Test Button
+.testButton {
+  flex-shrink: 0;
+  padding: $spacing-xs $spacing-md;
+  background: transparent;
+  color: $color-primary;
+  border: $border-width-thin solid $color-primary;
+  border-radius: $border-radius-full;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: background-color $transition-fast, color $transition-fast;
+
+  &:hover {
+    background: $color-primary;
+    color: $color-white;
+  }
+}
+
+// Footer
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: $spacing-lg;
+  margin-top: auto;
+  border-top: $border-width-thin solid $color-gray-200;
+}
+
+.totalCount {
+  font-size: $font-size-sm;
+  color: $color-gray-600;
+}
+
+// Pagination
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+}
+
+.paginationButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: $border-radius-md;
+  color: $color-gray-500;
+  cursor: pointer;
+  transition: background-color $transition-fast, color $transition-fast;
+
+  &:hover:not(:disabled) {
+    background: $color-gray-100;
+    color: $color-gray-700;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  svg {
+    margin: -2px;
+  }
+}
+
+.paginationNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 $spacing-sm;
+  background: transparent;
+  border: $border-width-thin solid transparent;
+  border-radius: $border-radius-md;
+  font-size: $font-size-sm;
+  color: $color-gray-600;
+  cursor: pointer;
+  transition: background-color $transition-fast, border-color $transition-fast, color $transition-fast;
+
+  &:hover:not(.active) {
+    background: $color-gray-100;
+  }
+
+  &.active {
+    border-color: $color-primary;
+    color: $color-primary;
+    font-weight: $font-weight-medium;
+  }
+}

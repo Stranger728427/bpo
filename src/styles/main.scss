@@ -1,0 +1,7 @@
+// Main entry point for global styles
+// Note: abstracts are auto-imported via vite.config.ts additionalData
+
+@use 'base';
+@use 'layout';
+@use 'themes';
+@use 'components';

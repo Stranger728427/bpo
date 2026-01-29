@@ -1,0 +1,18 @@
+@use '../abstracts' as *;
+
+:root,
+[data-theme='light'] {
+  --color-bg-primary: #{$color-white};
+  --color-bg-secondary: #{$color-gray-50};
+  --color-bg-tertiary: #{$color-gray-100};
+
+  --color-text-primary: #{$color-gray-900};
+  --color-text-secondary: #{$color-gray-600};
+  --color-text-tertiary: #{$color-gray-400};
+
+  --color-border: #{$color-gray-200};
+  --color-border-hover: #{$color-gray-300};
+
+  --color-accent: #{$color-primary};
+  --color-accent-hover: #{$color-primary-dark};
+}
