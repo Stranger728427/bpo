@@ -4,6 +4,12 @@ import { MainLayout } from '@/app/layout/MainLayout';
 import { Spinner } from '@components/ui/Spinner/Spinner';
 
 // Lazy loaded pages
+const LoginPage = lazy(() =>
+  import('@features/auth/pages/LoginPage').then((m) => ({
+    default: m.LoginPage,
+  }))
+);
+
 const DashboardPage = lazy(() =>
   import('@features/dashboard/pages/DashboardPage').then((m) => ({
     default: m.DashboardPage,
@@ -40,6 +46,14 @@ const SuspenseWrapper = ({ children }: { children: React.ReactNode }) => (
 );
 
 export const routes: RouteObject[] = [
+  {
+    path: '/login',
+    element: (
+      <SuspenseWrapper>
+        <LoginPage />
+      </SuspenseWrapper>
+    ),
+  },
   {
     path: '/',
     element: <MainLayout />,
