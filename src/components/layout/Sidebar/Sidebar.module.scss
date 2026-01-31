@@ -1,12 +1,13 @@
 .sidebar {
   position: fixed;
-  top: $header-height;
-  left: 0;
-  bottom: 0;
+  top: calc(#{$header-height} + #{$spacing-md});
+  left: $spacing-md;
+  height: calc(100vh - (#{$header-height} + #{$spacing-md} * 2));
   display: flex;
   flex-direction: column;
   background-color: $color-white;
-  border-right: $border-width-thin solid $color-gray-200;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-sm;
   z-index: $z-index-sticky;
   transition: width $transition-normal;
   overflow: hidden;
@@ -32,6 +33,10 @@
 // Mobile: sidebar becomes overlay
 @include media-down('md') {
   .sidebar {
+    top: calc(#{$header-height} + #{$spacing-md});
+    left: $spacing-md;
+    height: calc(100vh - (#{$header-height} + #{$spacing-md} * 2));
+    border-radius: 0;
     transform: translateX(-100%);
 
     &.expanded {

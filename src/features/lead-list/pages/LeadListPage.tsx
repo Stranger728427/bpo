@@ -4,6 +4,7 @@ import { CallRecord } from '@/types/call';
 import { Dropdown } from '@components/ui/Dropdown/Dropdown';
 import type { MenuProps } from 'antd';
 import styles from './LeadListPage.module.scss';
+import Banner from '@/components/layout/Banner/Banner';
 
 // Mock data
 const mockLeads: CallRecord[] = [
@@ -265,7 +266,8 @@ export function LeadListPage() {
   return (
     <div className={styles.container}>
       {/* Header */}
-      <div className={styles.header}>
+      <Banner>
+        <div className={styles.header}>
         <h1 className={styles.title}>Lead List</h1>
 
         <div className={styles.actions}>
@@ -307,6 +309,7 @@ export function LeadListPage() {
           </button>
         </div>
       </div>
+      </Banner>
 
       {/* Table */}
       <div className={styles.tableWrapper}>

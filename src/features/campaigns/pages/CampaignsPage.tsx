@@ -6,6 +6,7 @@ import type { MenuProps } from 'antd';
 import { CampaignDetailModal } from '../components/CampaignDetailModal';
 import { CreateCampaignModal } from '../components/CreateCampaignModal';
 import styles from './CampaignsPage.module.scss';
+import Banner from '@/components/layout/Banner/Banner';
 
 // Types
 interface Campaign {
@@ -226,7 +227,8 @@ export function CampaignsPage() {
 
   return (
     <div className={styles.container}>
-      {/* Header */}
+      <Banner>
+        {/* Header */}
       <div className={styles.header}>
         <h1 className={styles.title}>Campaign</h1>
 
@@ -265,6 +267,7 @@ export function CampaignsPage() {
           </button>
         </div>
       </div>
+      </Banner>
 
       {/* Table */}
       <div className={styles.tableWrapper}>

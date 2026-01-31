@@ -1,22 +1,29 @@
 .container {
-  padding: $spacing-lg;
-  min-height: 100%;
   display: flex;
   flex-direction: column;
+  gap: $spacing-md;
+  padding: $spacing-lg;
+  height: 100%;
+  // max-width: 1400px;
+  overflow: hidden;
+  
+  @include media-up('lg') {
+    padding: $spacing-xl;
+  }
 }
 
 // Header
 .header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: $spacing-xl;
+  align-items: center;
   flex-wrap: wrap;
   gap: $spacing-md;
 }
 
 .title {
-  @include heading-2;
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-semibold;
   color: $color-gray-900;
   margin: 0;
 }
@@ -72,17 +79,17 @@
   align-items: center;
   gap: $spacing-sm;
   padding: $spacing-sm $spacing-md;
-  background: $color-primary;
+  background: $color-primary-dark;
   color: $color-white;
   border: none;
   border-radius: $border-radius-md;
   font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
+  font-weight: $font-weight-normal;
   cursor: pointer;
   transition: background-color $transition-fast;
 
   &:hover {
-    background: $color-primary-dark;
+    background: $color-primary;
   }
 
   svg {
@@ -95,7 +102,19 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: $spacing-lg;
+  background: $color-white;
+  padding: $spacing-md;
+  border-radius: $border-radius-lg;
+  overflow: auto;
+  min-height: 0;
+  max-height: calc(100vh - 250px);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   flex: 1;
+
 
   @include media-down('xl') {
     grid-template-columns: repeat(3, 1fr);
@@ -113,7 +132,7 @@
 // Card
 .card {
   background: $color-white;
-  border: $border-width-thin solid $color-gray-200;
+  border: $border-width-thin solid black;
   border-radius: $border-radius-lg;
   overflow: hidden;
   transition: box-shadow $transition-fast, transform $transition-fast;
@@ -205,31 +224,31 @@
 
 // Test Button
 .testButton {
+  display: flex;
   flex-shrink: 0;
-  padding: $spacing-xs $spacing-md;
-  background: transparent;
-  color: $color-primary;
-  border: $border-width-thin solid $color-primary;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xs;
+  background: $color-primary-lighter;
+  color: $color-primary-dark;
+  height: 30px;
+  width: 30px;
   border-radius: $border-radius-full;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
   cursor: pointer;
   transition: background-color $transition-fast, color $transition-fast;
-
-  &:hover {
-    background: $color-primary;
-    color: $color-white;
-  }
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
 }
 
 // Footer
 .footer {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding-top: $spacing-lg;
-  margin-top: auto;
-  border-top: $border-width-thin solid $color-gray-200;
+  align-items: center;
+  padding: $spacing-sm;
+  background-color: $color-white;
+  border-top: 1px solid $color-gray-100;
+  border-radius: $border-radius-md;
 }
 
 .totalCount {

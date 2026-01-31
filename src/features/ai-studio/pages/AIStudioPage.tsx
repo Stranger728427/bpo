@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import styles from './AIStudioPage.module.scss';
+import Banner from '@/components/layout/Banner/Banner';
+import { HiOutlineDotsHorizontal } from 'react-icons/hi';
+import { AiOutlinePlusCircle } from 'react-icons/ai';
 
 // Types
 interface Agent {
@@ -58,11 +61,11 @@ const SearchIcon = () => (
   </svg>
 );
 
-const PlusIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path d="M8 3V13M3 8H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-  </svg>
-);
+// const PlusIcon = () => (
+//   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+//     <path d="M8 3V13M3 8H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+//   </svg>
+// );
 
 const ChevronLeftIcon = () => (
   <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -97,7 +100,8 @@ export function AIStudioPage() {
   return (
     <div className={styles.container}>
       {/* Header */}
-      <div className={styles.header}>
+      <Banner>
+        <div className={styles.header}>
         <h1 className={styles.title}>AI Agent</h1>
 
         <div className={styles.actions}>
@@ -117,11 +121,12 @@ export function AIStudioPage() {
 
           {/* Create Agent Button */}
           <button className={styles.createButton} onClick={handleCreateAgent}>
-            <PlusIcon />
+            <AiOutlinePlusCircle />
             <span>Create Agent</span>
           </button>
         </div>
       </div>
+      </Banner>
 
       {/* Agent Cards Grid */}
       <div className={styles.grid}>
@@ -143,8 +148,8 @@ export function AIStudioPage() {
               <button
                 className={styles.testButton}
                 onClick={() => handleTest(agent.id)}
-              >
-                Test
+              > 
+                <HiOutlineDotsHorizontal />
               </button>
             </div>
           </div>

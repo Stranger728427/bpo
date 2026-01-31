@@ -4,6 +4,7 @@ import { CallRecord } from '@/types/call';
 import { Dropdown } from '@components/ui/Dropdown/Dropdown';
 import type { MenuProps } from 'antd';
 import styles from './CallLogsPage.module.scss';
+import Banner from '@/components/layout/Banner/Banner';
 
 // Mock data for call logs
 const mockCallLogs: CallRecord[] = [
@@ -343,7 +344,8 @@ export function CallLogsPage() {
   return (
     <div className={styles.container}>
       {/* Header */}
-      <div className={styles.header}>
+      <Banner>
+        <div className={styles.header}>
         <h1 className={styles.title}>Call Logs</h1>
 
         <div className={styles.filters}>
@@ -394,6 +396,8 @@ export function CallLogsPage() {
           </button>
         </div>
       </div>
+      </Banner>
+      
 
       {/* Table */}
       <div className={styles.tableWrapper}>
@@ -441,8 +445,8 @@ export function CallLogsPage() {
           </tbody>
         </table>
       </div>
-
-      {/* Footer */}
+        
+         {/* Footer */}
       <div className={styles.footer}>
         <div className={styles.totalCount}>
           {totalCalls.toLocaleString()} Calls
@@ -476,7 +480,7 @@ export function CallLogsPage() {
             <ChevronRightIcon />
             <ChevronRightIcon />
           </button>
-        </div>
+      </div>
       </div>
 
       {/* Call Log Detail Drawer */}

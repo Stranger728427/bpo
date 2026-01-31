@@ -1,7 +1,7 @@
 .bodyWrapper {
   display: flex;
   flex: 1;
-  margin-top: $header-height;
-  min-height: calc(100vh - #{$header-height});
-  min-height: calc(100dvh - #{$header-height});
+  margin-top: $header-height - $spacing-md;
+  min-height: calc(100vh - #{$header-height}-#{$spacing-md});
+  min-height: calc(100dvh - #{$header-height}-#{$spacing-md}-#{$spacing-md});
 }

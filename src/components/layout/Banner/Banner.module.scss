@@ -1,0 +1,10 @@
+.banner {
+    background-color: $color-white;
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-sm;
+    padding: $spacing-sm; // Match standard padding
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+    
+}
