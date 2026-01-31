@@ -18,13 +18,20 @@ export default defineConfig({
       '@utils': resolve(__dirname, './src/utils'),
     },
   },
+  // css: {
+  //   preprocessorOptions: {
+  //     scss: {
+  //       additionalData: `@use "${resolve(__dirname, './src/styles/abstracts')}" as *;`,
+  //     },
+  //   },
+  // },
   css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: `@use "${resolve(__dirname, './src/styles/abstracts')}" as *;`,
-      },
-    },
-  },
+  preprocessorOptions: {
+    scss: {
+      additionalData: `@use "@/styles/abstracts" as *;`
+    }
+  }
+},
   server: {
     port: 3000,
     host: true,

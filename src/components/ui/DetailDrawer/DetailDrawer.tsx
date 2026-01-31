@@ -2,6 +2,9 @@ import { useState, ReactNode } from 'react';
 import { Drawer } from '@components/ui/Drawer/Drawer';
 import { TranscriptMessage } from '@/types/call';
 import styles from './DetailDrawer.module.scss';
+import { FiArrowRight, FiCornerDownLeft } from 'react-icons/fi';
+import { on } from 'events';
+import { PiPaperPlaneRightLight } from 'react-icons/pi';
 
 // Icons
 const CloseIcon = () => (
@@ -60,6 +63,10 @@ export interface DetailDrawerProps {
   onPlay?: () => void;
   onDownload?: () => void;
   width?: number;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  noteList?: string[];
+  onNoteListChange?: (notes: string[]) => void;
+  onNoteEnter?: () => void;
 }
 
 export function DetailDrawer({
@@ -69,13 +76,17 @@ export function DetailDrawer({
   infoFields,
   transcript,
   callSummary = '',
-  notes = '',
+  notes,
   onNotesChange,
   currentTime = 2.53,
   totalTime = 4.0,
   onPlay,
   onDownload,
   width = 400,
+  onKeyDown,
+  noteList,
+  onNoteEnter,
+
 }: DetailDrawerProps) {
   const [activeTab, setActiveTab] = useState<'transcript' | 'notes'>('transcript');
 
@@ -199,13 +210,31 @@ export function DetailDrawer({
                 </p>
               </div>
               <div className={styles.userNotes}>
-                <h4 className={styles.sectionTitle}>Enter Your Note</h4>
-                <textarea
-                  className={styles.notesTextarea}
-                  placeholder="Add your notes here..."
-                  defaultValue={notes}
+                <div className={styles.notesList}>
+                  <h4 className={styles.sectionTitle}>Notes:</h4>
+                  {noteList?.map((note, index) => (
+                    <div key={index} className={styles.noteItem}>
+                      <span className={styles.noteText}>{note}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className={styles.notesInputContainer}>
+                  <input
+                  // className={styles.notesInput}
+                  placeholder="Enter Your Notes"
+                  value={notes}
                   onChange={(e) => onNotesChange?.(e.target.value)}
+                  onKeyDown={onKeyDown}
                 />
+                <button
+                  type="button"
+                  // className={styles.enterButton}
+                  onClick={onNoteEnter}
+                  aria-label="Submit notes"
+                >
+                  <PiPaperPlaneRightLight className={styles.enterIcon} />
+                </button>
+                </div>
               </div>
             </div>
           )}

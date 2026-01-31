@@ -16,7 +16,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: $spacing-lg;
+  margin-bottom: $spacing-md;
 }
 
 .title {
@@ -50,7 +50,7 @@
   display: flex;
   flex-direction: column;
   gap: $spacing-md;
-  margin-bottom: $spacing-lg;
+  margin-bottom: $spacing-md;
 }
 
 .infoRow {
@@ -58,6 +58,7 @@
   align-items: center;
   justify-content: space-between;
   gap: $spacing-md;
+  border-bottom: $border-width-thin solid $color-gray-200; 
 }
 
 .infoLabel {
@@ -108,7 +109,7 @@
   background: $color-gray-50;
   border-radius: $border-radius-md;
   padding: $spacing-md;
-  margin-bottom: $spacing-lg;
+  margin-bottom: $spacing-md;
 }
 
 .progressContainer {
@@ -306,13 +307,45 @@
   display: flex;
   flex-direction: column;
   gap: $spacing-lg;
+  border-radius: $border-radius-md;
 }
 
-.callSummary,
-.userNotes {
+.callSummary {
   display: flex;
   flex-direction: column;
   gap: $spacing-sm;
+  padding: $spacing-sm;
+  border-bottom: $border-width-thin solid $color-gray-200;
+}
+.userNotes {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  height: 337px;
+  gap: $spacing-sm;
+  padding: $spacing-sm;
+  border-radius: $border-radius-md;
+} 
+
+.notesList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  flex: 1;
+}
+
+.noteItem {
+  display: flex;
+  align-items: center;
+  padding: $spacing-sm;
+  gap: $spacing-sm;
+  border: $border-width-thin solid $color-gray-200;
+  border-radius: $border-radius-md;
+}
+
+.noteText {
+  font-size: $font-size-sm;
+  color: $color-gray-600;
 }
 
 .sectionTitle {
@@ -329,18 +362,23 @@
   margin: 0;
 }
 
-.notesTextarea {
+.notesInputContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   width: 100%;
-  min-height: 120px;
+  position: sticky;
+  margin-top: auto;
+
+  input {
+  flex: 1;
+  height: 36px;
   padding: $spacing-md;
   background: $color-gray-50;
   border: $border-width-thin solid $color-gray-200;
   border-radius: $border-radius-md;
   font-size: $font-size-sm;
-  font-family: inherit;
   color: $color-gray-700;
-  resize: vertical;
-  transition: border-color $transition-fast, box-shadow $transition-fast;
 
   &::placeholder {
     color: $color-gray-400;
@@ -349,6 +387,36 @@
   &:focus {
     outline: none;
     border-color: $color-primary;
-    box-shadow: 0 0 0 2px rgba($color-primary, 0.1);
+    box-shadow: 0 0 0 1px $color-primary;
   }
+  }
+
+  button{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  color: $color-primary;
+  transition: $transition-fast;
+  border: $border-width-thin solid $color-primary-dark;
+  border-radius: $border-radius-md;
+
+  &:hover {
+    color: $color-primary;
+  }
+
+  .enterIcon {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-medium;
+    color: $color-primary;
+  }
+
+  // &:disabled {
+  //   cursor: not-allowed;
+  //   opacity: 0.5;
+  // }
+
+} 
 }

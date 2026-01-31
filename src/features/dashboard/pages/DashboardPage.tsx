@@ -7,6 +7,7 @@ import styles from './DashboardPage.module.scss';
 import { StatCard } from '../components/StatCard';
 import { CostOverviewChart } from '../components/CostOverviewChart';
 import { CostConversionChart } from '../components/CostConversionChart';
+import Banner from '@/components/layout/Banner/Banner';
 
 // Icons for stat cards
 const PhoneIcon = () => (
@@ -100,7 +101,8 @@ export function DashboardPage() {
   return (
     <div className={styles.container}>
       {/* Header */}
-      <div className={styles.header}>
+      <Banner>
+        <div className={styles.header}>
         <h1 className={styles.title}>Dashboard</h1>
         <Dropdown items={dateMenuItems} trigger={['click']}>
           <button className={styles.dateFilter}>
@@ -117,7 +119,9 @@ export function DashboardPage() {
           </button>
         </Dropdown>
       </div>
+      </Banner>
 
+      <div className={styles.content}>
       {/* Stats Grid */}
       <div className={styles.statsGrid}>
         <StatCard
@@ -182,6 +186,7 @@ export function DashboardPage() {
         <CostConversionChart
           data={costConversionData}
         />
+      </div>
       </div>
     </div>
   );
