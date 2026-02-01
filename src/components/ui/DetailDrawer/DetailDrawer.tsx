@@ -2,9 +2,9 @@ import { useState, ReactNode } from 'react';
 import { Drawer } from '@components/ui/Drawer/Drawer';
 import { TranscriptMessage } from '@/types/call';
 import styles from './DetailDrawer.module.scss';
-import { FiArrowRight, FiCornerDownLeft } from 'react-icons/fi';
-import { on } from 'events';
-import { PiPaperPlaneRightLight } from 'react-icons/pi';
+import { NotesChat } from '@/features/call-logs/components/NoteChat/NotesChat';
+import { Note } from '@/features/call-logs/components/NoteChat/NotesChat';
+
 
 // Icons
 const CloseIcon = () => (
@@ -43,6 +43,7 @@ const UserIcon = () => (
   </svg>
 );
 
+
 // Types
 export interface InfoField {
   label: string;
@@ -56,17 +57,14 @@ export interface DetailDrawerProps {
   infoFields: InfoField[];
   transcript: TranscriptMessage[];
   callSummary?: string;
-  notes?: string;
-  onNotesChange?: (notes: string) => void;
+  notes?: Note[];
+  onAddNote?: (note: Note) => void;
+  currentUser?: string;
   currentTime?: number;
   totalTime?: number;
   onPlay?: () => void;
   onDownload?: () => void;
   width?: number;
-  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  noteList?: string[];
-  onNoteListChange?: (notes: string[]) => void;
-  onNoteEnter?: () => void;
 }
 
 export function DetailDrawer({
@@ -76,16 +74,14 @@ export function DetailDrawer({
   infoFields,
   transcript,
   callSummary = '',
-  notes,
-  onNotesChange,
+  notes = [],
+  onAddNote,
+  currentUser,
   currentTime = 2.53,
   totalTime = 4.0,
   onPlay,
   onDownload,
   width = 400,
-  onKeyDown,
-  noteList,
-  onNoteEnter,
 
 }: DetailDrawerProps) {
   const [activeTab, setActiveTab] = useState<'transcript' | 'notes'>('transcript');
@@ -209,33 +205,11 @@ export function DetailDrawer({
                   {callSummary || 'No summary available'}
                 </p>
               </div>
-              <div className={styles.userNotes}>
-                <div className={styles.notesList}>
-                  <h4 className={styles.sectionTitle}>Notes:</h4>
-                  {noteList?.map((note, index) => (
-                    <div key={index} className={styles.noteItem}>
-                      <span className={styles.noteText}>{note}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className={styles.notesInputContainer}>
-                  <input
-                  // className={styles.notesInput}
-                  placeholder="Enter Your Notes"
-                  value={notes}
-                  onChange={(e) => onNotesChange?.(e.target.value)}
-                  onKeyDown={onKeyDown}
-                />
-                <button
-                  type="button"
-                  // className={styles.enterButton}
-                  onClick={onNoteEnter}
-                  aria-label="Submit notes"
-                >
-                  <PiPaperPlaneRightLight className={styles.enterIcon} />
-                </button>
-                </div>
-              </div>
+             <NotesChat
+               notes={notes}
+               onAddNote={onAddNote || (() => {})}
+               currentUser={currentUser}
+             />
             </div>
           )}
         </div>

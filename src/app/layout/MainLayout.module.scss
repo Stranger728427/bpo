@@ -104,7 +104,7 @@
   display: flex;
   align-items: center;
   gap: $spacing-md;
-  padding: $spacing-md;
+  padding: $spacing-sm;
   border: none;
   background: transparent;
   cursor: pointer;
@@ -126,6 +126,7 @@
 
     .navIcon {
       color: $color-primary;
+      
     }
   }
 }
@@ -135,6 +136,8 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
 }
 
 .navLabel {

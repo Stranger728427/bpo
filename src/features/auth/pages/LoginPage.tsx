@@ -54,7 +54,9 @@ export function LoginPage() {
         {/* Left Panel - Branding */}
         <div className={styles.brandingPanel}>
           <div className={styles.brandingContent}>
-            <MYaiLogo />
+            <img className={styles.loginAnimation} src="/assets/login-animation.png" alt="Logo" />
+          </div>
+          <div className={styles.brandingText}>
             <h1 className={styles.brandName}>MYai</h1>
             <p className={styles.tagline}>
               Your Personal AI Scheduler, Taking AI brilliance to the next level.

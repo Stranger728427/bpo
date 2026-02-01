@@ -1,0 +1,115 @@
+.userNotes {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: $color-white;
+}
+
+/* Title */
+.sectionTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: $color-gray-900;
+  margin-bottom: 12px;
+}
+
+/* Scroll area */
+.notesList {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Message card */
+.noteCard {
+  border: 1px solid $color-gray-200;
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: $color-white;
+}
+
+/* Header row */
+.noteHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.noteUser {
+  font-weight: 600;
+  font-size: 14px;
+  color: $color-gray-900;
+}
+
+.noteTime {
+  font-size: 13px;
+  color: $color-gray-500;
+}
+
+/* Message */
+.noteMessage {
+  font-size: 14px;
+  color: $color-gray-600;
+  line-height: 1.5;
+}
+
+/* Input container */
+.notesInputContainer {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  gap: 10px;
+  padding-top: 14px;
+  background: $color-white;
+}
+
+/* Input */
+.notesInputContainer input {
+  flex: 1;
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid $color-gray-300;
+  font-size: 14px;
+
+  &::placeholder {
+    color: $color-gray-400;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+  }
+}
+
+/* Send button */
+.notesInputContainer button {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid $color-primary-dark;
+  background: $color-primary-bg;
+  color: $color-primary-dark;
+  cursor: pointer;
+  transition: 0.2s ease;
+
+  &:hover {
+    background: $color-primary-lighter;
+  }
+}
+
+.enterIcon {
+  font-size: 20px;
+}

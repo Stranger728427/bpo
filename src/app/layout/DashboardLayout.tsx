@@ -72,7 +72,7 @@ export function DashboardLayout() {
             </svg>
           </button>
           <div className={styles.logo}>
-            <span className={styles.logoText}>MYai</span>
+            <span className={styles.logoText}></span>
             <span className={styles.logoSuperscript}>500</span>
           </div>
         </div>

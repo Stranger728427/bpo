@@ -5,6 +5,11 @@ import {
   DonutSegment,
 } from '@components/ui/MultiSegmentDonutChart/MultiSegmentDonutChart';
 import styles from './CampaignDetailModal.module.scss';
+import { HugeiconsCall02 } from '@/app/icons/CallLogs';
+import { AiOutlineDollarCircle } from 'react-icons/ai';
+import { StreamlineFlexDollarIncrease } from '@/app/icons/ConversionRateIcon';
+import { IoTimeOutline } from 'react-icons/io5';
+import { TbExternalLink } from 'react-icons/tb';
 
 interface Campaign {
   id: string;
@@ -32,70 +37,6 @@ const CloseIcon = () => (
   </svg>
 );
 
-const PhoneIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <path
-      d="M20 16V19C20 19.5523 19.5523 20 19 20C10.1634 20 3 12.8366 3 4C3 3.44772 3.44772 3 4 3H7C7.27614 3 7.5 3.22386 7.5 3.5C7.5 5.32071 7.875 7.06284 8.565 8.66L6.17 11.055C7.865 14.355 10.645 17.135 13.945 18.83L16.34 16.435C17.9372 17.125 19.6793 17.5 21.5 17.5C21.7761 17.5 22 17.7239 22 18V16H20Z"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
-const PercentIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <circle cx="7" cy="7" r="3" stroke="currentColor" strokeWidth="1.5" />
-    <circle cx="17" cy="17" r="3" stroke="currentColor" strokeWidth="1.5" />
-    <line
-      x1="19"
-      y1="5"
-      x2="5"
-      y2="19"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-    />
-  </svg>
-);
-
-const ClockIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" />
-    <path
-      d="M12 7V12L15 15"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
-const DollarIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.5" />
-    <path
-      d="M12 7V17M15 9.5C15 8.11929 13.6569 7 12 7C10.3431 7 9 8.11929 9 9.5C9 10.8807 10.3431 12 12 12C13.6569 12 15 13.1193 15 14.5C15 15.8807 13.6569 17 12 17C10.3431 17 9 15.8807 9 14.5"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-    />
-  </svg>
-);
-
-const ExternalLinkIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-    <path
-      d="M10 1H13V4M13 1L7 7M5 2H3C1.89543 2 1 2.89543 1 4V11C1 12.1046 1.89543 13 3 13H10C11.1046 13 12 12.1046 12 11V9"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
 
 // Mock performance data for line chart
 const performanceData = [
@@ -170,7 +111,7 @@ export function CampaignDetailModal({ isOpen, onClose, campaign }: CampaignDetai
                 </span>
                 <span>
                   AI prompt: <strong>AI Voice Script v3</strong>
-                  <ExternalLinkIcon />
+                  <TbExternalLink size={20} />
                 </span>
               </div>
               <div className={styles.infoDates}>Created Jan 5, 2025 • Last updated Jan 12, 2025</div>
@@ -186,7 +127,7 @@ export function CampaignDetailModal({ isOpen, onClose, campaign }: CampaignDetai
               <div className={styles.statHeader}>
                 <span className={styles.statLabel}>Calls made</span>
                 <div className={styles.statIcon}>
-                  <PhoneIcon />
+                  <HugeiconsCall02 />
                 </div>
               </div>
               <div className={styles.statValue}>4,320</div>
@@ -199,7 +140,7 @@ export function CampaignDetailModal({ isOpen, onClose, campaign }: CampaignDetai
               <div className={styles.statHeader}>
                 <span className={styles.statLabel}>Conversion rate</span>
                 <div className={styles.statIcon}>
-                  <PercentIcon />
+                  <StreamlineFlexDollarIncrease />
                 </div>
               </div>
               <div className={styles.statValue}>18.5%</div>
@@ -212,7 +153,7 @@ export function CampaignDetailModal({ isOpen, onClose, campaign }: CampaignDetai
               <div className={styles.statHeader}>
                 <span className={styles.statLabel}>Avg call duration</span>
                 <div className={styles.statIcon}>
-                  <ClockIcon />
+                  <IoTimeOutline size={24} />
                 </div>
               </div>
               <div className={styles.statValue}>01:42</div>
@@ -225,7 +166,7 @@ export function CampaignDetailModal({ isOpen, onClose, campaign }: CampaignDetai
               <div className={styles.statHeader}>
                 <span className={styles.statLabel}>Average cost</span>
                 <div className={styles.statIcon}>
-                  <DollarIcon />
+                  <AiOutlineDollarCircle size={24} />
                 </div>
               </div>
               <div className={styles.statValue}>$ 92.00</div>

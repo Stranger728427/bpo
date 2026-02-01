@@ -34,8 +34,11 @@
 
 .headerContent {
   display: flex;
+  padding-bottom: $spacing-md;
+  flex: 1;
   flex-direction: column;
   gap: $spacing-xs;
+  border-bottom: 1px solid $color-gray-200;
 }
 
 .title {
@@ -87,7 +90,7 @@
   @include transition;
 
   &.active {
-    color: $color-primary;
+    color: $color-primary-dark;
   }
 }
 
@@ -109,7 +112,7 @@
 
 .progressFill {
   height: 100%;
-  background-color: $color-primary;
+  background-color: $color-primary-dark;
   border-radius: 2px;
   @include transition;
 }
@@ -124,11 +127,11 @@
   @include transition;
 
   &.active {
-    background-color: $color-primary-light;
+    background-color: $color-primary-dark;
   }
 
   &.current {
-    background-color: $color-primary;
+    background-color: $color-primary-dark;
     width: 20px;
     height: 20px;
   }
@@ -153,6 +156,7 @@
   background-color: $color-white;
   border-radius: $border-radius-lg;
   padding: $spacing-lg;
+  box-shadow: $shadow-md;
 }
 
 .sectionHeader {
@@ -167,9 +171,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $color-primary-bg;
+  background-color: $color-primary-lighter;
   border-radius: $border-radius-md;
-  color: $color-primary;
+  color: $color-primary-dark;
   flex-shrink: 0;
 }
 
@@ -217,7 +221,7 @@
 .label {
   font-size: $font-size-sm;
   font-weight: $font-weight-medium;
-  color: $color-primary;
+  color: $color-gray-500;
   display: flex;
   align-items: center;
   gap: $spacing-xs;
@@ -242,7 +246,7 @@
 
   &:focus {
     outline: none;
-    border-color: $color-primary;
+    border-color: $color-primary-dark;
   }
 }
 
@@ -290,7 +294,7 @@
 
   &:focus {
     outline: none;
-    border-color: $color-primary;
+    border-color: $color-primary-dark;
   }
 }
 
@@ -323,12 +327,12 @@
   }
 
   &.selected {
-    border-color: $color-primary;
-    background-color: $color-primary-bg;
+    border-color: $color-primary-dark;
+    background-color: $color-primary-lighter;
   }
 
   &.phoneCard {
-    border-left: 4px solid $color-primary;
+    border-left: 4px solid $color-primary-dark;
   }
 }
 
@@ -361,7 +365,7 @@
 }
 
 .checkMark {
-  color: $color-primary;
+  color: $color-primary-dark;
 }
 
 // Tabs
@@ -395,7 +399,7 @@
 
   &.active {
     background-color: $color-white;
-    color: $color-primary;
+    color: $color-primary-dark;
     box-shadow: $shadow-sm;
   }
 
@@ -422,7 +426,7 @@
 
   &:focus {
     outline: none;
-    border-color: $color-primary;
+    border-color: $color-primary-dark;
   }
 }
 
@@ -453,16 +457,16 @@
 .chooseFileButton {
   padding: $spacing-sm $spacing-lg;
   background: none;
-  border: 1px solid $color-primary;
+  border: 1px solid $color-primary-dark;
   border-radius: $border-radius-md;
   font-size: $font-size-sm;
   font-weight: $font-weight-medium;
-  color: $color-primary;
+  color: $color-primary-dark;
   cursor: pointer;
   @include transition;
 
   &:hover {
-    background-color: $color-primary-bg;
+    background-color: $color-primary-lighter;
   }
 }
 
@@ -502,12 +506,12 @@
   }
 
   &.selected {
-    border-color: $color-primary;
-    background-color: $color-primary-bg;
+    border-color: $color-primary-dark;
+    background-color: $color-primary-lighter;
 
     .checkbox {
-      background-color: $color-primary;
-      border-color: $color-primary;
+      background-color: $color-primary-dark;
+      border-color: $color-primary-dark;
       color: $color-white;
     }
   }
@@ -575,7 +579,7 @@
   padding: 12px 16px;
   background-color: $color-gray-50;
   font-size: $font-size-sm;
-  color: $color-primary;
+  color: $color-primary-dark;
   font-weight: $font-weight-medium;
   border-right: 1px solid $color-gray-200;
 }
@@ -605,11 +609,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: $color-primary-bg;
+  background-color: $color-primary-lighter;
   border-radius: $border-radius-sm;
   font-size: $font-size-sm;
   font-weight: $font-weight-bold;
-  color: $color-primary;
+  color: $color-primary-dark;
   flex-shrink: 0;
 }
 
@@ -642,7 +646,7 @@
 
 .summaryValue {
   font-size: $font-size-sm;
-  color: $color-primary;
+  color: $color-primary-dark;
   font-weight: $font-weight-medium;
 }
 
@@ -660,7 +664,7 @@
 
 .primaryButton {
   padding: 12px 24px;
-  background-color: $color-primary;
+  background-color: $color-primary-dark;
   border: none;
   border-radius: $border-radius-md;
   font-size: $font-size-sm;
@@ -677,11 +681,11 @@
 .secondaryButton {
   padding: 12px 24px;
   background-color: $color-white;
-  border: 1px solid $color-primary;
+  border: 1px solid $color-primary-dark;
   border-radius: $border-radius-md;
   font-size: $font-size-sm;
   font-weight: $font-weight-medium;
-  color: $color-primary;
+  color: $color-primary-dark;
   cursor: pointer;
   @include transition;
 

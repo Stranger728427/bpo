@@ -1,7 +1,7 @@
 import { DetailDrawer, StatusBadge } from '@components/ui/DetailDrawer/DetailDrawer';
 import { CallRecord, getStatusLabel, getStatusVariant } from '@/types/call';
 import { useState } from 'react';
-
+import { Note } from './NoteChat/NotesChat';
 interface CallLogDetailDrawerProps {
   isOpen: boolean;
   onClose: () => void;
@@ -35,25 +35,12 @@ export function CallLogDetailDrawer({ isOpen, onClose, callLog }: CallLogDetailD
 
   const totalTime = parseDuration(callLog.duration);
 
-  const [notes, setNotes] = useState('');
-  const [noteList, setNoteList] = useState([''])
+  // Initialize with some mock notes if desired, or empty
+  const [notes, setNotes] = useState<Note[]>([]);
 
-  const handleNotesChange = (value: string) => {
-    setNotes(value);
-  };
-
-  const handleEnter = () => {
-    if (!notes.trim()) return;
-    setNoteList([...noteList, notes]);
-    setNotes('');
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleEnter();
-    }
-  };
-
+  const handleAddNote = (newNote: Note) => {
+    setNotes((prev) => [...prev, newNote]);
+  }
 
   return (
     <DetailDrawer
@@ -64,15 +51,12 @@ export function CallLogDetailDrawer({ isOpen, onClose, callLog }: CallLogDetailD
       transcript={callLog.transcript}
       callSummary={callLog.callSummary}
       notes={notes}
+      onAddNote={handleAddNote}
+      currentUser="You"
       currentTime={totalTime * 0.63} // Mock: 63% progress
       totalTime={totalTime}
       onPlay={() => console.log('Play audio')}
       onDownload={() => console.log('Download audio')}
-      onNotesChange={handleNotesChange}
-      onKeyDown={handleKeyDown}
-      noteList={noteList}
-      onNoteListChange={setNoteList}
-      onNoteEnter={handleEnter}
     />
   );
 }
