@@ -6,6 +6,9 @@ import { Sidebar } from '@components/layout/Sidebar/Sidebar';
 import { MainContent } from '@components/layout/MainContent/MainContent';
 import { useLayout } from '@components/layout/LayoutContext';
 import styles from './MainLayout.module.scss';
+import { MdOutlineDashboard, MdOutlineCampaign, MdOutlineList } from 'react-icons/md';
+import { MaterialSymbolsLightCallLogOutline } from '../icons/CallLogs';
+
 
 // Navigation items configuration
 const navItems = [
@@ -21,37 +24,15 @@ const NavIcon = ({ type }: { type: string }) => {
   switch (type) {
     case 'dashboard':
       return (
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <rect x="2" y="2" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
-          <rect x="11" y="2" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
-          <rect x="2" y="11" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
-          <rect x="11" y="11" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
-        </svg>
+        <MdOutlineDashboard size={20} />
       );
     case 'call':
       return (
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <path
-            d="M17 13.5V16C17 16.5523 16.5523 17 16 17C8.26801 17 2 10.732 2 3C2 2.44772 2.44772 2 3 2H5.5C5.77614 2 6 2.22386 6 2.5C6 3.88071 6.25 5.20855 6.71 6.44L4.78 8.37C5.91 10.57 7.43 12.09 9.63 13.22L11.56 11.29C12.7914 11.75 14.1193 12 15.5 12C15.7761 12 16 12.2239 16 12.5V13.5H17Z"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <MaterialSymbolsLightCallLogOutline />
       );
     case 'campaign':
       return (
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <path
-            d="M3 4L10 2L17 4V11C17 14.866 13.866 18 10 18C6.13401 18 3 14.866 3 11V4Z"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path d="M10 2V18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        </svg>
+        <MdOutlineCampaign size={20} />
       );
     case 'ai':
       return (
@@ -69,14 +50,7 @@ const NavIcon = ({ type }: { type: string }) => {
       );
     case 'list':
       return (
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <line x1="7" y1="5" x2="17" y2="5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1="7" y1="10" x2="17" y2="10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1="7" y1="15" x2="17" y2="15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          <circle cx="3.5" cy="5" r="1" fill="currentColor" />
-          <circle cx="3.5" cy="10" r="1" fill="currentColor" />
-          <circle cx="3.5" cy="15" r="1" fill="currentColor" />
-        </svg>
+        <MdOutlineList size={20} />
       );
     default:
       return null;
@@ -97,8 +71,7 @@ function HeaderContent() {
           </svg>
         </button>
         <div className={styles.logo}>
-          <span className={styles.logoText}>MYai</span>
-          <span className={styles.logoSuperscript}>500</span>
+          <img src="/myaiLogo.svg" alt="logo" className={styles.logoText}></img>
         </div>
       </div>
       <div className={styles.headerRight}>

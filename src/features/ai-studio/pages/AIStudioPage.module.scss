@@ -102,19 +102,22 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: $spacing-lg;
+
   background: $color-white;
   padding: $spacing-md;
   border-radius: $border-radius-lg;
-  overflow: auto;
+
+  flex: 1;
   min-height: 0;
-  max-height: calc(100vh - 250px);
+  max-height: calc(100vh - 150px);
+  overflow: auto;
+  align-content: start;
   scrollbar-width: none;
   -ms-overflow-style: none;
+
   &::-webkit-scrollbar {
     display: none;
   }
-  flex: 1;
-
 
   @include media-down('xl') {
     grid-template-columns: repeat(3, 1fr);
@@ -132,7 +135,7 @@
 // Card
 .card {
   background: $color-white;
-  border: $border-width-thin solid black;
+  box-shadow: $shadow-lg;
   border-radius: $border-radius-lg;
   overflow: hidden;
   transition: box-shadow $transition-fast, transform $transition-fast;

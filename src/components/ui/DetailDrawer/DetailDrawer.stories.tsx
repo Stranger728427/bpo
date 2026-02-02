@@ -54,12 +54,29 @@ export const Default: Story = {
     title: 'Details',
     infoFields: mockInfoFields,
     transcript: mockTranscript,
-    callSummary: 'The call began with an AI offering language selection, to which the user chose Spanish. The user identified themselves as a new patient, and the AI offered to schedule an appointment, asking for their full name. The call ended before the user could provide their name.',
-    notes: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    callSummary:
+      'The call began with an AI offering language selection, to which the user chose Spanish. The user identified themselves as a new patient, and the AI offered to schedule an appointment, asking for their full name. The call ended before the user could provide their name.',
+
+    notes: [
+      {
+        id: 1,
+        speaker: 'ai',
+        timestamp: '08/06/2025, 09:00 AM',
+        message:
+          'Thank you for calling Accident Centers of Texas. This is Riley. Which language would you like to continue in, English or Spanish?',
+      },
+      {
+        id: 2,
+        speaker: 'user',
+        timestamp: '08/06/2025, 09:01 AM',
+        message: 'English please.',
+      },
+    ],
+
     currentTime: 2.53,
     totalTime: 4.0,
   },
-};
+}
 
 export const EmptyTranscript: Story = {
   args: {
@@ -69,7 +86,7 @@ export const EmptyTranscript: Story = {
     infoFields: mockInfoFields,
     transcript: [],
     callSummary: '',
-    notes: '',
+    notes: [],
     currentTime: 0,
     totalTime: 4.0,
   },

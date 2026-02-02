@@ -15,7 +15,7 @@
   display: flex;
   width: 100%;
   max-width: 900px;
-  min-height: 520px;
+  min-height: 680px;
   background-color: $color-white;
   border-radius: $border-radius-xl;
   box-shadow: $shadow-xl;
@@ -28,32 +28,49 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: $spacing-2xl;
+  padding: $spacing-md;
   background-color: $color-white;
+  position: relative;
+  
 }
 
 .brandingContent {
   display: flex;
-  flex-direction: column;
+  height: 100%;
+  width: 100%;
   align-items: center;
+  justify-content: center;
   text-align: center;
   gap: $spacing-md;
 }
 
 .brandName {
-  font-size: $font-size-3xl;
-  font-weight: $font-weight-bold;
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-semibold;
   color: $color-gray-900;
   margin: 0;
   letter-spacing: -0.02em;
 }
 
+.brandingText {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  bottom: 0;
+  width: 100%;
+  position: absolute;
+  padding:$spacing-md;
+  margin-bottom: $spacing-lg;
+  margin-left: $spacing-xl;
+}
+
 .tagline {
-  font-size: $font-size-sm;
-  color: $color-gray-600;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: $color-gray-900;
   margin: 0;
-  max-width: 280px;
-  line-height: $line-height-relaxed;
+  width: 100%;
+  line-height: $line-height-normal;
 }
 
 // Right Panel - Login Form
@@ -69,10 +86,29 @@
 .formCard {
   width: 100%;
   max-width: 340px;
-  padding: $spacing-xl $spacing-lg;
+  padding: $spacing-xl $spacing-md;
   background-color: $color-white;
   border: 1px solid $color-gray-200;
   border-radius: $border-radius-lg;
+  height: 100%;
+  width: 100%;
+}
+
+.loginAnimation {
+  display: flex;
+  width: 280px;
+  height: 280px;
+  color: $color-gray-800;
+  animation: spin 10s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .formHeader {
@@ -88,15 +124,17 @@
 }
 
 .formSubtitle {
-  font-size: $font-size-sm;
-  color: $color-gray-500;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: $color-gray-900;
   margin: 0;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: $spacing-md;
+  gap: $spacing-xl;
+  padding: $spacing-xl;
 }
 
 .rememberMe {
@@ -108,8 +146,8 @@
   }
 
   :global(.ant-checkbox-checked .ant-checkbox-inner) {
-    background-color: $color-primary;
-    border-color: $color-primary;
+    background-color: $color-primary-dark;
+    border-color: $color-primary-dark;
   }
 }
 
@@ -117,8 +155,8 @@
   margin-top: $spacing-sm;
 
   &:global(.ant-btn-primary) {
-    background-color: $color-primary;
-    border-color: $color-primary;
+    background-color: $color-primary-dark;
+    border-color: $color-primary-dark;
     height: 44px;
     font-weight: $font-weight-medium;
     font-size: $font-size-base;
@@ -137,11 +175,11 @@
   gap: $spacing-xs;
   margin-top: $spacing-lg;
   font-size: $font-size-sm;
-  color: $color-gray-500;
+  color: $color-gray-900;
 }
 
 .registerLink {
-  color: $color-primary;
+  color: $color-primary-dark  ;
   text-decoration: none;
   font-weight: $font-weight-medium;
   transition: color $transition-fast;

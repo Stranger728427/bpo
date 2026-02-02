@@ -13,10 +13,10 @@
 }
 
 .modal {
-  background-color: $color-gray-50;
+  background-color: $color-gray-bg;
   border-radius: $border-radius-lg;
   width: 100%;
-  max-width: 1100px;
+  max-width: 1227px;
   max-height: 90vh;
   overflow: hidden;
   display: flex;
@@ -28,8 +28,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: $spacing-lg $spacing-xl;
-  background-color: $color-white;
+  padding: $spacing-lg $spacing-md;
   border-bottom: 1px solid $color-gray-100;
 }
 
@@ -72,21 +71,26 @@
 .content {
   flex: 1;
   overflow-y: auto;
-  padding: $spacing-lg;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  padding: $spacing-md;
   display: flex;
   flex-direction: column;
-  gap: $spacing-lg;
+  gap: $spacing-md; 
 }
 
 // Info Card
 .infoCard {
   background-color: $color-white;
   border-radius: $border-radius-lg;
-  padding: $spacing-lg;
+  padding: $spacing-md;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: $spacing-lg;
+  gap: $spacing-md;
 }
 
 .infoMain {
@@ -112,16 +116,16 @@
   span {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: $spacing-xs;
   }
 
   strong {
-    color: $color-gray-700;
+    color: $color-gray-900;
     font-weight: $font-weight-medium;
   }
 
   svg {
-    color: $color-gray-400;
+    color: $color-gray-900;
   }
 }
 
@@ -152,7 +156,7 @@
 .statCard {
   background-color: $color-white;
   border-radius: $border-radius-lg;
-  padding: $spacing-lg;
+  padding: $spacing-md;
   display: flex;
   flex-direction: column;
   gap: $spacing-sm;
@@ -203,7 +207,7 @@
 .chartsGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: $spacing-lg;
+  gap: $spacing-md;
 
   @include media-down('md') {
     grid-template-columns: 1fr;
@@ -213,14 +217,14 @@
 .chartCard {
   background-color: $color-white;
   border-radius: $border-radius-lg;
-  padding: $spacing-lg;
+  padding: $spacing-md;
 }
 
 .chartHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: $spacing-lg;
+  margin-bottom: $spacing-md;
   flex-wrap: wrap;
   gap: $spacing-sm;
 }
