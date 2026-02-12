@@ -39,6 +39,18 @@ const LeadListPage = lazy(() =>
   }))
 );
 
+const CallPage = lazy(() =>
+  import('@features/call/pages/CallPage').then((m) => ({
+    default: m.CallPage,
+  }))
+);
+
+export const Campaign = lazy(() =>
+  import('@features/camp/pages/Campaign').then((m) => ({
+    default: m.Campaign,
+  }))
+);
+
 // eslint-disable-next-line react-refresh/only-export-components
 const SuspenseWrapper = ({ children }: { children: React.ReactNode }) => (
   <Suspense fallback={<Spinner fullScreen />}>{children}</Suspense>
@@ -59,6 +71,22 @@ export const routes: RouteObject[] = [
     children: [
       {
         index: true,
+        element: (
+          <SuspenseWrapper>
+            <CallPage />
+          </SuspenseWrapper>
+        ),
+      },
+      {
+        path: 'campaign',
+        element: (
+          <SuspenseWrapper>
+            <Campaign />
+          </SuspenseWrapper>
+        ),
+      },
+      {
+        path: 'dashboard',
         element: (
           <SuspenseWrapper>
             <DashboardPage />

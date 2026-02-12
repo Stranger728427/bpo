@@ -13,11 +13,12 @@ import {
 } from 'react-icons/md';
 import { MaterialSymbolsLightCallLogOutline } from '../icons/CallLogs';
 import { BiPhone } from 'react-icons/bi';
+import { RxHamburgerMenu } from 'react-icons/rx';
 
 // Navigation items configuration
 const navItems = [
   // { path: '/', label: 'Upload', icon: 'upload' },
-  { path: '/call', label: 'Call', icon: 'call' },
+  { path: '/', label: 'Call', icon: 'call' },
   { path: '/campaign', label: 'Campaign', icon: 'campaign' },
   // { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
   // { path: '/call-logs', label: 'Call Logs', icon: 'call' },
@@ -51,42 +52,14 @@ function HeaderContent() {
           onClick={toggleSidebar}
           aria-label="Toggle sidebar"
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <line
-              x1="3"
-              y1="6"
-              x2="21"
-              y2="6"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <line
-              x1="3"
-              y1="12"
-              x2="21"
-              y2="12"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <line
-              x1="3"
-              y1="18"
-              x2="21"
-              y2="18"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
+          <RxHamburgerMenu size={24} />
         </button>
         <div className={styles.logo}>
           <img src="/myaiLogo.svg" alt="logo" className={styles.logoText}></img>
         </div>
       </div>
       <div className={styles.headerRight}>
-        <div className={styles.credits}>
+        {/* <div className={styles.credits}>
           <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
             <rect
               x="2"
@@ -107,8 +80,8 @@ function HeaderContent() {
             />
           </svg>
           <span>12,430</span>
-        </div>
-        <button className={styles.notificationBtn} aria-label="Notifications">
+        </div> */}
+        {/* <button className={styles.notificationBtn} aria-label="Notifications">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
             <path
               d="M15 7C15 5.67392 14.4732 4.40215 13.5355 3.46447C12.5979 2.52678 11.3261 2 10 2C8.67392 2 7.40215 2.52678 6.46447 3.46447C5.52678 4.40215 5 5.67392 5 7C5 11.25 3 13 3 13H17C17 13 15 11.25 15 7Z"
@@ -125,7 +98,7 @@ function HeaderContent() {
               strokeLinejoin="round"
             />
           </svg>
-        </button>
+        </button> */}
         <div className={styles.avatar}>
           <img
             src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"

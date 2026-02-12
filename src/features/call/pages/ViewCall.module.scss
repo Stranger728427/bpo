@@ -1,0 +1,181 @@
+.drawer {
+  :global(.ant-drawer-body) {
+    padding: 0;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: $spacing-md;
+}
+
+// Header
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.title {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-gray-900;
+  margin: 0;
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  border-radius: $border-radius-full;
+  color: $color-gray-500;
+  cursor: pointer;
+  transition: background-color $transition-fast, color $transition-fast;
+
+  &:hover {
+    background: $color-gray-100;
+    color: $color-gray-700;
+  }
+}
+
+// Info Section
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  margin-bottom: $spacing-md;
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-md;
+  border-bottom: $border-width-thin solid $color-gray-200; 
+}
+
+.infoLabel {
+  font-size: $font-size-sm;
+  color: $color-gray-500;
+  flex-shrink: 0;
+}
+
+.infoValue {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-gray-900;
+  text-align: right;
+}
+
+// Status Badge
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+
+  &.success {
+    background: rgba($color-success, 0.1);
+    color: $color-success;
+  }
+
+  &.error {
+    background: rgba($color-error, 0.1);
+    color: $color-error;
+  }
+
+  &.warning {
+    background: rgba($color-warning, 0.1);
+    color: $color-warning;
+  }
+
+  &.default {
+    background: $color-gray-100;
+    color: $color-gray-600;
+  }
+}
+
+// Tab Content
+// .tabContent {
+//   flex: 1;
+//   overflow-y: auto;
+// }
+
+.transcriptContainer{
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  margin-bottom: $spacing-md;
+  height: 100%;
+}
+
+// Transcript
+.transcript {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.message {
+  background: $color-gray-50;
+  border-radius: $border-radius-md;
+  padding: $spacing-md;
+}
+
+.messageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+}
+
+.speakerInfo {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.speakerIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: $color-primary-bg;
+  color: $color-primary;
+  border-radius: $border-radius-sm;
+}
+
+.speakerName {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-gray-900;
+}
+
+.messageTime {
+  font-size: $font-size-xs;
+  color: $color-gray-400;
+}
+
+.messageText {
+  font-size: $font-size-sm;
+  color: $color-gray-600;
+  line-height: $line-height-relaxed;
+  margin: 0;
+}
+
+.emptyState {
+  text-align: center;
+  color: $color-gray-400;
+  font-size: $font-size-sm;
+  padding: $spacing-xl;
+}

@@ -1,0 +1,84 @@
+.uploadArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xl;
+  border: 2px dashed $color-gray-300;
+  border-radius: $border-radius-lg;
+  text-align: center;
+}
+
+.uploadText {
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  color: $color-gray-700;
+  margin: 0;
+}
+
+.uploadOr {
+  font-size: $font-size-sm;
+  color: $color-gray-400;
+  margin: $spacing-sm 0;
+}
+
+.chooseFileButton {
+  padding: $spacing-sm $spacing-lg;
+  background: none;
+  border: 1px solid $color-primary-dark;
+  border-radius: $border-radius-md;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-primary-dark;
+  cursor: pointer;
+  @include transition;
+
+  &:hover {
+    background-color: $color-primary-lighter;
+  }
+}
+
+.uploadHint {
+  font-size: $font-size-sm;
+  color: $color-gray-500;
+  margin-top: $spacing-md;
+}
+
+.uploadedFile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-md;
+  background-color: $color-gray-50;
+  border: 1px solid $color-gray-200;
+  border-radius: $border-radius-lg;
+}
+
+.fileInfo {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.fileIcon {
+  font-size: $font-size-base;
+}
+
+.fileName {
+  font-size: $font-size-sm;
+  color: $color-gray-700;
+}
+
+.removeFile {
+  background: none;
+  border: none;
+  color: $color-error;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: $border-radius-full;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba($color-error, 0.1);
+  }
+}

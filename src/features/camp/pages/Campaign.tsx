@@ -236,26 +236,6 @@ export function Campaign() {
   const getDateLabel = () =>
     dateOptions.find((o) => o.key === dateFilter)?.label || 'Today';
 
-  const campaignTypeMenuItems: MenuProps['items'] = campaignTypeOptions.map(
-    (option) => ({
-      key: option.key,
-      label: option.label,
-      onClick: () => setCampaignTypeFilter(option.key),
-    })
-  );
-
-  const statusMenuItems: MenuProps['items'] = statusOptions.map((option) => ({
-    key: option.key,
-    label: option.label,
-    onClick: () => setStatusFilter(option.key),
-  }));
-
-  const dateMenuItems: MenuProps['items'] = dateOptions.map((option) => ({
-    key: option.key,
-    label: option.label,
-    onClick: () => setDateFilter(option.key),
-  }));
-
   const handleViewDetails = (campaign: Campaign) => {
     setSelectedCampaign(campaign);
     setIsModalOpen(true);
