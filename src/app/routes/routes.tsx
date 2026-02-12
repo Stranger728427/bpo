@@ -2,7 +2,6 @@ import { lazy, Suspense } from 'react';
 import { RouteObject } from 'react-router-dom';
 import { MainLayout } from '@/app/layout/MainLayout';
 import { Spinner } from '@components/ui/Spinner/Spinner';
-
 // Lazy loaded pages
 const LoginPage = lazy(() =>
   import('@features/auth/pages/LoginPage').then((m) => ({
