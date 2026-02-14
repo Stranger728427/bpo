@@ -1,6 +1,7 @@
 import { PiFileTextDuotone, PiXCircleDuotone } from 'react-icons/pi';
 import styles from './UploadFile.module.scss';
 import { Popconfirm } from 'antd';
+import { MdOutlineDelete } from 'react-icons/md';
 
 type UploadFileProps = {
   file: File | null;
@@ -28,9 +29,9 @@ export default function UploadFile({
   buttonText = 'Choose File',
   hintText = 'CSV or Excel file with name and phone number columns.',
   sampleLink,
-  FileIcon = <PiFileTextDuotone size={24} />,
-  onRemoveFile,
+  FileIcon = <PiFileTextDuotone size={30} />,
   isRemoving = false,
+  onRemoveFile,
 }: UploadFileProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0] || null;
@@ -40,25 +41,6 @@ export default function UploadFile({
   const openFileExplorer = () => {
     if (!isRemoving) {
       fileInputRef.current?.click();
-    }
-  };
-
-  const handleRemove = async () => {
-    if (isRemoving) return;
-
-    try {
-      if (onRemoveFile) {
-        await onRemoveFile(); // wait for truncate success
-      } else {
-        onFileChange(null);
-      }
-
-      // clear input only after success
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
-      }
-    } catch {
-      // do nothing (parent handles error message)
     }
   };
 
@@ -110,7 +92,7 @@ export default function UploadFile({
           <Popconfirm
             title="Remove file?"
             description="This will remove the uploaded file from server."
-            onConfirm={handleRemove}
+            onConfirm={onRemoveFile}
             okText="Yes"
             cancelText="No"
             disabled={isRemoving}
@@ -121,7 +103,7 @@ export default function UploadFile({
               disabled={isRemoving}
               aria-label="Remove file"
             >
-              <PiXCircleDuotone size={18} />
+              <MdOutlineDelete size={24} />
             </button>
           </Popconfirm>
         </div>

@@ -25,18 +25,7 @@ export default function UploadPage({
     mutationFn: triggerCalls,
   });
 
-  // const handleUpload = async () => {
-  //   if (!file) return;
-
-  //   try {
-  //     await fileMutation.mutateAsync(file);
-  //     message.success('Contacts uploaded successfully');
-  //   } catch {
-  //     message.error('Upload failed');
-  //   }
-  // };
-
-  const handleFileSelect = async (selectedFile: File | null) => {
+  const handleFileUpload = async (selectedFile: File | null) => {
     if (!selectedFile) {
       setFile(null);
       return;
@@ -97,28 +86,35 @@ export default function UploadPage({
     >
       <div style={{ display: 'grid', gap: 16 }}>
         {/* Upload Section - Only before upload success */}
-        {!fileMutation.isSuccess && (
-          <div className={styles.compactCard}>
-            <h3 className={styles.cardTitle}>Upload Contacts</h3>
-            <p className={styles.cardDescription}>Upload CSV or Excel file.</p>
 
-            <UploadFile
-              file={file}
-              onFileChange={handleFileSelect}
-              onRemoveFile={handleTruncateFile}
-              fileInputRef={fileInputRef}
-              uploadText="Upload file"
-              buttonText="Browse"
-              hintText="CSV: name, phone, appointment"
-              accept=".csv,.xls,.xlsx"
-            />
-          </div>
-        )}
+        <div className={styles.compactCard}>
+          {!fileMutation.isSuccess && !file && (
+            <>
+              <h3 className={styles.cardTitle}>Upload Contacts</h3>
+              <p className={styles.cardDescription}>
+                Upload CSV or Excel file.
+              </p>
+            </>
+          )}
+
+          <UploadFile
+            file={file}
+            onFileChange={handleFileUpload}
+            onRemoveFile={handleTruncateFile}
+            fileInputRef={fileInputRef}
+            uploadText="Upload file"
+            buttonText="Browse"
+            hintText="CSV: name, phone, appointment"
+            accept=".csv,.xls,.xlsx"
+          />
+        </div>
 
         {/* Trigger Section - Only after upload success */}
-        {fileMutation.isSuccess && (
+        {fileMutation.isSuccess && file && (
           <div className={styles.compactCard}>
-            <h3 className={styles.cardTitle}>Trigger Calls</h3>
+            <h3 className={styles.cardTitle}>
+              Initiate Calls for Uploaded Contacts
+            </h3>
 
             <Button
               danger
@@ -127,7 +123,7 @@ export default function UploadPage({
               loading={triggerCallsMutation.isPending}
               onClick={handleTriggerCalls}
             >
-              Trigger
+              Trigger Calls
             </Button>
           </div>
         )}
