@@ -1,5 +1,6 @@
 import { PiFileTextDuotone, PiXCircleDuotone } from 'react-icons/pi';
 import styles from './UploadFile.module.scss';
+import { Popconfirm } from 'antd';
 
 type UploadFileProps = {
   file: File | null;
@@ -14,6 +15,8 @@ type UploadFileProps = {
     href: string;
   };
   FileIcon?: React.ReactNode;
+  onRemoveFile?: () => Promise<void>; // truncate from parent
+  isRemoving?: boolean; // loading state from parent
 };
 
 export default function UploadFile({
@@ -26,13 +29,38 @@ export default function UploadFile({
   hintText = 'CSV or Excel file with name and phone number columns.',
   sampleLink,
   FileIcon = <PiFileTextDuotone size={24} />,
+  onRemoveFile,
+  isRemoving = false,
 }: UploadFileProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0] || null;
     onFileChange(selectedFile);
   };
 
-  const openFileExplorer = () => fileInputRef.current?.click();
+  const openFileExplorer = () => {
+    if (!isRemoving) {
+      fileInputRef.current?.click();
+    }
+  };
+
+  const handleRemove = async () => {
+    if (isRemoving) return;
+
+    try {
+      if (onRemoveFile) {
+        await onRemoveFile(); // wait for truncate success
+      } else {
+        onFileChange(null);
+      }
+
+      // clear input only after success
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    } catch {
+      // do nothing (parent handles error message)
+    }
+  };
 
   return (
     <>
@@ -53,6 +81,7 @@ export default function UploadFile({
             type="button"
             className={styles.chooseFileButton}
             onClick={openFileExplorer}
+            disabled={isRemoving}
           >
             {buttonText}
           </button>
@@ -78,17 +107,23 @@ export default function UploadFile({
             <span className={styles.fileName}>{file.name}</span>
           </div>
 
-          <button
-            type="button"
-            className={styles.removeFile}
-            onClick={() => {
-              onFileChange(null);
-              if (fileInputRef.current) fileInputRef.current.value = '';
-            }}
-            aria-label="Remove file"
+          <Popconfirm
+            title="Remove file?"
+            description="This will remove the uploaded file from server."
+            onConfirm={handleRemove}
+            okText="Yes"
+            cancelText="No"
+            disabled={isRemoving}
           >
-            <PiXCircleDuotone size={18} />
-          </button>
+            <button
+              type="button"
+              className={styles.removeFile}
+              disabled={isRemoving}
+              aria-label="Remove file"
+            >
+              <PiXCircleDuotone size={18} />
+            </button>
+          </Popconfirm>
         </div>
       )}
     </>

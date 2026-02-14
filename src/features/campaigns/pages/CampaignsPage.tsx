@@ -150,7 +150,7 @@ const dateOptions = [
   { key: 'all_time', label: 'All Time' },
 ];
 
-export function CampaignsPage() {
+  function CampaignsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -361,3 +361,5 @@ export function CampaignsPage() {
     </div>
   );
 }
+
+export default CampaignsPage

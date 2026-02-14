@@ -2,15 +2,21 @@ import { useState } from 'react';
 import { Checkbox } from 'antd';
 import { Input } from '@components/ui/Input/Input';
 import { Button } from '@components/ui/Button/Button';
-import { MYaiLogo } from '../components/MYaiLogo';
 import styles from './LoginPage.module.scss';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
 
-export function LoginPage() {
+function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
+    {}
+  );
+
+  const navigate = useNavigate();
 
   const validateForm = () => {
     const newErrors: { email?: string; password?: string } = {};
@@ -31,6 +37,23 @@ export function LoginPage() {
     return Object.keys(newErrors).length === 0;
   };
 
+  // const login = (payload: { email: string; password: string }) =>
+  //   axios.post('http://localhost:8080/api/auth/login', payload);
+
+  // const mutate = useMutation({
+  //   mutationFn: login,
+  //   onSuccess: (response) => {
+  //     const { access_token } = response.data;
+  //     localStorage.setItem('token', access_token);
+  //     navigate('/');
+  //   },
+  // });
+
+  // const logout = () => {
+  //   localStorage.removeItem('token');
+  //   navigate('/login');
+  // };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -48,18 +71,33 @@ export function LoginPage() {
     }
   };
 
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   if (!validateForm()) return;
+  //   const payload = {
+  //     email,
+  //     password,
+  //   };
+  //   mutate.mutate(payload);
+  // };
+
   return (
     <div className={styles.page}>
       <div className={styles.container}>
         {/* Left Panel - Branding */}
         <div className={styles.brandingPanel}>
           <div className={styles.brandingContent}>
-            <img className={styles.loginAnimation} src="/assets/login-animation.png" alt="Logo" />
+            <img
+              className={styles.loginAnimation}
+              src="/assets/login-animation.png"
+              alt="Logo"
+            />
           </div>
           <div className={styles.brandingText}>
             <h1 className={styles.brandName}>MYai</h1>
             <p className={styles.tagline}>
-              Your Personal AI Scheduler, Taking AI brilliance to the next level.
+              Your Personal AI Scheduler, Taking AI brilliance to the next
+              level.
             </p>
           </div>
         </div>
@@ -127,3 +165,5 @@ export function LoginPage() {
     </div>
   );
 }
+
+export default LoginPage;

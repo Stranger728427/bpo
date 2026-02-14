@@ -6,20 +6,18 @@ import { Sidebar } from '@components/layout/Sidebar/Sidebar';
 import { MainContent } from '@components/layout/MainContent/MainContent';
 import { useLayout } from '@components/layout/LayoutContext';
 import styles from './MainLayout.module.scss';
-import {
-  MdOutlineDashboard,
-  MdOutlineCampaign,
-  MdOutlineList,
-} from 'react-icons/md';
-import { MaterialSymbolsLightCallLogOutline } from '../icons/CallLogs';
+import myAilogo from '../../../public/myAiLogo.svg';
+
+import { MdOutlineDashboard, MdOutlineCampaign } from 'react-icons/md';
 import { BiPhone } from 'react-icons/bi';
 import { RxHamburgerMenu } from 'react-icons/rx';
+import { Avatar } from '@/components/ui/Avatar/Avatar';
 
 // Navigation items configuration
 const navItems = [
   // { path: '/', label: 'Upload', icon: 'upload' },
-  { path: '/', label: 'Call', icon: 'call' },
-  { path: '/campaign', label: 'Campaign', icon: 'campaign' },
+  { path: '/', label: 'Call Logs', icon: 'call' },
+  // { path: '/campaign', label: 'Campaign', icon: 'campaign' },
   // { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
   // { path: '/call-logs', label: 'Call Logs', icon: 'call' },
   // { path: '/campaigns', label: 'Campaigns', icon: 'campaign' },
@@ -55,7 +53,7 @@ function HeaderContent() {
           <RxHamburgerMenu size={24} />
         </button>
         <div className={styles.logo}>
-          <img src="/myaiLogo.svg" alt="logo" className={styles.logoText}></img>
+          <img src={myAilogo} alt="logo" className={styles.logoText}></img>
         </div>
       </div>
       <div className={styles.headerRight}>
@@ -99,12 +97,7 @@ function HeaderContent() {
             />
           </svg>
         </button> */}
-        <div className={styles.avatar}>
-          <img
-            src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix"
-            alt="User avatar"
-          />
-        </div>
+        <Avatar className={styles.avatar}>ACT</Avatar>
       </div>
     </>
   );

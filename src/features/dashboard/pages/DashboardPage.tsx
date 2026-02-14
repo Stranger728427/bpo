@@ -87,7 +87,7 @@ const dateOptions = [
   { key: 'all_time', label: 'All Time' },
 ];
 
-export function DashboardPage() {
+ function DashboardPage() {
   const [dateFilter, setDateFilter] = useState('today');
 
   const getDateLabel = () => dateOptions.find((o) => o.key === dateFilter)?.label || 'Today';
@@ -191,3 +191,5 @@ export function DashboardPage() {
     </div>
   );
 }
+
+export default DashboardPage

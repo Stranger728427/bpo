@@ -1,14 +1,16 @@
 import { UseQueryResult } from '@tanstack/react-query';
-import styles from './TriggerCallDetails.module.scss';
 import { Modal } from '@/components/ui/Modal/Modal';
-import { Empty } from 'antd';
-import { TableSkeleton } from '@/components/TableSkeleton/TableSkeleton';
+import { Table } from '@/components/ui/Table/Table';
 import { Badge } from '@/components/ui/Badge/Badge';
+import styles from './TriggerCallDetails.module.scss';
 import {
   getStatusLabel,
   getStatusVariant,
   TriggerCallResponse,
 } from '../call.types';
+import dayjs from 'dayjs';
+import { ColumnsType } from 'antd/es/table';
+import { Empty } from 'antd';
 
 interface TriggerCallDetailsProps {
   open: boolean;
@@ -21,7 +23,49 @@ const TriggerCallDetails = ({
   onClose,
   callsTrigger,
 }: TriggerCallDetailsProps) => {
-  const calls = callsTrigger?.data?.data || [];
+  const { data, isLoading } = callsTrigger;
+
+  // Adjust based on API shape
+  const calls = data?.data ?? [];
+
+  const columns: ColumnsType<any> = [
+    {
+      title: 'Phone',
+      dataIndex: 'phone_number',
+      key: 'phone_number',
+    },
+    {
+      title: 'Patient Name',
+      dataIndex: 'patient_name',
+      key: 'patient_name',
+    },
+    {
+      title: 'Appointment Date',
+      dataIndex: 'appointment_date',
+      key: 'appointment_date',
+    },
+    {
+      title: 'Appointment Time',
+      dataIndex: 'appointment_time',
+      key: 'appointment_time',
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status: string) => (
+        <Badge variant={getStatusVariant(status)}>
+          {getStatusLabel(status)}
+        </Badge>
+      ),
+    },
+    {
+      title: 'Created At',
+      dataIndex: 'created_at',
+      key: 'created_at',
+      render: (value: string) => dayjs(value).format('DD MMM YYYY, hh:mm A'),
+    },
+  ];
 
   return (
     <Modal
@@ -30,57 +74,22 @@ const TriggerCallDetails = ({
       title="Trigger Call Details"
       footer={null}
       width="70vw"
+      destroyOnHidden
     >
-      {callsTrigger?.isError && (
-        <div className={styles.state}>
-          Error: {callsTrigger.error?.message || 'Something went wrong'}
-        </div>
-      )}
-
-      <div className={styles.tableWrapper}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Phone</th>
-              <th>Patient Name</th>
-              <th>Appointment Date</th>
-              <th>Appointment Time</th>
-              <th>Status</th>
-              <th>Created At</th>
-            </tr>
-          </thead>
-          <tbody>
-            {callsTrigger?.isLoading && (
-              <tr>
-                <td
-                  colSpan={6}
-                  style={{ textAlign: 'center', padding: '20px' }}
-                >
-                  <TableSkeleton rows={10} columns={6} />
-                </td>
-              </tr>
-            )}
-            {calls.length > 0 &&
-              calls?.map((call) => (
-                <tr key={call?.id}>
-                  <td>{call?.phone_number}</td>
-                  <td>{call?.patient_name}</td>
-                  <td>{call?.appointment_date}</td>
-                  <td>{call?.appointment_time}</td>
-                  <td>
-                    <Badge variant={getStatusVariant(call?.status)}>
-                      {getStatusLabel(call?.status)}
-                    </Badge>
-                  </td>
-                  <td>{new Date(call?.created_at).toLocaleString()}</td>
-                </tr>
-              ))}
-          </tbody>
-          {!callsTrigger?.isLoading &&
-            !callsTrigger?.isError &&
-            calls.length === 0 && <Empty />}
-        </table>
-      </div>
+      <Table
+        rowKey="id"
+        columns={columns}
+        dataSource={calls}
+        loading={isLoading}
+        pagination={false}
+        size="middle"
+        bordered={false}
+        scroll={{ y: 420 }}
+        locale={{
+          emptyText: <Empty />,
+        }}
+        className={styles.triggerTable}
+      />
     </Modal>
   );
 };

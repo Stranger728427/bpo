@@ -79,7 +79,7 @@ const ChevronRightIcon = () => (
   </svg>
 );
 
-export function AIStudioPage() {
+  function AIStudioPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const totalAgents = 4;
@@ -195,3 +195,5 @@ export function AIStudioPage() {
     </div>
   );
 }
+
+export default AIStudioPage

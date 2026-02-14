@@ -1,6 +1,5 @@
 import Banner from '@/components/layout/Banner/Banner';
 import styles from './Call.module.scss';
-import { BiPhoneIncoming } from 'react-icons/bi';
 import { PiEye } from 'react-icons/pi';
 import { useCall } from '../components/useCall';
 import { useState } from 'react';
@@ -10,23 +9,25 @@ import {
   getStatusLabel,
 } from '../components/call.types';
 import ViewCall from './ViewCall';
-import { Button, Pagination } from 'antd';
-import { MdOutlineUpload } from 'react-icons/md';
+import { Button, Empty, Pagination } from 'antd';
 import UploadPage from '@/features/upload/pages/UploadPage';
 import TriggerCallDetails from '../components/triggerCallsView/TriggerCallDetails';
 import { TableSkeleton } from '@/components/TableSkeleton/TableSkeleton';
 import { Badge } from '@/components/ui/Badge/Badge';
+// import { AiOutlineContacts } from 'react-icons/ai';
+import { IoCloudUploadOutline } from 'react-icons/io5';
 
-export const CallPage = () => {
+const CallPage = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isUplodaModalOpen, setIsUploadModalOpen] = useState<boolean>(false);
   const [isTriggerModalOpen, setIsTriggerModalOpen] = useState<boolean>(false);
   const [selectedCallId, setSelectedCallId] = useState<string | null>(null);
+  const [pageSize, setPageSize] = useState<number>(10);
 
   const { getCallLogs, getTriggerCall } = useCall(
     selectedCallId as string,
     currentPage,
-    10,
+    pageSize,
     isTriggerModalOpen
   );
 
@@ -37,17 +38,17 @@ export const CallPage = () => {
   const pagination = {
     current: currentPage,
     total: totalItems,
-    pageSize: 10,
-    showSizeChanger: false,
-    onChange: (page: number) => setCurrentPage(page),
+    pageSize: pageSize,
+    showSizeChanger: true,
+    pageSizeOptions: ['10', '20', '50', '100'],
+    onChange: (page: number, pageSize: number) => {
+      setCurrentPage(page);
+      setPageSize(pageSize);
+    },
   };
 
   const handleViewDetails = (id: string) => {
     setSelectedCallId(id);
-  };
-
-  const handleModalOpen = () => {
-    setIsModalOpen(true);
   };
 
   return (
@@ -58,17 +59,6 @@ export const CallPage = () => {
           <h1 className={styles.title}>Call</h1>
 
           <div className={styles.filters}>
-            <Button onClick={handleModalOpen}>
-              <MdOutlineUpload />
-              <span>Upload Contacts</span>
-            </Button>
-            {isModalOpen && (
-              <UploadPage
-                open={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-              />
-            )}
-
             {isTriggerModalOpen && (
               <TriggerCallDetails
                 open={isTriggerModalOpen}
@@ -76,56 +66,21 @@ export const CallPage = () => {
                 callsTrigger={getTriggerCall}
               />
             )}
-            {/* Search */}
-            {/* <div className={styles.searchWrapper}>
-              <input
-                type="text"
-                placeholder="Search"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className={styles.searchInput}
-              />
-              <span className={styles.searchIcon}>
-                <IoSearchOutline />
-              </span>
-            </div> */}
 
-            <Button onClick={() => setIsTriggerModalOpen(true)}>
-              <BiPhoneIncoming />
-              <span>Trigger Call</span>
+            {/* <Tooltip title={'Trigger Call Details'}>
+              <Button type='text' onClick={() => setIsTriggerModalOpen(true)} icon={ <AiOutlineContacts size={24} />}/>
+          </Tooltip> */}
+
+            <Button onClick={() => setIsUploadModalOpen(true)}>
+              <IoCloudUploadOutline />
+              <span>Upload Contacts</span>
             </Button>
-
-            {/* Call Status Filter */}
-            {/* <Dropdown items={callStatusMenuItems as any} trigger={['click']}>
-              <button className={styles.filterButton}>
-                <BiPhoneIncoming />
-                <span>{getCallStatusLabel()}</span>
-                <IoChevronDownCircleOutline />
-              </button>
-            </Dropdown> */}
-
-            {/* Campaign Filter */}
-            {/* <Dropdown items={campaignMenuItems as any} trigger={['click']}>
-              <button className={styles.filterButton}>
-                <IoFilterCircleOutline />
-                <span>{getCampaignLabel()}</span>
-                <IoChevronDownCircleOutline />
-              </button>
-            </Dropdown> */}
-
-            {/* Date Filter */}
-            {/* <Dropdown items={dateMenuItems as any} trigger={['click']}>
-              <button className={styles.filterButton}>
-                <SlCalender />
-                <span>{getDateLabel()}</span>
-                <IoChevronDownCircleOutline />
-              </button>
-            </Dropdown> */}
-
-            {/* Download Button */}
-            {/* <button className={styles.downloadButton}>
-              <LiaDownloadSolid />
-            </button> */}
+            {isUplodaModalOpen && (
+              <UploadPage
+                open={isUplodaModalOpen}
+                onClose={() => setIsUploadModalOpen(false)}
+              />
+            )}
           </div>
         </div>
       </Banner>
@@ -136,12 +91,12 @@ export const CallPage = () => {
           <thead>
             <tr>
               {/* <th>Timestamp</th>
-              <th>Campaign</th> */}
+              <th>log</th> */}
               <th>Patient Name</th>
               <th>Phone</th>
               <th>Call Status</th>
               <th>Intent</th>
-              <th>Duration</th>
+              <th>Duration(sec)</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -157,7 +112,7 @@ export const CallPage = () => {
                 return (
                   <tr key={log?.id}>
                     {/* <td>{log?.creation_date}</td>
-                  <td>{log?.campaign_name}</td> */}
+                  <td>{log?.calls_name}</td> */}
                     <td>{log?.patient_name}</td>
                     <td>{log?.phone_number}</td>
                     <td>
@@ -179,6 +134,14 @@ export const CallPage = () => {
                   </tr>
                 );
               })}
+
+              {!callLogs?.length && (
+                <tr>
+                  <td colSpan={8} style={{ textAlign: 'center' }}>
+                    <Empty />
+                  </td>
+                </tr>
+              )}
             </tbody>
           )}
         </table>
@@ -186,7 +149,9 @@ export const CallPage = () => {
 
       {/* Footer */}
       <div className={styles.footer}>
-        <div className={styles.totalCount}>{callLogs?.length} Calls</div>
+        <div className={styles.totalCount}>
+          {getCallLogs?.data?.total} Calls
+        </div>
 
         <div className={styles.pagination}>
           <Pagination {...pagination} />
@@ -202,3 +167,5 @@ export const CallPage = () => {
     </div>
   );
 };
+
+export default CallPage;

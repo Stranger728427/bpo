@@ -6,6 +6,7 @@ import { Modal } from '@/components/ui/Modal/Modal';
 import { useUploadContactsMutation } from '../components/api/useUploadContacts';
 import { triggerCalls } from '../components/services/triggerCall.service';
 import UploadFile from '@/components/upload/UploadFile';
+import { useTruncateFileMutation } from '../components/api/useTruncateFile';
 
 export default function UploadPage({
   open,
@@ -18,89 +19,118 @@ export default function UploadPage({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fileMutation = useUploadContactsMutation();
-
-  const handleFileSelect = (selectedFile: File | null) => {
-    setFile(selectedFile);
-  };
-
-  const handleUpload = async () => {
-    if (!file) return;
-
-    try {
-      await fileMutation.mutateAsync(file);
-      message.success('Contacts uploaded successfully');
-      setFile(null);
-    } catch {
-      message.error('Upload failed');
-    }
-  };
+  const truncateFileMutation = useTruncateFileMutation();
 
   const triggerCallsMutation = useMutation({
     mutationFn: triggerCalls,
   });
 
+  // const handleUpload = async () => {
+  //   if (!file) return;
+
+  //   try {
+  //     await fileMutation.mutateAsync(file);
+  //     message.success('Contacts uploaded successfully');
+  //   } catch {
+  //     message.error('Upload failed');
+  //   }
+  // };
+
+  const handleFileSelect = async (selectedFile: File | null) => {
+    if (!selectedFile) {
+      setFile(null);
+      return;
+    }
+
+    try {
+      await fileMutation.mutateAsync(selectedFile);
+      message.success('Contacts uploaded successfully');
+      setFile(selectedFile);
+    } catch {
+      message.error('Upload failed');
+      setFile(null);
+    }
+  };
+
   const handleTriggerCalls = async () => {
     try {
       await triggerCallsMutation.mutateAsync();
       message.success('Calls triggered successfully');
-      onClose();
+      handleCloseAndReset();
     } catch {
       message.error('Trigger calls failed');
     }
   };
 
+  const handleTruncateFile = async () => {
+    try {
+      await truncateFileMutation.mutateAsync();
+      message.success('File removed successfully');
+      resetState();
+    } catch {
+      message.error('Remove file failed');
+    }
+  };
+
+  const resetState = () => {
+    setFile(null);
+    fileMutation.reset();
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const handleCloseAndReset = () => {
+    resetState();
+    onClose();
+  };
+
   return (
     <Modal
       open={open}
-      onCancel={onClose}
+      onCancel={handleCloseAndReset}
       width={700}
       centered
       title="Upload & Trigger Calls"
       footer={null}
-      destroyOnClose
+      destroyOnHidden
     >
       <div style={{ display: 'grid', gap: 16 }}>
-        {/* Upload Section */}
-        <div className={styles.compactCard}>
-          <h3 className={styles.cardTitle}>Upload Contacts</h3>
-          <p className={styles.cardDescription}>Upload CSV or Excel file.</p>
+        {/* Upload Section - Only before upload success */}
+        {!fileMutation.isSuccess && (
+          <div className={styles.compactCard}>
+            <h3 className={styles.cardTitle}>Upload Contacts</h3>
+            <p className={styles.cardDescription}>Upload CSV or Excel file.</p>
 
-          <UploadFile
-            file={file}
-            onFileChange={handleFileSelect}
-            fileInputRef={fileInputRef}
-            uploadText="Upload file"
-            buttonText="Browse"
-            hintText="CSV: name, phone, appointment"
-            accept=".csv,.xls,.xlsx"
-          />
+            <UploadFile
+              file={file}
+              onFileChange={handleFileSelect}
+              onRemoveFile={handleTruncateFile}
+              fileInputRef={fileInputRef}
+              uploadText="Upload file"
+              buttonText="Browse"
+              hintText="CSV: name, phone, appointment"
+              accept=".csv,.xls,.xlsx"
+            />
+          </div>
+        )}
 
-          <Button
-            type="primary"
-            block
-            disabled={!file}
-            loading={fileMutation.isPending}
-            onClick={handleUpload}
-            style={{ marginTop: 12 }}
-          >
-            Upload
-          </Button>
-        </div>
+        {/* Trigger Section - Only after upload success */}
+        {fileMutation.isSuccess && (
+          <div className={styles.compactCard}>
+            <h3 className={styles.cardTitle}>Trigger Calls</h3>
 
-        {/* Trigger Section */}
-        <div className={styles.compactCard}>
-          <h3 className={styles.cardTitle}>Trigger Calls</h3>
-
-          <Button
-            danger
-            type="primary"
-            block
-            loading={triggerCallsMutation.isPending}
-            onClick={handleTriggerCalls}
-          >
-            Trigger
-          </Button>
-        </div>
+            <Button
+              danger
+              type="primary"
+              block
+              loading={triggerCallsMutation.isPending}
+              onClick={handleTriggerCalls}
+            >
+              Trigger
+            </Button>
+          </div>
+        )}
       </div>
     </Modal>
   );

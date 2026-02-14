@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Badge } from '@components/ui/Badge/Badge';
 import { ActionMenu } from '@components/ui/ActionMenu/ActionMenu';
-import { Dropdown } from '@components/ui/Dropdown/Dropdown';
-import type { MenuProps } from 'antd';
 // import { CampaignDetailModal } from '../components/CampaignDetailModal';
 // import { CreateCampaignModal } from '../components/CreateCampaignModal';
 import styles from './Campaign.module.scss';
 import Banner from '@/components/layout/Banner/Banner';
+import { Pagination } from 'antd';
+import { HiOutlinePlus } from 'react-icons/hi';
 
 // Types
 interface Campaign {
@@ -58,124 +58,6 @@ const mockCampaigns: Campaign[] = [
   },
 ];
 
-// Icons
-const FilterIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path
-      d="M14 4H10"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-    />
-    <path
-      d="M6 4H2"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-    />
-    <circle cx="8" cy="4" r="1.5" stroke="currentColor" strokeWidth="1.5" />
-    <path
-      d="M14 12H10"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-    />
-    <path
-      d="M6 12H2"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-    />
-    <circle cx="8" cy="12" r="1.5" stroke="currentColor" strokeWidth="1.5" />
-  </svg>
-);
-
-const GearIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <circle cx="8" cy="8" r="2" stroke="currentColor" strokeWidth="1.5" />
-    <path
-      d="M8 1V3M8 13V15M1 8H3M13 8H15M2.93 2.93L4.34 4.34M11.66 11.66L13.07 13.07M2.93 13.07L4.34 11.66M11.66 4.34L13.07 2.93"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-    />
-  </svg>
-);
-
-const CalendarIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <rect
-      x="2"
-      y="3"
-      width="12"
-      height="11"
-      rx="1"
-      stroke="currentColor"
-      strokeWidth="1.5"
-    />
-    <path d="M2 6H14" stroke="currentColor" strokeWidth="1.5" />
-    <path
-      d="M5 1V4"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-    />
-    <path
-      d="M11 1V4"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-    />
-  </svg>
-);
-
-const PlusIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path
-      d="M8 3V13M3 8H13"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-    />
-  </svg>
-);
-
-const ChevronDownIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-    <path
-      d="M3 4.5L6 7.5L9 4.5"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
-const ChevronLeftIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-    <path
-      d="M8.5 10L5.5 7L8.5 4"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
-const ChevronRightIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-    <path
-      d="M5.5 4L8.5 7L5.5 10"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
-
 const getStatusVariant = (status: Campaign['status']) => {
   switch (status) {
     case 'active':
@@ -193,30 +75,7 @@ const getStatusLabel = (status: Campaign['status']) => {
   return status.charAt(0).toUpperCase() + status.slice(1);
 };
 
-// Filter options
-const campaignTypeOptions = [
-  { key: 'all', label: 'All Types' },
-  { key: 'onboarding', label: 'Onboarding' },
-  { key: 'lead_generation', label: 'Lead generation' },
-  { key: 'reminder', label: 'Reminder' },
-];
-
-const statusOptions = [
-  { key: 'all', label: 'All Statuses' },
-  { key: 'active', label: 'Active' },
-  { key: 'paused', label: 'Paused' },
-  { key: 'completed', label: 'Completed' },
-];
-
-const dateOptions = [
-  { key: 'today', label: 'Today' },
-  { key: 'yesterday', label: 'Yesterday' },
-  { key: 'last_7_days', label: 'Last 7 Days' },
-  { key: 'last_30_days', label: 'Last 30 Days' },
-  { key: 'all_time', label: 'All Time' },
-];
-
-export function Campaign() {
+  function Campaign() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(
     null
@@ -225,16 +84,6 @@ export function Campaign() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [campaignTypeFilter, setCampaignTypeFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [dateFilter, setDateFilter] = useState('today');
-  const totalPages = 3;
-
-  const getCampaignTypeLabel = () =>
-    campaignTypeOptions.find((o) => o.key === campaignTypeFilter)?.label ||
-    'Campaign Type';
-  const getStatusFilterLabel = () =>
-    statusOptions.find((o) => o.key === statusFilter)?.label || 'Status';
-  const getDateLabel = () =>
-    dateOptions.find((o) => o.key === dateFilter)?.label || 'Today';
 
   const handleViewDetails = (campaign: Campaign) => {
     setSelectedCampaign(campaign);
@@ -281,47 +130,29 @@ export function Campaign() {
     return matchesType && matchesStatus;
   });
 
+ const pagination = {
+    current: currentPage,
+    total: 10,
+    pageSize: 10,
+    showSizeChanger: false,
+    onChange: (page: number) => setCurrentPage(page),
+  };
+
+
   return (
     <div className={styles.container}>
       <Banner>
         {/* Header */}
         <div className={styles.header}>
           <h1 className={styles.title}>Campaign</h1>
-
           <div className={styles.actions}>
-            {/* Campaign Type Filter */}
-            {/* <Dropdown items={campaignTypeMenuItems} trigger={['click']}>
-              <button className={styles.filterButton}>
-                <FilterIcon />
-                <span>{getCampaignTypeLabel()}</span>
-                <ChevronDownIcon />
-              </button>
-            </Dropdown> */}
-
-            {/* Status Filter */}
-            {/* <Dropdown items={statusMenuItems} trigger={['click']}>
-              <button className={styles.filterButton}>
-                <GearIcon />
-                <span>{getStatusFilterLabel()}</span>
-                <ChevronDownIcon />
-              </button>
-            </Dropdown> */}
-
-            {/* Date Filter */}
-            {/* <Dropdown items={dateMenuItems} trigger={['click']}>
-              <button className={styles.filterButton}>
-                <CalendarIcon />
-                <span>{getDateLabel()}</span>
-                <ChevronDownIcon />
-              </button>
-            </Dropdown> */}
 
             {/* Create Campaign Button */}
             <button
               className={styles.createButton}
               onClick={() => setIsCreateModalOpen(true)}
             >
-              <PlusIcon />
+              <HiOutlinePlus size={18} />
               <span>Create Campaign</span>
             </button>
           </div>
@@ -375,33 +206,7 @@ export function Campaign() {
         </div>
 
         <div className={styles.pagination}>
-          <button
-            className={styles.paginationButton}
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage(1)}
-          >
-            <ChevronLeftIcon />
-            <ChevronLeftIcon />
-          </button>
-
-          {[1, 2, 3].map((page) => (
-            <button
-              key={page}
-              className={`${styles.paginationNumber} ${currentPage === page ? styles.active : ''}`}
-              onClick={() => setCurrentPage(page)}
-            >
-              {page}
-            </button>
-          ))}
-
-          <button
-            className={styles.paginationButton}
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage(totalPages)}
-          >
-            <ChevronRightIcon />
-            <ChevronRightIcon />
-          </button>
+          <Pagination {...pagination}/>
         </div>
       </div>
 
@@ -422,3 +227,5 @@ export function Campaign() {
     </div>
   );
 }
+
+export default Campaign

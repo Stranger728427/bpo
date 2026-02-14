@@ -1,129 +1,73 @@
-import { lazy, Suspense } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { RouteObject } from 'react-router-dom';
 import { MainLayout } from '@/app/layout/MainLayout';
 import { Spinner } from '@components/ui/Spinner/Spinner';
-// Lazy loaded pages
-const LoginPage = lazy(() =>
-  import('@features/auth/pages/LoginPage').then((m) => ({
-    default: m.LoginPage,
-  }))
+import { RoutePath } from './RouthPath';
+
+/* =========================
+   Lazy Loaded Pages
+========================= */
+
+const LoginPage = lazy(() => import('@features/auth/pages/LoginPage'));
+const DashboardPage = lazy(() => import('@features/dashboard/pages/DashboardPage'));
+const CallLogsPage = lazy(() => import('@features/call-logs/pages/CallLogsPage'));
+const CampaignsPage = lazy(() => import('@features/campaigns/pages/CampaignsPage'));
+const AIStudioPage = lazy(() => import('@features/ai-studio/pages/AIStudioPage'));
+const LeadListPage = lazy(() => import('@features/lead-list/pages/LeadListPage'));
+const CallPage = lazy(() => import('@features/call/pages/CallPage'));
+const Campaign = lazy(() => import('@features/camp/pages/Campaign'));
+
+
+/* =========================
+   Suspense Wrapper Helper
+========================= */
+
+const withSuspense = (Component: React.LazyExoticComponent<any>) => (
+  <Suspense fallback={<Spinner fullScreen />}>
+    <Component />
+  </Suspense>
 );
 
-const DashboardPage = lazy(() =>
-  import('@features/dashboard/pages/DashboardPage').then((m) => ({
-    default: m.DashboardPage,
-  }))
-);
-
-const CallLogsPage = lazy(() =>
-  import('@features/call-logs/pages/CallLogsPage').then((m) => ({
-    default: m.CallLogsPage,
-  }))
-);
-
-const CampaignsPage = lazy(() =>
-  import('@features/campaigns/pages/CampaignsPage').then((m) => ({
-    default: m.CampaignsPage,
-  }))
-);
-
-const AIStudioPage = lazy(() =>
-  import('@features/ai-studio/pages/AIStudioPage').then((m) => ({
-    default: m.AIStudioPage,
-  }))
-);
-
-const LeadListPage = lazy(() =>
-  import('@features/lead-list/pages/LeadListPage').then((m) => ({
-    default: m.LeadListPage,
-  }))
-);
-
-const CallPage = lazy(() =>
-  import('@features/call/pages/CallPage').then((m) => ({
-    default: m.CallPage,
-  }))
-);
-
-export const Campaign = lazy(() =>
-  import('@features/camp/pages/Campaign').then((m) => ({
-    default: m.Campaign,
-  }))
-);
-
-// eslint-disable-next-line react-refresh/only-export-components
-const SuspenseWrapper = ({ children }: { children: React.ReactNode }) => (
-  <Suspense fallback={<Spinner fullScreen />}>{children}</Suspense>
-);
+/* =========================
+   Routes Config
+========================= */
 
 export const routes: RouteObject[] = [
   {
-    path: '/login',
-    element: (
-      <SuspenseWrapper>
-        <LoginPage />
-      </SuspenseWrapper>
-    ),
+    path: RoutePath.LOGIN,
+    element: withSuspense(LoginPage),
   },
   {
-    path: '/',
+    path: RoutePath.ROOT,
     element: <MainLayout />,
     children: [
       {
         index: true,
-        element: (
-          <SuspenseWrapper>
-            <CallPage />
-          </SuspenseWrapper>
-        ),
+        element: withSuspense(CallPage),
       },
       {
-        path: 'campaign',
-        element: (
-          <SuspenseWrapper>
-            <Campaign />
-          </SuspenseWrapper>
-        ),
+        path: RoutePath.CAMPAIGN,
+        element: withSuspense(Campaign),
       },
       {
-        path: 'dashboard',
-        element: (
-          <SuspenseWrapper>
-            <DashboardPage />
-          </SuspenseWrapper>
-        ),
+        path: RoutePath.DASHBOARD,
+        element: withSuspense(DashboardPage),
       },
       {
-        path: 'call-logs',
-        element: (
-          <SuspenseWrapper>
-            <CallLogsPage />
-          </SuspenseWrapper>
-        ),
+        path: RoutePath.CALL_LOGS,
+        element: withSuspense(CallLogsPage),
       },
       {
-        path: 'campaigns',
-        element: (
-          <SuspenseWrapper>
-            <CampaignsPage />
-          </SuspenseWrapper>
-        ),
+        path: RoutePath.CALL_LOGS,
+        element: withSuspense(CampaignsPage),
       },
       {
-        path: 'ai-studio',
-        element: (
-          <SuspenseWrapper>
-            <AIStudioPage />
-          </SuspenseWrapper>
-        ),
+        path: RoutePath.AI_STUDIO,
+        element: withSuspense(AIStudioPage),
       },
       {
-        path: 'lead-list',
-        element: (
-          <SuspenseWrapper>
-            <LeadListPage />
-          </SuspenseWrapper>
-        ),
+        path: RoutePath.LEAD_LIST,
+        element: withSuspense(LeadListPage),
       },
     ],
   },

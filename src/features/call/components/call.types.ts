@@ -3,7 +3,7 @@ export interface CallTranscriptItem {
   message: string;
 }
 
-export type CallStatus = 'completed' | 'missed' | 'failed' | 'in_progress' | 'unknown';
+export type CallStatus = 'completed' | 'missed' | 'failed' | 'in_progress' | 'unknown' | 'completed';
 
 export type CallIntent = 'positive' | 'negative' | 'neutral';
 
@@ -42,7 +42,7 @@ export interface TriggerCall {
   appointment_date: string;
   appointment_time: string;
   created_at: string;
-  status: 'completed' | 'missed' | 'failed' | 'in_progress' | 'unknown' | 'completed';
+  status: CallStatus;
 }
 
 export interface TriggerCallResponse {

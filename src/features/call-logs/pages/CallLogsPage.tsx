@@ -279,7 +279,7 @@ const dateOptions = [
   { key: 'all_time', label: 'All Time' },
 ];
 
-export function CallLogsPage() {
+  function CallLogsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCallLog, setSelectedCallLog] = useState<CallRecord | null>(null);
@@ -492,3 +492,5 @@ export function CallLogsPage() {
     </div>
   );
 }
+
+export default CallLogsPage
