@@ -14,17 +14,22 @@ export interface Call {
   patient_name: string;
   status: string;
   call_duration: string; // kept as string since API returns "46"
-  summary: string;
+  summary?: string;
   intent: string;
-  overall_rating: number;
-  confidence: number;
-  transcript: CallTranscriptItem[];
-  audio_url: string | null;
-  campaign_id: number | null;
-  campaign_name: string | null;
-  cost: number | null;
+  overall_rating?: number;
+  confidence?: number;
+  transcript?: CallTranscriptItem[];
+  audio_url?: string | null;
+  campaign_id?: number | null;
+  campaign_name?: string | null;
+  cost?: number | null;
   creation_date: string | null;       // ISO date string expected
-  modification_date: string | null;   // ISO date string expected
+  modification_date?: string | null;   // ISO date string expected
+}
+
+export type urlParams = {
+    page?: number,
+    page_size?: number,
 }
 
 export interface CallResponse {

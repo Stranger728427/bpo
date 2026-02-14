@@ -1,15 +1,16 @@
 import { useQuery } from "@tanstack/react-query"
 import { callService } from "./services/call.service"
-import { Call, CallResponse, TriggerCallResponse } from "./call.types"
+import { Call, CallResponse, TriggerCallResponse, urlParams } from "./call.types"
 
-export const useCall = (id:string, page?: number, page_size?: number, isTriggerModalOpen?: boolean) => {
+
+export const useCall = (id:string, params: urlParams, isTriggerModalOpen?: boolean ) => {
     const getCallLogs = useQuery<CallResponse>({
-        queryKey: ['call-logs', page, page_size],
+        queryKey: ['call-logs', params],
         queryFn: async () => {
-            const response = await callService.getCallLogs({page, page_size})
+            const response = await callService.getCallLogs(params)
             return response.data
         },
-        enabled: !!page && !!page_size
+        enabled: !!params.page && !!params.page_size
     })
 
     const getCallLogsById = useQuery<Call>({

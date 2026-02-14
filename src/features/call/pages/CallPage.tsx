@@ -2,7 +2,7 @@ import Banner from '@/components/layout/Banner/Banner';
 import styles from './Call.module.scss';
 import { PiEye } from 'react-icons/pi';
 import { useCall } from '../components/useCall';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   Call,
   getStatusVariant,
@@ -24,10 +24,16 @@ const CallPage = () => {
   const [selectedCallId, setSelectedCallId] = useState<string | null>(null);
   const [pageSize, setPageSize] = useState<number>(10);
 
+  const param = useMemo(() => {
+    return {
+      page: currentPage,
+      page_size: pageSize,
+    };
+  }, [currentPage, pageSize]);
+
   const { getCallLogs, getTriggerCall } = useCall(
     selectedCallId as string,
-    currentPage,
-    pageSize,
+    param,
     isTriggerModalOpen
   );
 
