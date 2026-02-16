@@ -3,9 +3,9 @@ import { Checkbox } from 'antd';
 import { Input } from '@components/ui/Input/Input';
 import { Button } from '@components/ui/Button/Button';
 import styles from './LoginPage.module.scss';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
+import { axiosInstance } from '@/lib/axios/axiosInstance';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -37,49 +37,31 @@ function LoginPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // const login = (payload: { email: string; password: string }) =>
-  //   axios.post('http://localhost:8080/api/auth/login', payload);
+  const login = (payload: { email: string; password: string }) =>
+    axiosInstance.post('/login', payload);
 
-  // const mutate = useMutation({
-  //   mutationFn: login,
-  //   onSuccess: (response) => {
-  //     const { access_token } = response.data;
-  //     localStorage.setItem('token', access_token);
-  //     navigate('/');
-  //   },
-  // });
+  const mutate = useMutation({
+    mutationFn: login,
+    onSuccess: (response) => {
+      const { access_token, user } = response.data;
 
-  // const logout = () => {
-  //   localStorage.removeItem('token');
-  //   navigate('/login');
-  // };
+      localStorage.setItem('token', access_token);
+      localStorage.setItem('user', JSON.stringify(user));
+      navigate('/');
+    },
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!validateForm()) return;
-
     setIsLoading(true);
-    try {
-      // TODO: Implement actual login logic
-      console.log('Login attempt:', { email, rememberMe });
-      await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulated delay
-    } catch (error) {
-      console.error('Login error:', error);
-    } finally {
-      setIsLoading(false);
-    }
+    const payload = {
+      email,
+      password,
+    };
+    await mutate.mutateAsync(payload);
+    setIsLoading(false);
   };
-
-  // const handleSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   if (!validateForm()) return;
-  //   const payload = {
-  //     email,
-  //     password,
-  //   };
-  //   mutate.mutate(payload);
-  // };
 
   return (
     <div className={styles.page}>
@@ -155,9 +137,9 @@ function LoginPage() {
 
             <div className={styles.formFooter}>
               <span>Not a member?</span>
-              <a href="/register" className={styles.registerLink}>
+              <Link to="/register" className={styles.registerLink}>
                 Create an account
-              </a>
+              </Link>
             </div>
           </div>
         </div>

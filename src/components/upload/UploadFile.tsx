@@ -1,4 +1,4 @@
-import { PiFileTextDuotone, PiXCircleDuotone } from 'react-icons/pi';
+import { PiFileTextDuotone } from 'react-icons/pi';
 import styles from './UploadFile.module.scss';
 import { Popconfirm } from 'antd';
 import { MdOutlineDelete } from 'react-icons/md';

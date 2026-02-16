@@ -1,15 +1,18 @@
 import { Badge } from '@components/ui/Badge/Badge';
-import { MultiLineChart, LineConfig } from '@components/ui/MultiLineChart/MultiLineChart';
+import {
+  MultiLineChart,
+  LineConfig,
+} from '@components/ui/MultiLineChart/MultiLineChart';
 import {
   MultiSegmentDonutChart,
   DonutSegment,
 } from '@components/ui/MultiSegmentDonutChart/MultiSegmentDonutChart';
 import styles from './CampaignDetailModal.module.scss';
-import { HugeiconsCall02 } from '@/app/icons/CallLogs';
 import { AiOutlineDollarCircle } from 'react-icons/ai';
-import { StreamlineFlexDollarIncrease } from '@/app/icons/ConversionRateIcon';
 import { IoTimeOutline } from 'react-icons/io5';
 import { TbExternalLink } from 'react-icons/tb';
+import { HugeiconsCall02 } from '@/components/icons/CallLogs';
+import { StreamlineFlexDollarIncrease } from '@/components/icons/ConversionRateIcon';
 
 interface Campaign {
   id: string;
@@ -33,10 +36,14 @@ interface CampaignDetailModalProps {
 const CloseIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
     <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
-    <path d="M15 9L9 15M9 9L15 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <path
+      d="M15 9L9 15M9 9L15 15"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
   </svg>
 );
-
 
 // Mock performance data for line chart
 const performanceData = [
@@ -79,7 +86,11 @@ const getStatusLabel = (status: Campaign['status']) => {
   return status.charAt(0).toUpperCase() + status.slice(1);
 };
 
-export function CampaignDetailModal({ isOpen, onClose, campaign }: CampaignDetailModalProps) {
+export function CampaignDetailModal({
+  isOpen,
+  onClose,
+  campaign,
+}: CampaignDetailModalProps) {
   if (!isOpen) return null;
 
   return (
@@ -88,7 +99,9 @@ export function CampaignDetailModal({ isOpen, onClose, campaign }: CampaignDetai
         {/* Header */}
         <div className={styles.header}>
           <div className={styles.headerContent}>
-            <span className={styles.breadcrumb}>Campaign / {campaign.name}</span>
+            <span className={styles.breadcrumb}>
+              Campaign / {campaign.name}
+            </span>
             <h2 className={styles.title}>Campaign Details</h2>
           </div>
           <button className={styles.closeButton} onClick={onClose}>
@@ -114,9 +127,14 @@ export function CampaignDetailModal({ isOpen, onClose, campaign }: CampaignDetai
                   <TbExternalLink size={20} />
                 </span>
               </div>
-              <div className={styles.infoDates}>Created Jan 5, 2025 • Last updated Jan 12, 2025</div>
+              <div className={styles.infoDates}>
+                Created Jan 5, 2025 • Last updated Jan 12, 2025
+              </div>
             </div>
-            <Badge variant={getStatusVariant(campaign.status)} className={styles.statusBadge}>
+            <Badge
+              variant={getStatusVariant(campaign.status)}
+              className={styles.statusBadge}
+            >
               {getStatusLabel(campaign.status)}
             </Badge>
           </div>

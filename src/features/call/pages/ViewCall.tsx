@@ -2,9 +2,9 @@ import { useCall } from '../components/useCall';
 import { Drawer } from '@/components/ui/Drawer/Drawer';
 import { Button, Divider, Popover, Skeleton, Tag, Tooltip } from 'antd';
 import styles from '../pages/ViewCall.module.scss';
-import { LucideBot } from '@/app/icons/CallLogs';
 import { AiOutlineUser } from 'react-icons/ai';
 import { InfoCircleOutlined } from '@ant-design/icons';
+import { LucideBot } from '@/components/icons/CallLogs';
 
 interface CallLogDrawerProps {
   isOpen: boolean;
@@ -26,7 +26,10 @@ const getStatusColor = (status?: string) => {
 };
 
 const ViewCall = ({ isOpen, onClose, selectedCallId }: CallLogDrawerProps) => {
-  const { getCallLogsById } = useCall(selectedCallId as string);
+  const { getCallLogsById } = useCall(selectedCallId as string, {
+    page: 1,
+    page_size: 10,
+  });
 
   const call = getCallLogsById?.data;
 

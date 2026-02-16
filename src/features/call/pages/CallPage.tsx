@@ -1,21 +1,25 @@
 import Banner from '@/components/layout/Banner/Banner';
 import styles from './Call.module.scss';
-import { PiEye } from 'react-icons/pi';
+import { PiEye, PiMagnifyingGlass } from 'react-icons/pi';
 import { useCall } from '../components/useCall';
 import { useMemo, useState } from 'react';
 import {
   Call,
   getStatusVariant,
   getStatusLabel,
+  SearchType,
+  SEARCH_TYPE,
 } from '../components/call.types';
 import ViewCall from './ViewCall';
-import { Button, Empty, Pagination } from 'antd';
+import { Button, Empty, Flex, Input, Pagination } from 'antd';
 import UploadPage from '@/features/upload/pages/UploadPage';
 import TriggerCallDetails from '../components/triggerCallsView/TriggerCallDetails';
 import { TableSkeleton } from '@/components/TableSkeleton/TableSkeleton';
 import { Badge } from '@/components/ui/Badge/Badge';
-// import { AiOutlineContacts } from 'react-icons/ai';
 import { IoCloudUploadOutline } from 'react-icons/io5';
+import { Select } from '@/components/ui/Select/Select';
+import { useDebounce } from '@/components/Hooks/useDebounce';
+import { DEBOUNCE_TIMEOUT } from '@/components/constants/Constant';
 
 const CallPage = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -23,13 +27,20 @@ const CallPage = () => {
   const [isTriggerModalOpen, setIsTriggerModalOpen] = useState<boolean>(false);
   const [selectedCallId, setSelectedCallId] = useState<string | null>(null);
   const [pageSize, setPageSize] = useState<number>(10);
+  const [searchType, setSearchType] = useState<SearchType>(SEARCH_TYPE.NAME);
+  const [searchValue, setSearchValue] = useState<string>('');
+
+  const debouncedSearchValue = useDebounce(searchValue, DEBOUNCE_TIMEOUT);
 
   const param = useMemo(() => {
     return {
       page: currentPage,
       page_size: pageSize,
+      ...(debouncedSearchValue && {
+        [searchType]: debouncedSearchValue,
+      }),
     };
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, debouncedSearchValue, searchType]);
 
   const { getCallLogs, getTriggerCall } = useCall(
     selectedCallId as string,
@@ -57,14 +68,38 @@ const CallPage = () => {
     setSelectedCallId(id);
   };
 
+  const handleSearchTypeChange = (value: SearchType) => {
+    setSearchType(value);
+    setSearchValue('');
+    setCurrentPage(1);
+  };
+
   return (
     <div className={styles.container}>
       {/* Header */}
       <Banner>
         <div className={styles.header}>
-          <h1 className={styles.title}>Call</h1>
+          <h1 className={styles.title}>Call Logs</h1>
 
           <div className={styles.filters}>
+            <Flex gap={'small'}>
+              <Select
+                value={searchType}
+                onChange={(value: SearchType) => handleSearchTypeChange(value)}
+                options={[
+                  { label: 'Patient name', value: SEARCH_TYPE.NAME },
+                  { label: 'Phone number', value: SEARCH_TYPE.PHONE },
+                ]}
+              />
+              <Input
+                allowClear
+                placeholder={`Search by ${searchType}`}
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                suffix={<PiMagnifyingGlass />}
+              />
+            </Flex>
+
             {isTriggerModalOpen && (
               <TriggerCallDetails
                 open={isTriggerModalOpen}
@@ -73,11 +108,7 @@ const CallPage = () => {
               />
             )}
 
-            {/* <Tooltip title={'Trigger Call Details'}>
-              <Button type='text' onClick={() => setIsTriggerModalOpen(true)} icon={ <AiOutlineContacts size={24} />}/>
-          </Tooltip> */}
-
-            <Button onClick={() => setIsUploadModalOpen(true)}>
+            <Button type="primary" onClick={() => setIsUploadModalOpen(true)}>
               <IoCloudUploadOutline />
               <span>Upload Contacts</span>
             </Button>
@@ -96,8 +127,6 @@ const CallPage = () => {
         <table className={styles.table}>
           <thead>
             <tr>
-              {/* <th>Timestamp</th>
-              <th>log</th> */}
               <th>Patient Name</th>
               <th>Phone</th>
               <th>Call Status</th>
@@ -117,8 +146,6 @@ const CallPage = () => {
               {callLogs?.map((log: Call) => {
                 return (
                   <tr key={log?.id}>
-                    {/* <td>{log?.creation_date}</td>
-                  <td>{log?.calls_name}</td> */}
                     <td>{log?.patient_name}</td>
                     <td>{log?.phone_number}</td>
                     <td>

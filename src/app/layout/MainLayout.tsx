@@ -8,28 +8,20 @@ import { useLayout } from '@components/layout/LayoutContext';
 import styles from './MainLayout.module.scss';
 import myAilogo from '../../../public/myAiLogo.svg';
 
-import { MdOutlineDashboard, MdOutlineCampaign } from 'react-icons/md';
+import { MdOutlineCampaign } from 'react-icons/md';
 import { BiPhone } from 'react-icons/bi';
 import { RxHamburgerMenu } from 'react-icons/rx';
 import { Avatar } from '@/components/ui/Avatar/Avatar';
+import { UserAvatar } from '@/components/Avatar/UserAvatar';
 
 // Navigation items configuration
 const navItems = [
-  // { path: '/', label: 'Upload', icon: 'upload' },
   { path: '/', label: 'Call Logs', icon: 'call' },
-  // { path: '/campaign', label: 'Campaign', icon: 'campaign' },
-  // { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
-  // { path: '/call-logs', label: 'Call Logs', icon: 'call' },
-  // { path: '/campaigns', label: 'Campaigns', icon: 'campaign' },
-  // { path: '/ai-studio', label: 'AI Studio', icon: 'ai' },
-  // { path: '/lead-list', label: 'Lead List', icon: 'list' },
+  { path: '/campaign', label: 'Campaign', icon: 'campaign' },
 ];
 
-// SVG icons for navigation
 const NavIcon = ({ type }: { type: string }) => {
   switch (type) {
-    case 'dashboard':
-      return <MdOutlineDashboard size={20} />;
     case 'call':
       return <BiPhone size={20} />;
     case 'campaign':
@@ -97,7 +89,7 @@ function HeaderContent() {
             />
           </svg>
         </button> */}
-        <Avatar className={styles.avatar}>ACT</Avatar>
+        <UserAvatar />
       </div>
     </>
   );

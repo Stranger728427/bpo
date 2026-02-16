@@ -3,6 +3,13 @@ export interface CallTranscriptItem {
   message: string;
 }
 
+export const SEARCH_TYPE = {
+  NAME: 'name',
+  PHONE: 'number',
+} as const;
+
+export type SearchType = (typeof SEARCH_TYPE)[keyof typeof SEARCH_TYPE];
+
 export type CallStatus = 'completed' | 'missed' | 'failed' | 'in_progress' | 'unknown' | 'completed';
 
 export type CallIntent = 'positive' | 'negative' | 'neutral';

@@ -1,48 +1,80 @@
 import { useState, ReactNode } from 'react';
 import { Drawer } from '@components/ui/Drawer/Drawer';
-import { TranscriptMessage } from '@/types/call';
+import { TranscriptMessage } from '@/types/types';
 import styles from './DetailDrawer.module.scss';
 import { NotesChat } from '@/features/call-logs/components/NoteChat/NotesChat';
 import { Note } from '@/features/call-logs/components/NoteChat/NotesChat';
 
-
 // Icons
 const CloseIcon = () => (
   <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-    <circle cx="10" cy="10" r="9" stroke="currentColor" strokeWidth="1.5"/>
-    <path d="M13 7L7 13M7 7L13 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    <circle cx="10" cy="10" r="9" stroke="currentColor" strokeWidth="1.5" />
+    <path
+      d="M13 7L7 13M7 7L13 13"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
   </svg>
 );
 
 const PlayIcon = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path d="M4 3L13 8L4 13V3Z" fill="currentColor"/>
+    <path d="M4 3L13 8L4 13V3Z" fill="currentColor" />
   </svg>
 );
 
 const DownloadIcon = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path d="M8 2V10M8 10L5 7M8 10L11 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M2 12V13C2 13.5523 2.44772 14 3 14H13C13.5523 14 14 13.5523 14 13V12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    <path
+      d="M8 2V10M8 10L5 7M8 10L11 7"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M2 12V13C2 13.5523 2.44772 14 3 14H13C13.5523 14 14 13.5523 14 13V12"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
   </svg>
 );
 
 const AIIcon = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" strokeWidth="1.5"/>
-    <circle cx="6" cy="6" r="1" fill="currentColor"/>
-    <circle cx="10" cy="6" r="1" fill="currentColor"/>
-    <path d="M5 10C5 10 6.5 11.5 8 11.5C9.5 11.5 11 10 11 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    <rect
+      x="2"
+      y="2"
+      width="12"
+      height="12"
+      rx="2"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    />
+    <circle cx="6" cy="6" r="1" fill="currentColor" />
+    <circle cx="10" cy="6" r="1" fill="currentColor" />
+    <path
+      d="M5 10C5 10 6.5 11.5 8 11.5C9.5 11.5 11 10 11 10"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
   </svg>
 );
 
 const UserIcon = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.5"/>
-    <path d="M2 14C2 11.2386 4.68629 9 8 9C11.3137 9 14 11.2386 14 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    <circle cx="8" cy="5" r="3" stroke="currentColor" strokeWidth="1.5" />
+    <path
+      d="M2 14C2 11.2386 4.68629 9 8 9C11.3137 9 14 11.2386 14 14"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
   </svg>
 );
-
 
 // Types
 export interface InfoField {
@@ -82,9 +114,10 @@ export function DetailDrawer({
   onPlay,
   onDownload,
   width = 400,
-
 }: DetailDrawerProps) {
-  const [activeTab, setActiveTab] = useState<'transcript' | 'notes'>('transcript');
+  const [activeTab, setActiveTab] = useState<'transcript' | 'notes'>(
+    'transcript'
+  );
 
   const progressPercent = (currentTime / totalTime) * 100;
 
@@ -107,7 +140,11 @@ export function DetailDrawer({
         {/* Header */}
         <div className={styles.header}>
           <h2 className={styles.title}>{title}</h2>
-          <button className={styles.closeButton} onClick={onClose} aria-label="Close">
+          <button
+            className={styles.closeButton}
+            onClick={onClose}
+            aria-label="Close"
+          >
             <CloseIcon />
           </button>
         </div>
@@ -205,11 +242,11 @@ export function DetailDrawer({
                   {callSummary || 'No summary available'}
                 </p>
               </div>
-             <NotesChat
-               notes={notes}
-               onAddNote={onAddNote || (() => {})}
-               currentUser={currentUser}
-             />
+              <NotesChat
+                notes={notes}
+                onAddNote={onAddNote || (() => {})}
+                currentUser={currentUser}
+              />
             </div>
           )}
         </div>

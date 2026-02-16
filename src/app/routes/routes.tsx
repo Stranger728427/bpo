@@ -9,14 +9,8 @@ import { RoutePath } from './RouthPath';
 ========================= */
 
 const LoginPage = lazy(() => import('@features/auth/pages/LoginPage'));
-const DashboardPage = lazy(() => import('@features/dashboard/pages/DashboardPage'));
-const CallLogsPage = lazy(() => import('@features/call-logs/pages/CallLogsPage'));
-const CampaignsPage = lazy(() => import('@features/campaigns/pages/CampaignsPage'));
-const AIStudioPage = lazy(() => import('@features/ai-studio/pages/AIStudioPage'));
-const LeadListPage = lazy(() => import('@features/lead-list/pages/LeadListPage'));
-const CallPage = lazy(() => import('@features/call/pages/CallPage'));
+const CallLogs = lazy(() => import('@features/call/pages/CallPage'));
 const Campaign = lazy(() => import('@features/camp/pages/Campaign'));
-
 
 /* =========================
    Suspense Wrapper Helper
@@ -43,31 +37,11 @@ export const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: withSuspense(CallPage),
+        element: withSuspense(CallLogs),
       },
       {
         path: RoutePath.CAMPAIGN,
         element: withSuspense(Campaign),
-      },
-      {
-        path: RoutePath.DASHBOARD,
-        element: withSuspense(DashboardPage),
-      },
-      {
-        path: RoutePath.CALL_LOGS,
-        element: withSuspense(CallLogsPage),
-      },
-      {
-        path: RoutePath.CALL_LOGS,
-        element: withSuspense(CampaignsPage),
-      },
-      {
-        path: RoutePath.AI_STUDIO,
-        element: withSuspense(AIStudioPage),
-      },
-      {
-        path: RoutePath.LEAD_LIST,
-        element: withSuspense(LeadListPage),
       },
     ],
   },
