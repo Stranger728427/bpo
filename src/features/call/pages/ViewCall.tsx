@@ -5,6 +5,7 @@ import styles from '../pages/ViewCall.module.scss';
 import { AiOutlineUser } from 'react-icons/ai';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { LucideBot } from '@/components/icons/CallLogs';
+import dayjs from 'dayjs';
 
 interface CallLogDrawerProps {
   isOpen: boolean;
@@ -33,12 +34,19 @@ const ViewCall = ({ isOpen, onClose, selectedCallId }: CallLogDrawerProps) => {
 
   const call = getCallLogsById?.data;
 
+  const formatCallTriggeredAt = (call_triggered_at: string) =>
+    dayjs(call_triggered_at).format('DD MMM YYYY, hh:mm A');
+
   const infoFields = [
     { label: 'Patient Name', value: call?.patient_name },
     { label: 'Phone Number', value: call?.phone_number },
     { label: 'Status', value: call?.status },
-    { label: 'Call Duration(sec)', value: call?.call_duration },
+    { label: 'Call Duration', value: call?.call_duration },
     { label: 'Intent', value: call?.intent },
+    {
+      label: 'Triggered At',
+      value: formatCallTriggeredAt(call?.call_triggered_at as string),
+    },
   ];
 
   return (

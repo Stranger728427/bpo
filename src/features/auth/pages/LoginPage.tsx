@@ -3,7 +3,7 @@ import { Checkbox } from 'antd';
 import { Input } from '@components/ui/Input/Input';
 import { Button } from '@components/ui/Button/Button';
 import styles from './LoginPage.module.scss';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { axiosInstance } from '@/lib/axios/axiosInstance';
 
@@ -45,8 +45,8 @@ function LoginPage() {
     onSuccess: (response) => {
       const { access_token, user } = response.data;
 
-      localStorage.setItem('token', access_token);
-      localStorage.setItem('user', JSON.stringify(user));
+      sessionStorage.setItem('token', access_token);
+      sessionStorage.setItem('user', JSON.stringify(user));
       navigate('/');
     },
   });
@@ -135,12 +135,12 @@ function LoginPage() {
               </Button>
             </form>
 
-            <div className={styles.formFooter}>
+            {/* <div className={styles.formFooter}>
               <span>Not a member?</span>
               <Link to="/register" className={styles.registerLink}>
                 Create an account
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

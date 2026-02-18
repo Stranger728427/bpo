@@ -11,6 +11,8 @@ import {
   getStatusLabel,
   getStatusVariant,
 } from '../component/campaign.type';
+import { CampaignDetailModal } from '@/features/campaigns/components/CampaignDetailModal';
+import { CreateCampaignModal } from '@/features/campaigns/components/CreateCampaignModal';
 
 function Campaign() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -46,7 +48,7 @@ function Campaign() {
     {
       key: 'edit',
       label: 'Edit',
-      onClick: () => console.log('Edit', campaign.id),
+      onClick: () => setIsCreateCampaignModalOpen(true),
     },
     {
       key: 'end',
@@ -137,19 +139,19 @@ function Campaign() {
       </div>
 
       {/* Campaign Detail Modal */}
-      {/* {selectedCampaignId && (
+      {selectedCampaignId && (
         <CampaignDetailModal
           isOpen={Boolean(selectedCampaignId)}
           onClose={() => setSelectedCampaignId(null)}
           campaignId={selectedCampaignId}
         />
-      )} */}
+      )}
 
-      {/* Create Campaign Modal */}
-      {/* <CreateCampaignModal
+      {/* Create Campaign Form */}
+      <CreateCampaignModal
         isOpen={isCreateCampaignModalOpen}
         onClose={() => setIsCreateCampaignModalOpen(false)}
-      /> */}
+      />
     </div>
   );
 }

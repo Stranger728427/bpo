@@ -20,6 +20,7 @@ import { IoCloudUploadOutline } from 'react-icons/io5';
 import { Select } from '@/components/ui/Select/Select';
 import { useDebounce } from '@/components/Hooks/useDebounce';
 import { DEBOUNCE_TIMEOUT } from '@/components/constants/Constant';
+import dayjs from 'dayjs';
 
 const CallPage = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -73,6 +74,9 @@ const CallPage = () => {
     setSearchValue('');
     setCurrentPage(1);
   };
+
+  const formatCallTriggeredAt = (call_triggered_at: string) =>
+    dayjs(call_triggered_at).format('DD MMM YYYY, hh:mm A');
 
   return (
     <div className={styles.container}>
@@ -131,7 +135,8 @@ const CallPage = () => {
               <th>Phone</th>
               <th>Call Status</th>
               <th>Intent</th>
-              <th>Duration(sec)</th>
+              <th>Duration</th>
+              <th>Triggered At</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -155,6 +160,9 @@ const CallPage = () => {
                     </td>
                     <td>{log?.intent}</td>
                     <td>{log?.call_duration}</td>
+                    <td>
+                      {formatCallTriggeredAt(log?.call_triggered_at as string)}
+                    </td>
                     <td>
                       <button
                         className={styles.actionButton}

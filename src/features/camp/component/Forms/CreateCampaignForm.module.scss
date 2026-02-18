@@ -1,0 +1,246 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: $z-index-modal;
+  padding: $spacing-lg;
+}
+
+.modal {
+  background-color: $color-gray-bg;
+  border-radius: $border-radius-lg;
+  width: 100%;
+  max-width: 1227px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+// Header
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: $spacing-lg $spacing-md;
+  border-bottom: 1px solid $color-gray-100;
+}
+
+.headerContent {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.breadcrumb {
+  font-size: $font-size-sm;
+  color: $color-gray-500;
+}
+
+.title {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: $color-gray-900;
+  margin: 0;
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: $color-gray-400;
+  @include transition;
+
+  &:hover {
+    color: $color-gray-600;
+  }
+}
+
+// Content
+.content {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  padding: $spacing-md;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md; 
+}
+
+// Info Card
+.infoCard {
+  background-color: $color-white;
+  border-radius: $border-radius-lg;
+  padding: $spacing-md;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: $spacing-md;
+}
+
+.infoMain {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.campaignName {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-gray-900;
+  margin: 0;
+}
+
+.infoMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-md;
+  font-size: $font-size-sm;
+  color: $color-gray-500;
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+  }
+
+  strong {
+    color: $color-gray-900;
+    font-weight: $font-weight-medium;
+  }
+
+  svg {
+    color: $color-gray-900;
+  }
+}
+
+.infoDates {
+  font-size: $font-size-sm;
+  color: $color-gray-400;
+}
+
+.statusBadge {
+  flex-shrink: 0;
+}
+
+// Stats Grid
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $spacing-md;
+
+  @include media-down('lg') {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include media-down('sm') {
+    grid-template-columns: 1fr;
+  }
+}
+
+.statCard {
+  background-color: $color-white;
+  border-radius: $border-radius-lg;
+  padding: $spacing-md;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.statHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.statLabel {
+  font-size: $font-size-sm;
+  color: $color-gray-500;
+}
+
+.statIcon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $color-primary-bg;
+  border-radius: $border-radius-md;
+  color: $color-primary;
+}
+
+.statValue {
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-bold;
+  color: $color-gray-900;
+  line-height: 1;
+}
+
+.statChange {
+  font-size: $font-size-xs;
+
+  .positive {
+    color: $color-success;
+  }
+
+  .negative {
+    color: $color-error;
+  }
+}
+
+// Charts Grid
+.chartsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $spacing-md;
+
+  @include media-down('md') {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chartCard {
+  background-color: $color-white;
+  border-radius: $border-radius-lg;
+  padding: $spacing-md;
+}
+
+.chartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-md;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+}
+
+.chartTitle {
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: $color-gray-900;
+  margin: 0;
+}
+
+// Donut Chart Wrapper
+.donutChartWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-md 0;
+  min-height: 280px;
+}

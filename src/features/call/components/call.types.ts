@@ -10,7 +10,7 @@ export const SEARCH_TYPE = {
 
 export type SearchType = (typeof SEARCH_TYPE)[keyof typeof SEARCH_TYPE];
 
-export type CallStatus = 'completed' | 'missed' | 'failed' | 'in_progress' | 'unknown' | 'completed';
+export type CallStatus = 'completed' | 'missed' | 'failed' | 'in_progress' | 'busy' | 'no_answer' | 'completed';
 
 export type CallIntent = 'positive' | 'negative' | 'neutral';
 
@@ -19,7 +19,7 @@ export interface Call {
   id: string;
   phone_number: string;
   patient_name: string;
-  status: string;
+  status: CallStatus;
   call_duration: string; // kept as string since API returns "46"
   summary?: string;
   intent: string;
@@ -30,6 +30,7 @@ export interface Call {
   campaign_id?: number | null;
   campaign_name?: string | null;
   cost?: number | null;
+  call_triggered_at?: string | null;
   creation_date: string | null;       // ISO date string expected
   modification_date?: string | null;   // ISO date string expected
 }
@@ -71,6 +72,10 @@ export const getStatusVariant = (status: string) => {
         return 'error';
       case 'in_progress':
         return 'info';
+      case 'busy':
+        return 'info';
+      case 'no_answer':
+        return 'info';
       default:
         return 'unknown';
     }
@@ -86,6 +91,10 @@ export const getStatusLabel = (status: string) => {
         return 'Failed';
       case 'in_progress':
         return 'In Progress';
+      case 'busy':
+        return 'Busy';
+      case 'no_answer':
+        return 'No Answer';
       default:
         return 'Unknown';
     }

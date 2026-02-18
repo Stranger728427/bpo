@@ -4,4 +4,5 @@ import { getCampaignByIdService } from "../getCampaignById.service";
 export const useCampaignById = (id: string) => useQuery({
     queryKey: ['campaigns', id],
     queryFn: () => getCampaignByIdService(id),
+    enabled: !!id,
 })

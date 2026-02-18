@@ -1,12 +1,13 @@
 
 export type CampaignStatus = 'active' | 'paused' | 'completed';
+export type CampaignType = 'onboarding' | 'lead_generation' | 'reminder' | 'survey';
 
-export enum CampaignType {
-  ONBOARDING = 'onboarding',
-  LEAD_GENERATION = 'lead_generation',
-  REMINDER = 'reminder',
-  SURVEY = 'survey',
-}
+// export enum CampaignType {
+//   ONBOARDING = 'onboarding',
+//   LEAD_GENERATION = 'lead_generation',
+//   REMINDER = 'reminder',
+//   SURVEY = 'survey',
+// }
 
 export interface Campaigns {
   id: string;
@@ -81,19 +82,30 @@ export interface CampaignDetailResponse {
 }
 
 export interface CreateCampaignRequest {
-  name: string;
-  type: CampaignType;
-  start_date: string;
-  end_date: string;
-  ai_assistant_id?: string;
-  phone_number_id?: string;
-  calling_days?: string[];
-  start_time?: string;
-  end_time?: string;
-  retry_attempts?: number;
-  retry_interval?: number;
-  time_zone?: string;
-  leads_manual?: string;
+  name: string | null;
+  status: CampaignStatus | null;
+  type: CampaignType | null;
+
+  start_date: string | null;
+  end_date: string | null;
+
+  contacts_count: number | null;
+
+  ai_assistant_id: string | null;
+  ai_assistant_name: string | null;
+
+  leads_list_id: string | null;
+
+  phone_number: string | null;
+
+  calling_days: string[] | null;
+  start_time: string | null;
+  end_time: string | null;
+
+  retry_attempts: number | null;
+  retry_interval: number | null;
+
+  time_zone: string | null;
 }
 
 export interface CreateCampaignResponse {

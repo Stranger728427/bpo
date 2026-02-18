@@ -11,7 +11,6 @@ import myAilogo from '../../../public/myAiLogo.svg';
 import { MdOutlineCampaign } from 'react-icons/md';
 import { BiPhone } from 'react-icons/bi';
 import { RxHamburgerMenu } from 'react-icons/rx';
-import { Avatar } from '@/components/ui/Avatar/Avatar';
 import { UserAvatar } from '@/components/Avatar/UserAvatar';
 
 // Navigation items configuration
@@ -49,46 +48,6 @@ function HeaderContent() {
         </div>
       </div>
       <div className={styles.headerRight}>
-        {/* <div className={styles.credits}>
-          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-            <rect
-              x="2"
-              y="4"
-              width="16"
-              height="12"
-              rx="2"
-              stroke="currentColor"
-              strokeWidth="1.5"
-            />
-            <path d="M2 8H18" stroke="currentColor" strokeWidth="1.5" />
-            <circle
-              cx="14"
-              cy="12"
-              r="2"
-              stroke="currentColor"
-              strokeWidth="1.5"
-            />
-          </svg>
-          <span>12,430</span>
-        </div> */}
-        {/* <button className={styles.notificationBtn} aria-label="Notifications">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path
-              d="M15 7C15 5.67392 14.4732 4.40215 13.5355 3.46447C12.5979 2.52678 11.3261 2 10 2C8.67392 2 7.40215 2.52678 6.46447 3.46447C5.52678 4.40215 5 5.67392 5 7C5 11.25 3 13 3 13H17C17 13 15 11.25 15 7Z"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M11.73 16C11.5542 16.3031 11.3019 16.5547 10.9982 16.7295C10.6946 16.9044 10.3504 16.9965 10 16.9965C9.64964 16.9965 9.30541 16.9044 9.00179 16.7295C8.69818 16.5547 8.44583 16.3031 8.27 16"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button> */}
         <UserAvatar />
       </div>
     </>

@@ -29,7 +29,6 @@ export function UserAvatar({ avatarUrl }: UserAvatarDropdownProps) {
   const user = JSON.parse(localStorage.getItem('user') || '{}');
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
-  console.log(user);
   // const logoutMutation = useLogout();
 
   const logout = () =>
@@ -42,8 +41,8 @@ export function UserAvatar({ avatarUrl }: UserAvatarDropdownProps) {
   const logoutMutation = useMutation({
     mutationFn: logout,
     onSuccess: () => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('user');
       message.success('Logout successful');
       navigate('/login');
     },
