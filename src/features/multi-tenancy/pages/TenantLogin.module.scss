@@ -1,0 +1,264 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-lg;
+  // background-image:
+  //   linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+  //   linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-image: url('/assets/login-bg.jpg');
+  background-size: cover;
+  position: relative;
+}
+
+.loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba($color-gray-900, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  max-width: 900px;
+  min-height: 600px;
+  background-color: $color-white;
+  border-radius: $border-radius-xl;
+  box-shadow: $shadow-xl;
+  overflow: hidden;
+}
+
+// Left Panel - Branding
+.brandingPanel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-md;
+  background-color: $color-white;
+  position: relative;
+}
+
+.brandingContent {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: $spacing-md;
+}
+
+.brandName {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-semibold;
+  color: $color-gray-900;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.brandingText {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  bottom: 0;
+  width: 100%;
+  position: absolute;
+  padding: $spacing-md;
+  margin-bottom: $spacing-lg;
+  margin-left: $spacing-xl;
+}
+
+.tagline {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: $color-gray-900;
+  margin: 0;
+  width: 100%;
+  line-height: $line-height-normal;
+}
+
+// Right Panel - Login Form
+.formPanel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xl;
+  background-color: $color-gray-50;
+}
+
+.formCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  padding: $spacing-sm $spacing-sm;
+  background-color: $color-white;
+  border: 1px solid $color-gray-200;
+  border-radius: $border-radius-lg;
+  height: 100%;
+  width: 100%;
+}
+
+.loginAnimation {
+  display: flex;
+  width: 280px;
+  height: 280px;
+  color: $color-gray-800;
+  animation: spin 10s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.formHeader {
+  text-align: center;
+  margin-bottom: $spacing-lg;
+}
+
+.formTitle {
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-semibold;
+  color: $color-gray-900;
+  margin: 0 0 $spacing-sm 0;
+}
+
+.formSubtitle {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: $color-gray-900;
+  margin: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+  padding: $spacing-xl;
+}
+
+.formOptions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: -$spacing-xs;
+
+  :global(.ant-checkbox-wrapper) {
+    font-size: $font-size-sm;
+    color: $color-gray-600;
+  }
+
+  :global(.ant-checkbox-checked .ant-checkbox-inner) {
+    background-color: $color-primary-dark;
+    border-color: $color-primary-dark;
+  }
+}
+
+.forgotLink {
+  font-size: $font-size-sm;
+  color: $color-primary;
+  text-decoration: none;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $color-primary-dark;
+    text-decoration: underline;
+  }
+}
+
+.submitButton {
+  margin-top: $spacing-sm;
+
+  &:global(.ant-btn-primary) {
+    background-color: $color-primary-dark;
+    border-color: $color-primary-dark;
+    height: 44px;
+    font-weight: $font-weight-medium;
+    font-size: $font-size-base;
+
+    &:hover {
+      background-color: $color-primary-dark;
+      border-color: $color-primary-dark;
+    }
+  }
+}
+
+.formFooter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: $spacing-xs;
+  margin-top: $spacing-lg;
+  font-size: $font-size-sm;
+  color: $color-gray-900;
+}
+
+.registerLink {
+  color: $color-primary-dark;
+  text-decoration: none;
+  font-weight: $font-weight-medium;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $color-primary-dark;
+    text-decoration: underline;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    max-width: 420px;
+  }
+
+  .brandingPanel {
+    padding: $spacing-xl $spacing-lg $spacing-lg;
+  }
+
+  .brandingContent {
+    gap: $spacing-sm;
+
+    :global(svg) {
+      width: 120px;
+      height: 120px;
+    }
+  }
+
+  .brandName {
+    font-size: $font-size-2xl;
+  }
+
+  .tagline {
+    font-size: $font-size-xs;
+  }
+
+  .formPanel {
+    padding: $spacing-lg;
+    padding-top: 0;
+    background-color: $color-white;
+  }
+
+  .formCard {
+    border: none;
+    padding: $spacing-lg 0;
+  }
+}

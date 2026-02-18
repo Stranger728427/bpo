@@ -8,7 +8,12 @@ import { RoutePath } from './RouthPath';
    Lazy Loaded Pages
 ========================= */
 
-const LoginPage = lazy(() => import('@features/auth/pages/LoginPage'));
+const TenantLogin = lazy(
+  () => import('@features/multi-tenancy/pages/TenantLogin')
+);
+const MultiTenantRedirect = lazy(
+  () => import('@features/multi-tenancy/pages/MultiTenantRedirect')
+);
 const CallLogs = lazy(() => import('@features/call/pages/CallPage'));
 const Campaign = lazy(() => import('@features/camp/pages/Campaign'));
 
@@ -29,7 +34,11 @@ const withSuspense = (Component: React.LazyExoticComponent<any>) => (
 export const routes: RouteObject[] = [
   {
     path: RoutePath.LOGIN,
-    element: withSuspense(LoginPage),
+    element: withSuspense(TenantLogin),
+  },
+  {
+    path: RoutePath.MULTI_TENANT_REDIRECT,
+    element: withSuspense(MultiTenantRedirect),
   },
   {
     path: RoutePath.ROOT,

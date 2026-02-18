@@ -1,9 +1,10 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import useCurrentUser from '@/app/store/Hooks/useCurrentUser';
 
 export const ProtectedRoutes = () => {
-  const isAuthenticated = localStorage.getItem('token');
+  const currentUser = useCurrentUser();
   const location = useLocation();
-  return isAuthenticated ? (
+  return currentUser ? (
     <Outlet />
   ) : (
     <Navigate to="/login" state={{ from: location }} replace />
