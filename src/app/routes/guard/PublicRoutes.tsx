@@ -12,7 +12,7 @@ export function PublicRoute() {
   // Get the page they were trying to access before being redirected to login
   const from = location.state?.from?.pathname || '/';
 
-  if (currentUser) {
+  if (currentUser.currentUserId) {
     // Redirect authenticated users away from auth pages
     return <Navigate to={from} replace />;
   }

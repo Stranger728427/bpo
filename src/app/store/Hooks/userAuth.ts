@@ -5,6 +5,7 @@ import { env } from '@/app/config/env';
 import { logout } from '../Slice/userSlice';
 import { store } from '../store';
 import { persistor } from '@/app/store/store';
+import { siteConfig } from '@/components/constants/Constant';
 
 
 /**
@@ -13,6 +14,8 @@ import { persistor } from '@/app/store/store';
 const useAuth = () => {
     const navigate = useNavigate();
 
+    const {tenantName} = siteConfig
+
     const clearSession = async () => {
         store.dispatch(logout()); // Clear Redux state
         await persistor.purge();  // Clear persisted state
@@ -20,8 +23,11 @@ const useAuth = () => {
 
     const signOut = async () => {
         try {
-            await axiosInstance.delete(`${env.API_BASE_URL}/authcentral/token`, {
+            await axiosInstance.delete(`${env.AUTH_BASE_URL}/authcentral/token`, {
                 withCredentials: true,
+                data: {
+                    tenantName: tenantName
+                },
             });
 
             navigate('/login');

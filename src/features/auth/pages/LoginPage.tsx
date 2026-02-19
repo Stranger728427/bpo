@@ -134,13 +134,6 @@ function LoginPage() {
                 Login
               </Button>
             </form>
-
-            {/* <div className={styles.formFooter}>
-              <span>Not a member?</span>
-              <Link to="/register" className={styles.registerLink}>
-                Create an account
-              </Link>
-            </div> */}
           </div>
         </div>
       </div>

@@ -3,6 +3,9 @@ import { RouteObject } from 'react-router-dom';
 import { MainLayout } from '@/app/layout/MainLayout';
 import { Spinner } from '@components/ui/Spinner/Spinner';
 import { RoutePath } from './RouthPath';
+import { ProtectedRoutes } from './guard/ProtectedRoutes';
+
+import { PublicRoute } from './guard/PublicRoutes';
 
 /* =========================
    Lazy Loaded Pages
@@ -33,24 +36,35 @@ const withSuspense = (Component: React.LazyExoticComponent<any>) => (
 
 export const routes: RouteObject[] = [
   {
-    path: RoutePath.LOGIN,
-    element: withSuspense(TenantLogin),
-  },
-  {
-    path: RoutePath.MULTI_TENANT_REDIRECT,
-    element: withSuspense(MultiTenantRedirect),
+    element: <PublicRoute />,
+    children: [
+      {
+        path: RoutePath.LOGIN,
+        element: withSuspense(TenantLogin),
+      },
+      {
+        path: RoutePath.MULTI_TENANT_REDIRECT,
+        element: withSuspense(MultiTenantRedirect),
+      },
+    ],
   },
   {
     path: RoutePath.ROOT,
-    element: <MainLayout />,
+    element: <ProtectedRoutes />,
     children: [
       {
-        index: true,
-        element: withSuspense(CallLogs),
-      },
-      {
-        path: RoutePath.CAMPAIGN,
-        element: withSuspense(Campaign),
+        path: '',
+        element: <MainLayout />,
+        children: [
+          {
+            index: true,
+            element: withSuspense(CallLogs),
+          },
+          {
+            path: RoutePath.CAMPAIGN,
+            element: withSuspense(Campaign),
+          },
+        ],
       },
     ],
   },

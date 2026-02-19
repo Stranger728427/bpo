@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { queryKeys } from '@lib/query/queryKeys';
 import { useAppSelector } from '@store/hooks';
+import { AuthService } from '@/features/auth/components/services/authService.service';
 import { UserAuthSelector } from '@/app/store/Slice/userSlice';
-import { authService } from '@/features/auth/components/services/authService.service';
 
 
 export function useCurrentUser() {
+  const authService = AuthService()
   const user = useAppSelector(UserAuthSelector);
 
   return useQuery({

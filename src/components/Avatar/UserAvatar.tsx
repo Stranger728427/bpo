@@ -1,11 +1,13 @@
 import { Dropdown } from '@components/ui/Dropdown/Dropdown';
 import styles from './UserAvatar.module.scss';
-import { message } from 'antd';
-import { axiosInstance } from '@/lib/axios/axiosInstance';
-import { useMutation } from '@tanstack/react-query';
 import { IoIosLogOut } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
-// import { useLogout } from '@/features/auth/components/api/useLogout';
+import useCurrentUser from '@/app/store/Hooks/useCurrentUser';
+import { useAppDispatch } from '@/app/store/store';
+import { logout as logoutAction } from '@/app/store/Slice/userSlice';
+import { AuthService } from '@/features/auth/components/services/authService.service';
+import { useMutation } from '@tanstack/react-query';
+import { message } from 'antd';
 
 /**
  * Get user initials from full name (first 2 characters of first and last name)
@@ -26,41 +28,31 @@ interface UserAvatarDropdownProps {
 }
 
 export function UserAvatar({ avatarUrl }: UserAvatarDropdownProps) {
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
-  const token = localStorage.getItem('token');
+  const user = useCurrentUser();
   const navigate = useNavigate();
-  // const logoutMutation = useLogout();
+  const dispatch = useAppDispatch();
+  const authService = AuthService();
 
-  const logout = () =>
-    axiosInstance.post(
-      '/logout',
-      {},
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
+  const tenantName = window.location.host.split('.')[0];
 
   const logoutMutation = useMutation({
-    mutationFn: logout,
-    onSuccess: () => {
-      sessionStorage.removeItem('token');
-      sessionStorage.removeItem('user');
-      message.success('Logout successful');
+    mutationFn: authService.logout,
+    onSettled: () => {
+      // Clear Redux state and redirect regardless of API success/failure
+      // to ensure the user is logged out locally
+      dispatch(logoutAction());
       navigate('/login');
-    },
-    onError: () => {
-      message.error('Logout failed');
+      message.success('Logged out successfully');
     },
   });
 
-  const handleLogout = async () => {
-    try {
-      await logoutMutation.mutateAsync();
-      message.success('Logout successful');
-    } catch (error) {
-      message.error('Logout failed');
-    }
+  const handleLogout = () => {
+    logoutMutation.mutateAsync(tenantName);
   };
 
-  const initials = user?.full_name ? getInitials(user.full_name) : '??';
+  const initials = user?.currentUserName
+    ? getInitials(user.currentUserName)
+    : '??';
 
   const dropdownItems = [
     {
@@ -68,7 +60,9 @@ export function UserAvatar({ avatarUrl }: UserAvatarDropdownProps) {
       label: (
         <div className={styles.emailItem}>
           <span className={styles.emailLabel}>Signed in as</span>
-          <span className={styles.emailValue}>{user?.email || 'No email'}</span>
+          <span className={styles.emailValue}>
+            {user?.currentEmail || 'No email'}
+          </span>
         </div>
       ),
       disabled: true,
@@ -79,9 +73,9 @@ export function UserAvatar({ avatarUrl }: UserAvatarDropdownProps) {
     {
       key: 'logout',
       label: (
-        <div className={styles.logoutItem}>
+        <div className={styles.logoutItem} onClick={handleLogout}>
           <IoIosLogOut size={20} />
-          <span onClick={handleLogout}>Logout</span>
+          <span>Logout</span>
         </div>
       ),
     },

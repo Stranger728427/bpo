@@ -1,24 +1,51 @@
-import { axiosInstance } from "@/lib/axios/axiosInstance";
-import { ValidateTenantResponse } from "@/features/multi-tenancy/tenant.types";
+import { useApi } from "@/lib/axios/interceptors";
 
-export const authService = {
-    validateTenant: async (tenantName: string) => {
-        return await axiosInstance.post<ValidateTenantResponse>(`/authcentral/login`, { tenantName });
-    },
+export type validateTenantRequest = {
+	tenantName: string;
+};
 
-    validateAuthCode: async (payload: { tenantName: string; authCode: string }) => {
-        return await axiosInstance.post(`/authcentral/token`, payload);
-    },
+export type AuthCodeRequest = {
+	tenantName: string;
+	authCode: string;
+};
+export const AuthService = () => {
+	const { baseApi } = useApi();
 
-    refreshToken: async () => {
-        return await axiosInstance.put(`/authcentral/token`, { tokenType: 'Refresh' });
-    },
+	const validateTennant = async (payload: validateTenantRequest) => {
+		const result = await baseApi().post('/authcentral/login', payload);
+		return result;
+	};
 
-    logout: async () => {
-        return await axiosInstance.delete(`/authcentral/token`);
-    },
+	const validateAuthCode = async (payload: AuthCodeRequest) => {
+		const result = await baseApi().post('/authcentral/token', payload);
+		return result;
+	};
 
-    getUserDetails: async () => {
-        return await axiosInstance.get(`/api/v1/users`);
+	const getUserDetails = async () => {
+		const result = await baseApi().get('/api/v1/users');
+		return result?.data;
+	};
+
+
+    const refreshToken = async () => {
+        const result = await baseApi().put('/authcentral/token');
+        return result?.data;
     }
+
+	const logout = async (tenant:string) => {
+		const result = await baseApi().delete('/authcentral/token',{
+			data:{
+				tenantName:tenant
+			},
+		});
+		return result?.data;
+	};
+
+	return {
+		validateTennant,
+		validateAuthCode,
+		getUserDetails,
+		logout,
+        refreshToken
+	};
 };

@@ -8,9 +8,12 @@ import { IoCubeOutline } from 'react-icons/io5';
 import { Spinner } from '@/components/ui/Spinner/Spinner';
 import { siteConfig } from '@/components/constants/Constant';
 import { useValidateTenant } from '../components/api/useValidateTenant';
+import { validateTenantRequest } from '@/features/auth/components/services/authService.service';
 
 const TenantLogin = () => {
-  const [tenantName, setTenantName] = useState('');
+  const [tenantName, setTenantName] = useState<validateTenantRequest>({
+    tenantName: '',
+  });
 
   const { mutateAsync: validateTenant, isPending } =
     useValidateTenant(tenantName);
@@ -68,16 +71,15 @@ const TenantLogin = () => {
                     </span>
                   )
                 }
-                value={tenantName}
+                value={tenantName.tenantName}
                 onChange={(e) => {
-                  setTenantName(e.target.value.toLowerCase());
+                  setTenantName({ tenantName: e.target.value.toLowerCase() });
                 }}
                 name="tenantId"
                 type="text"
                 disabled={isPending}
                 addonAfter={siteConfig.tenantBaseUrl}
               />
-
               <Button type="primary" htmlType="submit">
                 Login
               </Button>

@@ -1,8 +1,3 @@
-export enum Role {
-	PROVIDER = 'Provider',
-	ADMIN = 'Admin',
-	SUPER_ADMIN = 'SuperAdmin',
-}
 
 export enum PrescriberType {
 	Admin = 'Admin',
@@ -10,11 +5,17 @@ export enum PrescriberType {
 	User = 'User',
 }
 
+export interface Role {
+  roleName: string;
+  description: string | null;
+}
+
+
 export interface UserAuth {
-	userId: string;
-	name?: string;
-	username: string;
-	email: string;
-	roles: Role[];
-	userType?: PrescriberType | string;
+  userId: string;
+  name?: string;
+  username: string;
+  email: string;
+  roles: Role[];
+  traits?: any[];
 }
