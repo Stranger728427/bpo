@@ -75,6 +75,11 @@ const CallPage = () => {
     setCurrentPage(1);
   };
 
+  const onSearch = (value: string) => {
+    setSearchValue(value);
+    setCurrentPage(1);
+  };
+
   const formatCallTriggeredAt = (call_triggered_at: string) =>
     dayjs(call_triggered_at).format('DD MMM YYYY, hh:mm A');
 
@@ -99,7 +104,7 @@ const CallPage = () => {
                 allowClear
                 placeholder={`Search by ${searchType}`}
                 value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
+                onChange={(e) => onSearch(e.target.value)}
                 suffix={<PiMagnifyingGlass />}
               />
             </Flex>

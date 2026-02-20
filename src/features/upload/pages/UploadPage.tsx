@@ -7,6 +7,7 @@ import { useUploadContactsMutation } from '../components/api/useUploadContacts';
 import { triggerCalls } from '../components/services/triggerCall.service';
 import UploadFile from '@/components/upload/UploadFile';
 import { useTruncateFileMutation } from '../components/api/useTruncateFile';
+import { Spinner } from '@/components/ui/Spinner/Spinner';
 
 export default function UploadPage({
   open,
@@ -97,23 +98,36 @@ export default function UploadPage({
             </>
           )}
 
-          <UploadFile
-            file={file}
-            onFileChange={handleFileUpload}
-            onRemoveFile={handleTruncateFile}
-            fileInputRef={fileInputRef}
-            uploadText="Upload file"
-            buttonText="Browse"
-            hintText="CSV: name, phone, appointment"
-            accept=".csv,.xls,.xlsx"
-          />
+          {fileMutation.isPending ? (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Spinner />
+            </div>
+          ) : (
+            <UploadFile
+              file={file}
+              onFileChange={handleFileUpload}
+              onRemoveFile={handleTruncateFile}
+              fileInputRef={fileInputRef}
+              uploadText="Upload file"
+              buttonText="Browse"
+              hintText="CSV: name, phone, appointment"
+              accept=".csv,.xls,.xlsx"
+            />
+          )}
         </div>
 
         {/* Trigger Section - Only after upload success */}
         {fileMutation.isSuccess && file && (
           <div className={styles.compactCard}>
             <h3 className={styles.cardTitle}>
-              Initiate Calls for Uploaded Contacts
+              Start calling uploaded contacts. Calls will be triggered
+              automatically based on the uploaded schedule.
             </h3>
 
             <Button
@@ -121,6 +135,7 @@ export default function UploadPage({
               type="primary"
               block
               loading={triggerCallsMutation.isPending}
+              disabled={triggerCallsMutation.isPending}
               onClick={handleTriggerCalls}
             >
               Trigger Calls

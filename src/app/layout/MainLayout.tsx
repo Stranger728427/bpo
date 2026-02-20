@@ -16,7 +16,7 @@ import { UserAvatar } from '@/components/Avatar/UserAvatar';
 // Navigation items configuration
 const navItems = [
   { path: '/', label: 'Call Logs', icon: 'call' },
-  { path: '/campaign', label: 'Campaign', icon: 'campaign' },
+  // { path: '/campaign', label: 'Campaign', icon: 'campaign' },
 ];
 
 const NavIcon = ({ type }: { type: string }) => {

@@ -6,10 +6,11 @@ import { Call, CallResponse, TriggerCallResponse, urlParams } from "./call.types
 export const useCall = (id:string, params: urlParams, isTriggerModalOpen?: boolean ) => {
     const getCallLogs = useQuery<CallResponse>({
         queryKey: ['call-logs', params],
-        queryFn: async () => {
-            const response = await callService.getCallLogs(params)
+        queryFn: async ({signal}) => {
+            const response = await callService.getCallLogs({params,signal})
             return response.data
         },
+        refetchOnWindowFocus:true,
         enabled: !!params.page && !!params.page_size
     })
 

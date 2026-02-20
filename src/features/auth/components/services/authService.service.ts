@@ -32,12 +32,8 @@ export const AuthService = () => {
         return result?.data;
     }
 
-	const logout = async (tenant:string) => {
-		const result = await baseApi().delete('/authcentral/token',{
-			data:{
-				tenantName:tenant
-			},
-		});
+	const logout = async () => {
+		const result = await baseApi().delete('/authcentral/token');
 		return result?.data;
 	};
 

@@ -88,18 +88,7 @@ const MultiTenancyRedirect = () => {
     );
   }
 
-  return (
-    <div
-      style={{
-        display: 'grid',
-        width: '100%',
-        height: '100vh',
-        placeContent: 'center',
-      }}
-    >
-      <Spinner />
-    </div>
-  );
+  return <Spinner fullScreen tip="Authenticating and fetching details..." />;
 };
 
 export default MultiTenancyRedirect;

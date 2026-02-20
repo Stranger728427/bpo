@@ -1,3 +1,5 @@
+import { BadgeVariant } from "@/components/ui/Badge/Badge";
+
 export interface CallTranscriptItem {
   speaker: 'bot' | 'customer' | string;
   message: string;
@@ -10,7 +12,7 @@ export const SEARCH_TYPE = {
 
 export type SearchType = (typeof SEARCH_TYPE)[keyof typeof SEARCH_TYPE];
 
-export type CallStatus = 'completed' | 'missed' | 'failed' | 'in_progress' | 'busy' | 'no_answer' | 'completed';
+export type CallStatus = 'completed' | 'missed' | 'failed' | 'in_progress' | 'busy' | 'no_answer' | 'completed'| 'voicemail' | 'ivr' | 'canceled' | 'unknown';
 
 export type CallIntent = 'positive' | 'negative' | 'neutral';
 
@@ -38,6 +40,9 @@ export interface Call {
 export type urlParams = {
     page?: number,
     page_size?: number,
+    search?: string,
+    search_type?: SearchType,
+
 }
 
 export interface CallResponse {
@@ -62,44 +67,28 @@ export interface TriggerCallResponse {
   data: TriggerCall[]
 }
 
-export const getStatusVariant = (status: string) => {
-    switch (status) {
-      case 'completed':
-        return 'success';
-      case 'missed':
-        return 'warning';
-      case 'failed':
-        return 'error';
-      case 'in_progress':
-        return 'info';
-      case 'busy':
-        return 'info';
-      case 'no_answer':
-        return 'info';
-      default:
-        return 'unknown';
-    }
-  };
+export const STATUS_CONFIG: Record<
+  CallStatus,
+  { label: string; variant: BadgeVariant }
+> = {
+  completed: { label: 'Completed', variant: 'success' },
+  in_progress: { label: 'In Progress', variant: 'info' },
+  missed: { label: 'Missed', variant: 'warning' },
+  failed: { label: 'Failed', variant: 'error' },
+  busy: { label: 'Busy', variant: 'warning' },
+  no_answer: { label: 'No Answer', variant: 'warning' },
+  voicemail: { label: 'Voicemail', variant: 'secondary' },
+  ivr: { label: 'IVR', variant: 'info' },
+  canceled: { label: 'Canceled', variant: 'secondary' },
+  unknown: { label: 'Unknown', variant: 'unknown' },
+};
 
-export const getStatusLabel = (status: string) => {
-    switch (status) {
-      case 'completed':
-        return 'Completed';
-      case 'missed':
-        return 'Missed';
-      case 'failed':
-        return 'Failed';
-      case 'in_progress':
-        return 'In Progress';
-      case 'busy':
-        return 'Busy';
-      case 'no_answer':
-        return 'No Answer';
-      default:
-        return 'Unknown';
-    }
-  };
+export const getStatusVariant = (status?: string): BadgeVariant =>
+  STATUS_CONFIG[
+    status?.toLowerCase() as CallStatus
+  ]?.variant ?? 'unknown';
 
-
-
-
+export const getStatusLabel = (status?: string): string =>
+  STATUS_CONFIG[
+    status?.toLowerCase() as CallStatus
+  ]?.label ?? 'Unknown';

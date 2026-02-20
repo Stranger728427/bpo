@@ -1,10 +1,10 @@
 import { axiosInstance } from "@/lib/axios/axiosInstance";
-import { urlParams } from "../call.types";
+import { AxiosRequestConfig } from "axios";
 
 
 export const callService = {
 
-    getCallLogs: async (params: urlParams) =>  await axiosInstance.get('/api/calls', {params}),
+    getCallLogs: async (config:AxiosRequestConfig) =>  await axiosInstance.get('/api/calls', config),
     getCallLogsById: async (id:string) =>  await axiosInstance.get(`/api/calls/${id}`),
     getTriggerCall: async () =>  await axiosInstance.get('/api/calls/triggered')
         

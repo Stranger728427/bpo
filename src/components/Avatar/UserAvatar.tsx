@@ -8,6 +8,7 @@ import { logout as logoutAction } from '@/app/store/Slice/userSlice';
 import { AuthService } from '@/features/auth/components/services/authService.service';
 import { useMutation } from '@tanstack/react-query';
 import { message } from 'antd';
+import { Spinner } from '@/components/ui/Spinner/Spinner';
 
 /**
  * Get user initials from full name (first 2 characters of first and last name)
@@ -33,8 +34,6 @@ export function UserAvatar({ avatarUrl }: UserAvatarDropdownProps) {
   const dispatch = useAppDispatch();
   const authService = AuthService();
 
-  const tenantName = window.location.host.split('.')[0];
-
   const logoutMutation = useMutation({
     mutationFn: authService.logout,
     onSettled: () => {
@@ -47,7 +46,7 @@ export function UserAvatar({ avatarUrl }: UserAvatarDropdownProps) {
   });
 
   const handleLogout = () => {
-    logoutMutation.mutateAsync(tenantName);
+    logoutMutation.mutateAsync();
   };
 
   const initials = user?.currentUserName
@@ -82,18 +81,25 @@ export function UserAvatar({ avatarUrl }: UserAvatarDropdownProps) {
   ];
 
   return (
-    <Dropdown items={dropdownItems} trigger={['click']} placement="bottomRight">
-      <button className={styles.avatarButton} type="button">
-        {avatarUrl ? (
-          <img
-            src={avatarUrl}
-            alt="User avatar"
-            className={styles.avatarImage}
-          />
-        ) : (
-          <span className={styles.avatarInitials}>{initials}</span>
-        )}
-      </button>
-    </Dropdown>
+    <>
+      {logoutMutation.isPending && <Spinner fullScreen tip="Logging out..." />}
+      <Dropdown
+        items={dropdownItems}
+        trigger={['click']}
+        placement="bottomRight"
+      >
+        <button className={styles.avatarButton} type="button">
+          {avatarUrl ? (
+            <img
+              src={avatarUrl}
+              alt="User avatar"
+              className={styles.avatarImage}
+            />
+          ) : (
+            <span className={styles.avatarInitials}>{initials}</span>
+          )}
+        </button>
+      </Dropdown>
+    </>
   );
 }

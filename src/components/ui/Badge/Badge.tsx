@@ -11,7 +11,13 @@ export type BadgeVariant =
   | 'completed'
   | 'missed'
   | 'failed'
-  | 'in_progress';
+  | 'in_progress'
+  | 'busy'
+  | 'no_answer'
+  | 'voicemail'
+  | 'ivr'
+  | 'canceled'
+  | 'secondary';
 
 export interface BadgeProps {
   children: ReactNode;

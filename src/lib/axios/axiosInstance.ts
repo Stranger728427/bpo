@@ -11,7 +11,4 @@ export const axiosInstanceAuth: AxiosInstance = axios.create({
   baseURL: env.AUTH_BASE_URL,
   timeout: 10000,
   withCredentials: true,
-  headers:{
-
-  }
 });
