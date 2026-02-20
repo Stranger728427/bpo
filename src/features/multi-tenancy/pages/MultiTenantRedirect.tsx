@@ -1,7 +1,7 @@
 import { updateUserAuth } from '@/app/store/Slice/userSlice';
 import { useAppDispatch } from '@/app/store/store';
 import { Spinner } from '@/components/ui/Spinner/Spinner';
-import { AuthService } from '@/features/auth/components/services/authService.service';
+import { AuthService } from '@/features/multi-tenancy/components/services/authService.service';
 import { useMutation } from '@tanstack/react-query';
 import { notification } from 'antd';
 import { AxiosError } from 'axios';

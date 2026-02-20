@@ -1,4 +1,4 @@
-import { LucideBot } from '@/components/icons/CallLogs';
+import { LucideBot } from '@/components/icons/CallLogs.icons';
 import styles from './CreateCampaignForm.module.scss';
 import { CreateCampaignRequest } from '../campaign.type';
 import { LuPhone } from 'react-icons/lu';

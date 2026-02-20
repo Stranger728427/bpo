@@ -1,4 +1,4 @@
-import { AuthService, validateTenantRequest } from '@/features/auth/components/services/authService.service';
+import { AuthService, validateTenantRequest } from '@/features/multi-tenancy/components/services/authService.service';
 import { useMutation } from '@tanstack/react-query';
 import { message } from 'antd';
 import { AxiosError } from 'axios';

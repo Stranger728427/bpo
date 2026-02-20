@@ -7,7 +7,7 @@ import {
 } from '@/features/camp/component/campaign.type';
 import { useCampaignCreate } from '@/features/camp/component/services/api/useCreateCampaign';
 import { Select } from '@/components/ui/Select/Select';
-import { LucideBot } from '@/components/icons/CallLogs';
+import { LucideBot } from '@/components/icons/CallLogs.icons';
 import { LuPhone } from 'react-icons/lu';
 
 interface CreateCampaignModalProps {

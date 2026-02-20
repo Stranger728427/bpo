@@ -2,9 +2,10 @@ import {
   DetailDrawer,
   StatusBadge,
 } from '@components/ui/DetailDrawer/DetailDrawer';
-import { CallRecord, getStatusLabel, getStatusVariant } from '@/types/types';
 import { useState } from 'react';
 import { Note } from './NoteChat/NotesChat';
+import { CallRecord } from '@/types/call';
+import { getStatusLabel, getStatusVariant } from '@/types/call';
 interface CallLogDetailDrawerProps {
   isOpen: boolean;
   onClose: () => void;

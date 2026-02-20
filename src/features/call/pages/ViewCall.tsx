@@ -4,7 +4,7 @@ import { Button, Divider, Popover, Skeleton, Tag, Tooltip } from 'antd';
 import styles from '../pages/ViewCall.module.scss';
 import { AiOutlineUser } from 'react-icons/ai';
 import { InfoCircleOutlined } from '@ant-design/icons';
-import { LucideBot } from '@/components/icons/CallLogs';
+import { LucideBot } from '@/components/icons/CallLogs.icons';
 import dayjs from 'dayjs';
 
 interface CallLogDrawerProps {

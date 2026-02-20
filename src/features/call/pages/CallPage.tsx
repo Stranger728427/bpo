@@ -20,7 +20,7 @@ import { IoCloudUploadOutline } from 'react-icons/io5';
 import { Select } from '@/components/ui/Select/Select';
 import { useDebounce } from '@/components/Hooks/useDebounce';
 import { DEBOUNCE_TIMEOUT } from '@/components/constants/Constant';
-import dayjs from 'dayjs';
+import { formatCallTriggeredAt } from '@/utils/helpers/helper';
 
 const CallPage = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -79,9 +79,6 @@ const CallPage = () => {
     setSearchValue(value);
     setCurrentPage(1);
   };
-
-  const formatCallTriggeredAt = (call_triggered_at: string) =>
-    dayjs(call_triggered_at).format('DD MMM YYYY, hh:mm A');
 
   return (
     <div className={styles.container}>

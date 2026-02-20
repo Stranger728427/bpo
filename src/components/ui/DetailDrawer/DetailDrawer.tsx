@@ -1,9 +1,9 @@
 import { useState, ReactNode } from 'react';
 import { Drawer } from '@components/ui/Drawer/Drawer';
-import { TranscriptMessage } from '@/types/types';
 import styles from './DetailDrawer.module.scss';
 import { NotesChat } from '@/features/call-logs/components/NoteChat/NotesChat';
 import { Note } from '@/features/call-logs/components/NoteChat/NotesChat';
+import { TranscriptMessage } from '@/types/call';
 
 // Icons
 const CloseIcon = () => (

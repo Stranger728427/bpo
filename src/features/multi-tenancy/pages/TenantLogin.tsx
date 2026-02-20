@@ -1,5 +1,3 @@
-// import { useParams } from 'react-router-dom';
-// import { getSubDomain } from '@/utils/getSubDomain';
 import { Button } from 'antd';
 import styles from './TenantLogin.module.scss';
 import { Input } from '@/components/ui/Input/Input';
@@ -8,7 +6,7 @@ import { IoCubeOutline } from 'react-icons/io5';
 import { Spinner } from '@/components/ui/Spinner/Spinner';
 import { siteConfig } from '@/components/constants/Constant';
 import { useValidateTenant } from '../components/api/useValidateTenant';
-import { validateTenantRequest } from '@/features/auth/components/services/authService.service';
+import { validateTenantRequest } from '@/features/multi-tenancy/components/services/authService.service';
 
 const TenantLogin = () => {
   const [tenantName, setTenantName] = useState<validateTenantRequest>({
