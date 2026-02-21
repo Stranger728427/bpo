@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import useCurrentUser from '@/app/store/Hooks/useCurrentUser';
 import { useAppDispatch } from '@/app/store/store';
 import { logout as logoutAction } from '@/app/store/Slice/userSlice';
-import { AuthService } from '@/features/auth/components/services/authService.service';
+import { authService } from '@/features/auth/components/services/authService.service';
 import { useMutation } from '@tanstack/react-query';
 import { message } from 'antd';
 import { Spinner } from '@/components/ui/Spinner/Spinner';
@@ -32,7 +32,6 @@ export function UserAvatar({ avatarUrl }: UserAvatarDropdownProps) {
   const user = useCurrentUser();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const authService = AuthService();
 
   const logoutMutation = useMutation({
     mutationFn: authService.logout,

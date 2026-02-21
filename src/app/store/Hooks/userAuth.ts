@@ -1,11 +1,9 @@
 import { notification } from 'antd';
 import { useNavigate } from 'react-router';
-import { axiosInstance } from '@/lib/axios/axiosInstance';
-import { env } from '@/app/config/env';
 import { logout } from '../Slice/userSlice';
 import { store } from '../store';
 import { persistor } from '@/app/store/store';
-
+import { authService } from '@/features/auth/components/services/authService.service';
 
 /**
  * Custom hook for handling authentication logic.
@@ -20,8 +18,7 @@ const useAuth = () => {
 
     const signOut = async () => {
         try {
-            await axiosInstance.delete(`${env.AUTH_BASE_URL}/authcentral/token`);
-
+            await authService.logout();
             navigate('/login');
         } catch (logoutError) {
             notification.error({

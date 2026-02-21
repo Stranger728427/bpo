@@ -1,11 +1,10 @@
-import { AuthService, validateTenantRequest } from '@/features/auth/components/services/authService.service';
+import { authService, validateTenantRequest } from '@/features/auth/components/services/authService.service';
 import { mutationKeys } from '@/lib/query/mutationKeys';
 import { useMutation } from '@tanstack/react-query';
 import { message } from 'antd';
 import { AxiosError } from 'axios';
 
 export const useValidateTenant = (tenantName: validateTenantRequest) => {
-  const authService = AuthService()
   const validateTenant = async () => {
     const response = await authService.validateTennant(tenantName);
     return response;

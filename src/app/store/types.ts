@@ -18,4 +18,5 @@ export interface UserAuth {
   email: string;
   roles: Role[];
   traits?: any[];
+  accessToken:string;
 }

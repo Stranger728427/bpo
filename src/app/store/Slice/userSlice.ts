@@ -8,7 +8,8 @@ const initialState: UserAuth = {
 	roles: [],
 	userId: '',
 	username: '',
-	traits:[]
+	traits:[],
+	accessToken:''
 };
 
 export const userSlice = createSlice({

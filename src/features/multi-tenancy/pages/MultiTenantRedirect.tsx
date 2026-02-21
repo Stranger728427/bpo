@@ -1,7 +1,7 @@
 import { updateUserAuth } from '@/app/store/Slice/userSlice';
 import { useAppDispatch } from '@/app/store/store';
 import { Spinner } from '@/components/ui/Spinner/Spinner';
-import { AuthService } from '@/features/auth/components/services/authService.service';
+import { authService } from '@/features/auth/components/services/authService.service';
 import { mutationKeys } from '@/lib/query/mutationKeys';
 import { tenantName } from '@/utils/helpers/helper';
 import { useMutation } from '@tanstack/react-query';
@@ -12,7 +12,6 @@ import { useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 
 const MultiTenancyRedirect = () => {
-  const authService = AuthService();
   const [params] = useSearchParams();
   const dispatch = useAppDispatch();
   const authToken = useSelector(
