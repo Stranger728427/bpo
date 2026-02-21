@@ -20,3 +20,4 @@ export const queryKeys = {
     detail: (id: string) => [...queryKeys.call.details(), id] as const,
   },
 } as const;
+

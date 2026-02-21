@@ -1,4 +1,5 @@
-import { AuthService, validateTenantRequest } from '@/features/multi-tenancy/components/services/authService.service';
+import { AuthService, validateTenantRequest } from '@/features/auth/components/services/authService.service';
+import { mutationKeys } from '@/lib/query/mutationKeys';
 import { useMutation } from '@tanstack/react-query';
 import { message } from 'antd';
 import { AxiosError } from 'axios';
@@ -10,9 +11,11 @@ export const useValidateTenant = (tenantName: validateTenantRequest) => {
     return response;
   };
 
+  const validateTenantKeys = mutationKeys.validateTenant(tenantName.tenantName);
+
   return useMutation({
     mutationFn: validateTenant,
-    mutationKey: ['validate-tenant', tenantName],
+    mutationKey: validateTenantKeys,
     onSuccess: (response) => {
       message.success('Tenant validated successfully');
       if (response?.data?.redirectURI) window.location.href = response?.data?.redirectURI;

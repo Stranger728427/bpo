@@ -1,39 +1,37 @@
 import { updateUserAuth } from '@/app/store/Slice/userSlice';
 import { useAppDispatch } from '@/app/store/store';
 import { Spinner } from '@/components/ui/Spinner/Spinner';
-import { AuthService } from '@/features/multi-tenancy/components/services/authService.service';
+import { AuthService } from '@/features/auth/components/services/authService.service';
+import { mutationKeys } from '@/lib/query/mutationKeys';
+import { tenantName } from '@/utils/helpers/helper';
 import { useMutation } from '@tanstack/react-query';
 import { notification } from 'antd';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 
 const MultiTenancyRedirect = () => {
   const authService = AuthService();
   const [params] = useSearchParams();
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const tenantName = window.location.host.split('.')[0];
+  const authToken = useSelector(
+    (state: any) => state?.UserAuth?.value?.accessToken
+  );
   const [getUserError, setGetUserError] = useState<boolean>(false);
 
   const fetchUserDetails = async () => {
     try {
       const response = await authService.getUserDetails();
-      console.log('userDetails', response);
       const mapUser = {
         userId: response.id,
         name: response.name,
         username: response.username,
         email: response.email,
         roles: response.roles ?? [],
-        traits: response.traits ?? [],
+        traits: response.traits ?? [], // traits is a feature to used in user profile
       };
-
-      console.log('Dispatching user details to userSlice:', mapUser);
       dispatch(updateUserAuth(mapUser));
-
-      // Redirect to the portal
-      navigate('/');
     } catch (err) {
       notification.error({
         message:
@@ -45,6 +43,7 @@ const MultiTenancyRedirect = () => {
   };
 
   const validateAuthCode = useMutation({
+    mutationKey: mutationKeys.validateAuthCode(),
     mutationFn: async () => {
       const code = params.get('code');
       if (!code) throw new Error('No auth code found');
@@ -68,10 +67,14 @@ const MultiTenancyRedirect = () => {
 
   useEffect(() => {
     const code = params.get('code');
-    if (code && tenantName) {
-      validateAuthCode.mutate();
+    // Trigger only if:
+    //  code exists
+    //  tenant exists
+    //  token NOT already stored
+    if (code && tenantName && !authToken) {
+      validateAuthCode.mutateAsync();
     }
-  }, [params, tenantName]);
+  }, [params, tenantName, authToken]);
 
   if (getUserError || validateAuthCode.isError || !params.get('code')) {
     return (

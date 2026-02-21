@@ -10,7 +10,7 @@ export const useApi = () => {
 	const baseApi = (headers?: Record<any, any>) => {
 
 		const instance = axios.create({
-			baseURL: env.AUTH_BASE_URL,
+			baseURL: import.meta.env.VITE_API_BASE_URL,
 			timeout: 120000,
 			withCredentials: true,
 			headers: {
@@ -20,7 +20,7 @@ export const useApi = () => {
 
 		const refreshTokenFlow = async () => {
 			await axios.put(
-				`${env.AUTH_BASE_URL}/authcentral/token`,
+				`${import.meta.env.VITE_API_BASE_URL}/authcentral/token`,
 				{
 					tenantName,
 				},

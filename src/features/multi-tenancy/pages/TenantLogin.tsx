@@ -6,7 +6,7 @@ import { IoCubeOutline } from 'react-icons/io5';
 import { Spinner } from '@/components/ui/Spinner/Spinner';
 import { siteConfig } from '@/components/constants/Constant';
 import { useValidateTenant } from '../components/api/useValidateTenant';
-import { validateTenantRequest } from '@/features/multi-tenancy/components/services/authService.service';
+import { validateTenantRequest } from '@/features/auth/components/services/authService.service';
 
 const TenantLogin = () => {
   const [tenantName, setTenantName] = useState<validateTenantRequest>({
@@ -76,7 +76,7 @@ const TenantLogin = () => {
                 name="tenantId"
                 type="text"
                 disabled={isPending}
-                addonAfter={siteConfig.tenantBaseUrl}
+                addonAfter={siteConfig.tenantName}
               />
               <Button type="primary" htmlType="submit">
                 Login

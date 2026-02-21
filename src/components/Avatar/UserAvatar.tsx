@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import useCurrentUser from '@/app/store/Hooks/useCurrentUser';
 import { useAppDispatch } from '@/app/store/store';
 import { logout as logoutAction } from '@/app/store/Slice/userSlice';
-import { AuthService } from '@/features/multi-tenancy/components/services/authService.service';
+import { AuthService } from '@/features/auth/components/services/authService.service';
 import { useMutation } from '@tanstack/react-query';
 import { message } from 'antd';
 import { Spinner } from '@/components/ui/Spinner/Spinner';
