@@ -26,13 +26,15 @@ export const authService =  {
 	},
 
 
-    refreshToken: async () => {
-        const result = await axiosInstance.put('/authcentral/token');
+    refreshToken: async (tenantName: string) => {
+        const result = await axiosInstance.put('/authcentral/token',{tenantName});
         return result?.data;
     },
 
 	logout: async () => {
-		const result = await axiosInstance.delete('/authcentral/token');
+		const result = await axiosInstance.delete('/authcentral/token',{
+			withCredentials: true
+		});
 		return result?.data
 	}
 }

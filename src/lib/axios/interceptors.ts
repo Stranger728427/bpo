@@ -2,6 +2,7 @@ import { axiosInstance } from './axiosInstance';
 import { store } from '@/app/store/store';
 import useAuth from '@/app/store/Hooks/userAuth';
 import { refreshTokenFlow } from './refreshToken';
+import { tenantName } from '@/utils/helpers/helper';
 
 export const setupInterceptors = () => {
   const { signOut } = useAuth();
@@ -37,7 +38,7 @@ export const setupInterceptors = () => {
         originalRequest._retry = true;
 
         try {
-          const newToken = await refreshTokenFlow();
+          const newToken = await refreshTokenFlow(tenantName);
 
           originalRequest.headers.Authorization =
             `Bearer ${newToken}`;
