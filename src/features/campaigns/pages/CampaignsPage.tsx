@@ -3,7 +3,6 @@ import { Badge } from '@components/ui/Badge/Badge';
 import { ActionMenu } from '@components/ui/ActionMenu/ActionMenu';
 import { Dropdown } from '@components/ui/Dropdown/Dropdown';
 import type { MenuProps } from 'antd';
-import { CampaignDetailModal } from '../components/CampaignDetailModal';
 import { CreateCampaignModal } from '../components/CreateCampaignModal';
 import styles from './CampaignsPage.module.scss';
 import Banner from '@/components/layout/Banner/Banner';
@@ -61,11 +60,31 @@ const mockCampaigns: Campaign[] = [
 // Icons
 const FilterIcon = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path d="M14 4H10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M6 4H2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <path
+      d="M14 4H10"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
+    <path
+      d="M6 4H2"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
     <circle cx="8" cy="4" r="1.5" stroke="currentColor" strokeWidth="1.5" />
-    <path d="M14 12H10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M6 12H2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <path
+      d="M14 12H10"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
+    <path
+      d="M6 12H2"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
     <circle cx="8" cy="12" r="1.5" stroke="currentColor" strokeWidth="1.5" />
   </svg>
 );
@@ -73,40 +92,86 @@ const FilterIcon = () => (
 const GearIcon = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
     <circle cx="8" cy="8" r="2" stroke="currentColor" strokeWidth="1.5" />
-    <path d="M8 1V3M8 13V15M1 8H3M13 8H15M2.93 2.93L4.34 4.34M11.66 11.66L13.07 13.07M2.93 13.07L4.34 11.66M11.66 4.34L13.07 2.93" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <path
+      d="M8 1V3M8 13V15M1 8H3M13 8H15M2.93 2.93L4.34 4.34M11.66 11.66L13.07 13.07M2.93 13.07L4.34 11.66M11.66 4.34L13.07 2.93"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
   </svg>
 );
 
 const CalendarIcon = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <rect x="2" y="3" width="12" height="11" rx="1" stroke="currentColor" strokeWidth="1.5"/>
-    <path d="M2 6H14" stroke="currentColor" strokeWidth="1.5"/>
-    <path d="M5 1V4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-    <path d="M11 1V4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    <rect
+      x="2"
+      y="3"
+      width="12"
+      height="11"
+      rx="1"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    />
+    <path d="M2 6H14" stroke="currentColor" strokeWidth="1.5" />
+    <path
+      d="M5 1V4"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
+    <path
+      d="M11 1V4"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
   </svg>
 );
 
 const PlusIcon = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path d="M8 3V13M3 8H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    <path
+      d="M8 3V13M3 8H13"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
   </svg>
 );
 
 const ChevronDownIcon = () => (
   <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path
+      d="M3 4.5L6 7.5L9 4.5"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 
 const ChevronLeftIcon = () => (
   <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-    <path d="M8.5 10L5.5 7L8.5 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path
+      d="M8.5 10L5.5 7L8.5 4"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 
 const ChevronRightIcon = () => (
   <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-    <path d="M5.5 4L8.5 7L5.5 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path
+      d="M5.5 4L8.5 7L5.5 10"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 
@@ -150,25 +215,33 @@ const dateOptions = [
   { key: 'all_time', label: 'All Time' },
 ];
 
-  function CampaignsPage() {
+function CampaignsPage() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(
+  //   null
+  // );
+  // const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [campaignTypeFilter, setCampaignTypeFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [dateFilter, setDateFilter] = useState('today');
   const totalPages = 3;
 
-  const getCampaignTypeLabel = () => campaignTypeOptions.find((o) => o.key === campaignTypeFilter)?.label || 'Campaign Type';
-  const getStatusFilterLabel = () => statusOptions.find((o) => o.key === statusFilter)?.label || 'Status';
-  const getDateLabel = () => dateOptions.find((o) => o.key === dateFilter)?.label || 'Today';
+  const getCampaignTypeLabel = () =>
+    campaignTypeOptions.find((o) => o.key === campaignTypeFilter)?.label ||
+    'Campaign Type';
+  const getStatusFilterLabel = () =>
+    statusOptions.find((o) => o.key === statusFilter)?.label || 'Status';
+  const getDateLabel = () =>
+    dateOptions.find((o) => o.key === dateFilter)?.label || 'Today';
 
-  const campaignTypeMenuItems: MenuProps['items'] = campaignTypeOptions.map((option) => ({
-    key: option.key,
-    label: option.label,
-    onClick: () => setCampaignTypeFilter(option.key),
-  }));
+  const campaignTypeMenuItems: MenuProps['items'] = campaignTypeOptions.map(
+    (option) => ({
+      key: option.key,
+      label: option.label,
+      onClick: () => setCampaignTypeFilter(option.key),
+    })
+  );
 
   const statusMenuItems: MenuProps['items'] = statusOptions.map((option) => ({
     key: option.key,
@@ -182,16 +255,16 @@ const dateOptions = [
     onClick: () => setDateFilter(option.key),
   }));
 
-  const handleViewDetails = (campaign: Campaign) => {
-    setSelectedCampaign(campaign);
-    setIsModalOpen(true);
-  };
+  // const handleViewDetails = (campaign: Campaign) => {
+  //   setSelectedCampaign(campaign);
+  //   setIsModalOpen(true);
+  // };
 
   const getActionItems = (campaign: Campaign) => [
     {
       key: 'view',
       label: 'View Details',
-      onClick: () => handleViewDetails(campaign),
+      onClick: () => console.log('View Details', campaign.id),
     },
     {
       key: 'edit',
@@ -216,11 +289,13 @@ const dateOptions = [
     const matchesType =
       campaignTypeFilter === 'all' ||
       (campaignTypeFilter === 'onboarding' && campaign.type === 'Onboarding') ||
-      (campaignTypeFilter === 'lead_generation' && campaign.type === 'Lead generation') ||
+      (campaignTypeFilter === 'lead_generation' &&
+        campaign.type === 'Lead generation') ||
       (campaignTypeFilter === 'reminder' && campaign.type === 'Reminder');
 
     // Status filter
-    const matchesStatus = statusFilter === 'all' || campaign.status === statusFilter;
+    const matchesStatus =
+      statusFilter === 'all' || campaign.status === statusFilter;
 
     return matchesType && matchesStatus;
   });
@@ -229,44 +304,47 @@ const dateOptions = [
     <div className={styles.container}>
       <Banner>
         {/* Header */}
-      <div className={styles.header}>
-        <h1 className={styles.title}>Campaign</h1>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Campaign</h1>
 
-        <div className={styles.actions}>
-          {/* Campaign Type Filter */}
-          <Dropdown items={campaignTypeMenuItems} trigger={['click']}>
-            <button className={styles.filterButton}>
-              <FilterIcon />
-              <span>{getCampaignTypeLabel()}</span>
-              <ChevronDownIcon />
+          <div className={styles.actions}>
+            {/* Campaign Type Filter */}
+            <Dropdown items={campaignTypeMenuItems} trigger={['click']}>
+              <button className={styles.filterButton}>
+                <FilterIcon />
+                <span>{getCampaignTypeLabel()}</span>
+                <ChevronDownIcon />
+              </button>
+            </Dropdown>
+
+            {/* Status Filter */}
+            <Dropdown items={statusMenuItems} trigger={['click']}>
+              <button className={styles.filterButton}>
+                <GearIcon />
+                <span>{getStatusFilterLabel()}</span>
+                <ChevronDownIcon />
+              </button>
+            </Dropdown>
+
+            {/* Date Filter */}
+            <Dropdown items={dateMenuItems} trigger={['click']}>
+              <button className={styles.filterButton}>
+                <CalendarIcon />
+                <span>{getDateLabel()}</span>
+                <ChevronDownIcon />
+              </button>
+            </Dropdown>
+
+            {/* Create Campaign Button */}
+            <button
+              className={styles.createButton}
+              onClick={() => setIsCreateModalOpen(true)}
+            >
+              <PlusIcon />
+              <span>Create Campaign</span>
             </button>
-          </Dropdown>
-
-          {/* Status Filter */}
-          <Dropdown items={statusMenuItems} trigger={['click']}>
-            <button className={styles.filterButton}>
-              <GearIcon />
-              <span>{getStatusFilterLabel()}</span>
-              <ChevronDownIcon />
-            </button>
-          </Dropdown>
-
-          {/* Date Filter */}
-          <Dropdown items={dateMenuItems} trigger={['click']}>
-            <button className={styles.filterButton}>
-              <CalendarIcon />
-              <span>{getDateLabel()}</span>
-              <ChevronDownIcon />
-            </button>
-          </Dropdown>
-
-          {/* Create Campaign Button */}
-          <button className={styles.createButton} onClick={() => setIsCreateModalOpen(true)}>
-            <PlusIcon />
-            <span>Create Campaign</span>
-          </button>
+          </div>
         </div>
-      </div>
       </Banner>
 
       {/* Table */}
@@ -294,7 +372,9 @@ const dateOptions = [
                   </Badge>
                 </td>
                 <td>{campaign.type}</td>
-                <td>{campaign.startDate} – {campaign.endDate}</td>
+                <td>
+                  {campaign.startDate} – {campaign.endDate}
+                </td>
                 <td>{campaign.callsMade.toLocaleString()}</td>
                 <td>{campaign.conversionRate}%</td>
                 <td>{campaign.spend.toLocaleString()} credits</td>
@@ -345,13 +425,13 @@ const dateOptions = [
       </div>
 
       {/* Campaign Detail Modal */}
-      {selectedCampaign && (
+      {/* {selectedCampaign && (
         <CampaignDetailModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           campaign={selectedCampaign}
         />
-      )}
+      )} */}
 
       {/* Create Campaign Modal */}
       <CreateCampaignModal
@@ -362,4 +442,4 @@ const dateOptions = [
   );
 }
 
-export default CampaignsPage
+export default CampaignsPage;

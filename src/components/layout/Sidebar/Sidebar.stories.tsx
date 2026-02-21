@@ -2,6 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Sidebar } from './Sidebar';
 import { LayoutProvider } from '../LayoutContext';
 import { Button } from '../../ui/Button/Button';
+import { ComponentProps } from 'react';
+
+type SidebarStoryArgs = ComponentProps<typeof Sidebar> & {
+  expanded?: boolean;
+};
 
 const meta = {
   title: 'Layout/Sidebar',
@@ -45,14 +50,28 @@ import { Layout } from '@components/layout/Layout/Layout';
       </LayoutProvider>
     ),
   ],
-} satisfies Meta<typeof Sidebar>;
+} satisfies Meta<SidebarStoryArgs>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 const NavItems = () => (
-  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', padding: '0.5rem' }}>
-    {['Dashboard', 'Campaigns', 'Call Logs', 'Lead List', 'AI Studio', 'Settings'].map((item) => (
+  <div
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '0.25rem',
+      padding: '0.5rem',
+    }}
+  >
+    {[
+      'Dashboard',
+      'Campaigns',
+      'Call Logs',
+      'Lead List',
+      'AI Studio',
+      'Settings',
+    ].map((item) => (
       <div
         key={item}
         style={{
@@ -61,7 +80,9 @@ const NavItems = () => (
           cursor: 'pointer',
           transition: 'background 0.2s',
         }}
-        onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)')}
+        onMouseEnter={(e) =>
+          (e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)')
+        }
         onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
       >
         {item}
@@ -71,7 +92,14 @@ const NavItems = () => (
 );
 
 const IconNavItems = () => (
-  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', padding: '0.5rem' }}>
+  <div
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '0.25rem',
+      padding: '0.5rem',
+    }}
+  >
     {[
       { icon: '📊', label: 'Dashboard' },
       { icon: '📢', label: 'Campaigns' },
@@ -91,7 +119,9 @@ const IconNavItems = () => (
           gap: '0.75rem',
           transition: 'background 0.2s',
         }}
-        onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)')}
+        onMouseEnter={(e) =>
+          (e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)')
+        }
         onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
       >
         <span>{item.icon}</span>
@@ -104,7 +134,7 @@ const IconNavItems = () => (
 export const Collapsed: Story = {
   args: {
     expanded: false,
-  } as { expanded?: boolean },
+  },
   render: () => (
     <Sidebar>
       <NavItems />
@@ -115,16 +145,7 @@ export const Collapsed: Story = {
 export const Expanded: Story = {
   args: {
     expanded: true,
-  } as { expanded?: boolean },
-  decorators: [
-    (Story) => (
-      <LayoutProvider defaultExpanded={true}>
-        <div style={{ height: '400px', display: 'flex' }}>
-          <Story />
-        </div>
-      </LayoutProvider>
-    ),
-  ],
+  },
   render: () => (
     <Sidebar>
       <NavItems />
@@ -135,16 +156,7 @@ export const Expanded: Story = {
 export const WithIcons: Story = {
   args: {
     expanded: true,
-  } as { expanded?: boolean },
-  decorators: [
-    (Story) => (
-      <LayoutProvider defaultExpanded={true}>
-        <div style={{ height: '400px', display: 'flex' }}>
-          <Story />
-        </div>
-      </LayoutProvider>
-    ),
-  ],
+  },
   render: () => (
     <Sidebar>
       <IconNavItems />
@@ -155,19 +167,17 @@ export const WithIcons: Story = {
 export const WithFooter: Story = {
   args: {
     expanded: true,
-  } as { expanded?: boolean },
-  decorators: [
-    (Story) => (
-      <LayoutProvider defaultExpanded={true}>
-        <div style={{ height: '400px', display: 'flex' }}>
-          <Story />
-        </div>
-      </LayoutProvider>
-    ),
-  ],
+  },
   render: () => (
     <Sidebar>
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%',
+          justifyContent: 'space-between',
+        }}
+      >
         <IconNavItems />
         <div style={{ padding: '1rem', borderTop: '1px solid #e5e5e5' }}>
           <Button type="primary" fullWidth>
