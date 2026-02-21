@@ -6,7 +6,6 @@ import { Sidebar } from '@components/layout/Sidebar/Sidebar';
 import { MainContent } from '@components/layout/MainContent/MainContent';
 import { useLayout } from '@components/layout/LayoutContext';
 import styles from './MainLayout.module.scss';
-import myAilogo from '../../../public/myAiLogo.svg';
 
 import { MdOutlineCampaign } from 'react-icons/md';
 import { BiPhone } from 'react-icons/bi';
@@ -44,7 +43,7 @@ function HeaderContent() {
           <RxHamburgerMenu size={24} />
         </button>
         <div className={styles.logo}>
-          <img src={myAilogo} alt="logo" className={styles.logoText}></img>
+          <img src="/myAiLogo.svg" alt="logo" className={styles.logoText}></img>
         </div>
       </div>
       <div className={styles.headerRight}>
