@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen, act } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { LayoutProvider, useLayout } from './LayoutContext';
 
@@ -61,7 +61,9 @@ describe('LayoutContext', () => {
 
   describe('useLayout', () => {
     it('throws error when used outside LayoutProvider', () => {
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const consoleSpy = vi
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
 
       expect(() => {
         render(<TestConsumer />);
@@ -132,7 +134,11 @@ describe('LayoutContext', () => {
 
       function CaptureFunctions() {
         const { toggleSidebar, expandSidebar, collapseSidebar } = useLayout();
-        capturedFunctions.push({ toggleSidebar, expandSidebar, collapseSidebar });
+        capturedFunctions.push({
+          toggleSidebar,
+          expandSidebar,
+          collapseSidebar,
+        });
         return <button onClick={toggleSidebar}>Toggle</button>;
       }
 

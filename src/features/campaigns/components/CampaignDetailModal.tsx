@@ -1,68 +1,34 @@
 import { Badge } from '@components/ui/Badge/Badge';
-import { MultiLineChart, LineConfig } from '@components/ui/MultiLineChart/MultiLineChart';
-import {
-  MultiSegmentDonutChart,
-  DonutSegment,
-} from '@components/ui/MultiSegmentDonutChart/MultiSegmentDonutChart';
+import { MultiLineChart } from '@components/ui/MultiLineChart/MultiLineChart';
+import { MultiSegmentDonutChart } from '@components/ui/MultiSegmentDonutChart/MultiSegmentDonutChart';
 import styles from './CampaignDetailModal.module.scss';
-import { HugeiconsCall02 } from '@/app/icons/CallLogs';
 import { AiOutlineDollarCircle } from 'react-icons/ai';
-import { StreamlineFlexDollarIncrease } from '@/app/icons/ConversionRateIcon';
 import { IoTimeOutline } from 'react-icons/io5';
-import { TbExternalLink } from 'react-icons/tb';
-
-interface Campaign {
-  id: string;
-  name: string;
-  status: 'active' | 'paused' | 'completed';
-  type: string;
-  startDate: string;
-  endDate: string;
-  callsMade: number;
-  conversionRate: number;
-  spend: number;
-}
+import { HugeiconsCall02 } from '@/components/icons/CallLogs.icons';
+import { StreamlineFlexDollarIncrease } from '@/components/icons/ConversionRateIcon';
+import { Campaigns } from '@/features/camp/component/campaign.type';
+import { useCampaignById } from '@/features/camp/component/api/useCampaignById';
 
 interface CampaignDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
-  campaign: Campaign;
+  campaignId: string;
 }
 
 // Icons
 const CloseIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
     <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
-    <path d="M15 9L9 15M9 9L15 15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    <path
+      d="M15 9L9 15M9 9L15 15"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
   </svg>
 );
 
-
-// Mock performance data for line chart
-const performanceData = [
-  { date: '4 Dec', calls: 50, conversion: 30 },
-  { date: '5 Dec', calls: 80, conversion: 55 },
-  { date: '6 Dec', calls: 180, conversion: 68 },
-  { date: '7 Dec', calls: 150, conversion: 85 },
-  { date: '8 Dec', calls: 200, conversion: 95 },
-  { date: '9 Dec', calls: 230, conversion: 105 },
-  { date: '10 Dec', calls: 210, conversion: 110 },
-];
-
-// Line configurations for the performance chart
-const performanceLines: LineConfig[] = [
-  { dataKey: 'calls', name: 'Calls', color: '#8b5cf6' },
-  { dataKey: 'conversion', name: 'Conversion', color: '#6b7280' },
-];
-
-// Call outcomes data for donut chart
-const outcomesData: DonutSegment[] = [
-  { name: 'Connected', value: 42, color: '#8b5cf6' },
-  { name: 'No Answer', value: 35, color: '#c4b5fd' },
-  { name: 'Busy / Failed', value: 23, color: '#6b7280' },
-];
-
-const getStatusVariant = (status: Campaign['status']) => {
+const getStatusVariant = (status: Campaigns['status']) => {
   switch (status) {
     case 'active':
       return 'success';
@@ -75,12 +41,20 @@ const getStatusVariant = (status: Campaign['status']) => {
   }
 };
 
-const getStatusLabel = (status: Campaign['status']) => {
-  return status.charAt(0).toUpperCase() + status.slice(1);
+const getStatusLabel = (status: Campaigns['status']) => {
+  return status?.charAt(0).toUpperCase() + status?.slice(1);
 };
 
-export function CampaignDetailModal({ isOpen, onClose, campaign }: CampaignDetailModalProps) {
+export function CampaignDetailModal({
+  isOpen,
+  onClose,
+  campaignId,
+}: CampaignDetailModalProps) {
   if (!isOpen) return null;
+
+  const { data } = useCampaignById(campaignId);
+  const campaign = data?.campaign;
+  const performance = campaign?.performance;
 
   return (
     <div className={styles.overlay} onClick={onClose}>
@@ -88,7 +62,9 @@ export function CampaignDetailModal({ isOpen, onClose, campaign }: CampaignDetai
         {/* Header */}
         <div className={styles.header}>
           <div className={styles.headerContent}>
-            <span className={styles.breadcrumb}>Campaign / {campaign.name}</span>
+            <span className={styles.breadcrumb}>
+              Campaign / {campaign?.name}
+            </span>
             <h2 className={styles.title}>Campaign Details</h2>
           </div>
           <button className={styles.closeButton} onClick={onClose}>
@@ -96,82 +72,105 @@ export function CampaignDetailModal({ isOpen, onClose, campaign }: CampaignDetai
           </button>
         </div>
 
-        {/* Content */}
         <div className={styles.content}>
           {/* Campaign Info Card */}
           <div className={styles.infoCard}>
             <div className={styles.infoMain}>
-              <h3 className={styles.campaignName}>{campaign.name}</h3>
+              <h3 className={styles.campaignName}>{campaign?.name}</h3>
+
               <div className={styles.infoMeta}>
                 <span>
-                  Type: <strong>Lead generation</strong>
+                  Type: <strong>{campaign?.type}</strong>
                 </span>
+
                 <span>
-                  Contacts: <strong>2,842 contacts</strong>
+                  Contacts:{' '}
+                  <strong>
+                    {campaign?.contacts_count?.toLocaleString()} contacts
+                  </strong>
                 </span>
+
                 <span>
-                  AI prompt: <strong>AI Voice Script v3</strong>
-                  <TbExternalLink size={20} />
+                  AI prompt: <strong>{campaign?.ai_assistant_name}</strong>
                 </span>
               </div>
-              <div className={styles.infoDates}>Created Jan 5, 2025 • Last updated Jan 12, 2025</div>
+
+              <div className={styles.infoDates}>
+                Created: {campaign?.created_at}
+              </div>
             </div>
-            <Badge variant={getStatusVariant(campaign.status)} className={styles.statusBadge}>
-              {getStatusLabel(campaign.status)}
+
+            <Badge
+              variant={getStatusVariant(campaign?.status)}
+              className={styles.statusBadge}
+            >
+              {getStatusLabel(campaign?.status)}
             </Badge>
           </div>
 
           {/* Stats Cards */}
           <div className={styles.statsGrid}>
+            {/* Calls Made */}
             <div className={styles.statCard}>
               <div className={styles.statHeader}>
                 <span className={styles.statLabel}>Calls made</span>
-                <div className={styles.statIcon}>
-                  <HugeiconsCall02 />
-                </div>
+                <HugeiconsCall02 />
               </div>
-              <div className={styles.statValue}>4,320</div>
+
+              <div className={styles.statValue}>
+                {performance?.calls_made ?? 0}
+              </div>
+
               <div className={styles.statChange}>
-                <span className={styles.positive}>↑ +12.4% vs last 7 days</span>
+                {performance?.calls_made_change ?? 0}%
               </div>
             </div>
 
+            {/* Conversion Rate */}
             <div className={styles.statCard}>
               <div className={styles.statHeader}>
                 <span className={styles.statLabel}>Conversion rate</span>
-                <div className={styles.statIcon}>
-                  <StreamlineFlexDollarIncrease />
-                </div>
+                <StreamlineFlexDollarIncrease />
               </div>
-              <div className={styles.statValue}>18.5%</div>
+
+              <div className={styles.statValue}>
+                {performance?.conversion_rate ?? 0}%
+              </div>
+
               <div className={styles.statChange}>
-                <span className={styles.positive}>↑ +12.4% vs last 7 days</span>
+                {performance?.conversion_rate_change ?? 0}%
               </div>
             </div>
 
+            {/* Avg Call Duration */}
             <div className={styles.statCard}>
               <div className={styles.statHeader}>
                 <span className={styles.statLabel}>Avg call duration</span>
-                <div className={styles.statIcon}>
-                  <IoTimeOutline size={24} />
-                </div>
+                <IoTimeOutline size={24} />
               </div>
-              <div className={styles.statValue}>01:42</div>
+
+              <div className={styles.statValue}>
+                {performance?.avg_call_duration ?? '00:00'}
+              </div>
+
               <div className={styles.statChange}>
-                <span className={styles.positive}>↑ +12.4% vs last 7 days</span>
+                {performance?.avg_call_duration_change ?? 0}%
               </div>
             </div>
 
+            {/* Average Cost */}
             <div className={styles.statCard}>
               <div className={styles.statHeader}>
                 <span className={styles.statLabel}>Average cost</span>
-                <div className={styles.statIcon}>
-                  <AiOutlineDollarCircle size={24} />
-                </div>
+                <AiOutlineDollarCircle size={24} />
               </div>
-              <div className={styles.statValue}>$ 92.00</div>
+
+              <div className={styles.statValue}>
+                ${performance?.average_cost ?? 0}
+              </div>
+
               <div className={styles.statChange}>
-                <span className={styles.positive}>↑ +12.4% vs last 7 days</span>
+                {performance?.average_cost_change ?? 0}%
               </div>
             </div>
           </div>
@@ -180,34 +179,32 @@ export function CampaignDetailModal({ isOpen, onClose, campaign }: CampaignDetai
           <div className={styles.chartsGrid}>
             {/* Performance Chart */}
             <div className={styles.chartCard}>
-              <div className={styles.chartHeader}>
-                <h4 className={styles.chartTitle}>Performance over time</h4>
-              </div>
+              <h4 className={styles.chartTitle}>Performance over time</h4>
+
               <MultiLineChart
-                data={performanceData}
-                lines={performanceLines}
+                lines={campaign?.performance_over_time ?? []}
+                data={performance?.performance_over_time ?? []}
                 xAxisKey="date"
                 height={280}
-                yAxisDomain={[0, 500]}
-                yAxisTicks={[0, 100, 200, 300, 400, 500]}
               />
             </div>
 
-            {/* Outcomes Chart */}
+            {/* Call Outcomes Donut */}
             <div className={styles.chartCard}>
-              <div className={styles.chartHeader}>
-                <h4 className={styles.chartTitle}>Call outcomes</h4>
-              </div>
-              <div className={styles.donutChartWrapper}>
-                <MultiSegmentDonutChart
-                  data={outcomesData}
-                  size={220}
-                  innerRadius={65}
-                  outerRadius={90}
-                  showLegend={true}
-                  showPercentage={true}
-                />
-              </div>
+              <h4 className={styles.chartTitle}>Call outcomes</h4>
+
+              <MultiSegmentDonutChart
+                data={
+                  campaign?.call_outcomes?.map((item: any) => ({
+                    name: item.name,
+                    value: item.value,
+                    color: item.color,
+                  })) ?? []
+                }
+                size={220}
+                innerRadius={65}
+                outerRadius={90}
+              />
             </div>
           </div>
         </div>

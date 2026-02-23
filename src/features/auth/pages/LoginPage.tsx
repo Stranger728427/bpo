@@ -2,15 +2,21 @@ import { useState } from 'react';
 import { Checkbox } from 'antd';
 import { Input } from '@components/ui/Input/Input';
 import { Button } from '@components/ui/Button/Button';
-import { MYaiLogo } from '../components/MYaiLogo';
 import styles from './LoginPage.module.scss';
+import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
+import { axiosInstance } from '@/lib/axios/axiosInstance';
 
-export function LoginPage() {
+function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
+    {}
+  );
+
+  const navigate = useNavigate();
 
   const validateForm = () => {
     const newErrors: { email?: string; password?: string } = {};
@@ -31,21 +37,30 @@ export function LoginPage() {
     return Object.keys(newErrors).length === 0;
   };
 
+  const login = (payload: { email: string; password: string }) =>
+    axiosInstance.post('/login', payload);
+
+  const mutate = useMutation({
+    mutationFn: login,
+    onSuccess: (response) => {
+      const { access_token, user } = response.data;
+
+      sessionStorage.setItem('token', access_token);
+      sessionStorage.setItem('user', JSON.stringify(user));
+      navigate('/');
+    },
+  });
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!validateForm()) return;
-
     setIsLoading(true);
-    try {
-      // TODO: Implement actual login logic
-      console.log('Login attempt:', { email, rememberMe });
-      await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulated delay
-    } catch (error) {
-      console.error('Login error:', error);
-    } finally {
-      setIsLoading(false);
-    }
+    const payload = {
+      email,
+      password,
+    };
+    await mutate.mutateAsync(payload);
+    setIsLoading(false);
   };
 
   return (
@@ -54,12 +69,17 @@ export function LoginPage() {
         {/* Left Panel - Branding */}
         <div className={styles.brandingPanel}>
           <div className={styles.brandingContent}>
-            <img className={styles.loginAnimation} src="/assets/login-animation.png" alt="Logo" />
+            <img
+              className={styles.loginAnimation}
+              src="/assets/login-animation.png"
+              alt="Logo"
+            />
           </div>
           <div className={styles.brandingText}>
             <h1 className={styles.brandName}>MYai</h1>
             <p className={styles.tagline}>
-              Your Personal AI Scheduler, Taking AI brilliance to the next level.
+              Your Personal AI Scheduler, Taking AI brilliance to the next
+              level.
             </p>
           </div>
         </div>
@@ -114,16 +134,11 @@ export function LoginPage() {
                 Login
               </Button>
             </form>
-
-            <div className={styles.formFooter}>
-              <span>Not a member?</span>
-              <a href="/register" className={styles.registerLink}>
-                Create an account
-              </a>
-            </div>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
+export default LoginPage;

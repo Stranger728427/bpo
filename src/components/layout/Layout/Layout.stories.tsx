@@ -54,7 +54,14 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const SampleNavItems = () => (
-  <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+  <div
+    style={{
+      padding: '1rem',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '0.5rem',
+    }}
+  >
     <div style={{ padding: '0.5rem', cursor: 'pointer' }}>Dashboard</div>
     <div style={{ padding: '0.5rem', cursor: 'pointer' }}>Campaigns</div>
     <div style={{ padding: '0.5rem', cursor: 'pointer' }}>Call Logs</div>
@@ -67,7 +74,14 @@ const SampleContent = () => (
   <div style={{ padding: '2rem' }}>
     <h1>Welcome to Dashboard</h1>
     <p>This is the main content area. It adjusts based on sidebar state.</p>
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginTop: '1rem' }}>
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: '1rem',
+        marginTop: '1rem',
+      }}
+    >
       {[1, 2, 3].map((i) => (
         <div
           key={i}
@@ -91,9 +105,19 @@ export const Default: Story = {
   render: (args) => (
     <Layout {...args}>
       <Header>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', padding: '0 1rem' }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '100%',
+            padding: '0 1rem',
+          }}
+        >
           <span style={{ fontWeight: 'bold' }}>MyAI</span>
-          <Button type="primary" size="small">Profile</Button>
+          <Button type="primary" size="small">
+            Profile
+          </Button>
         </div>
       </Header>
       <BodyWrapper>
@@ -115,9 +139,19 @@ export const SidebarExpanded: Story = {
   render: (args) => (
     <Layout {...args}>
       <Header>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', padding: '0 1rem' }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '100%',
+            padding: '0 1rem',
+          }}
+        >
           <span style={{ fontWeight: 'bold' }}>MyAI</span>
-          <Button type="primary" size="small">Profile</Button>
+          <Button type="primary" size="small">
+            Profile
+          </Button>
         </div>
       </Header>
       <BodyWrapper>
@@ -139,9 +173,19 @@ export const SidebarCollapsed: Story = {
   render: (args) => (
     <Layout {...args}>
       <Header>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', padding: '0 1rem' }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '100%',
+            padding: '0 1rem',
+          }}
+        >
           <span style={{ fontWeight: 'bold' }}>MyAI</span>
-          <Button type="primary" size="small">Profile</Button>
+          <Button type="primary" size="small">
+            Profile
+          </Button>
         </div>
       </Header>
       <BodyWrapper>

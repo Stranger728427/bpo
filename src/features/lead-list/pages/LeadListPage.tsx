@@ -217,7 +217,7 @@ const dateOptions = [
   { key: 'all_time', label: 'All Time' },
 ];
 
-export function LeadListPage() {
+  function LeadListPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedLead, setSelectedLead] = useState<CallRecord | null>(null);
@@ -393,3 +393,5 @@ export function LeadListPage() {
     </div>
   );
 }
+
+export default LeadListPage

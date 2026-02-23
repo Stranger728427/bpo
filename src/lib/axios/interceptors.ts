@@ -1,24 +1,56 @@
 import { axiosInstance } from './axiosInstance';
-
-// Request interceptor - can be extended later for auth tokens
-axiosInstance.interceptors.request.use(
-  (config) => {
-    // Add auth token here when auth is implemented
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-// Response interceptor - handle errors globally
-axiosInstance.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    // Handle global errors here (e.g., 401 for auth)
-    return Promise.reject(error);
-  }
-);
+import { store } from '@/app/store/store';
+import useAuth from '@/app/store/Hooks/userAuth';
+import { refreshTokenFlow } from './refreshToken';
+import { tenantName } from '@/utils/helpers/helper';
 
 export const setupInterceptors = () => {
-  // This function can be called to initialize interceptors
-  // after the store is available
+  const { signOut } = useAuth();
+
+  /**
+   * REQUEST INTERCEPTOR
+   * Attach latest access token
+   */
+  axiosInstance.interceptors.request.use((config) => {
+    const state = store.getState();
+    const token = state?.UserAuth?.value?.accessToken;
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  });
+
+  /**
+   * RESPONSE INTERCEPTOR
+   * Handle 401 + refresh token
+   */
+  axiosInstance.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+      const originalRequest = error.config;
+
+      if (
+        error?.response?.status === 401 &&
+        !originalRequest._retry
+      ) {
+        originalRequest._retry = true;
+
+        try {
+          const newToken = await refreshTokenFlow(tenantName);
+
+          originalRequest.headers.Authorization =
+            `Bearer ${newToken}`;
+
+          return axiosInstance(originalRequest);
+        } catch (err) {
+          await signOut();
+          return Promise.reject(err);
+        }
+      }
+
+      return Promise.reject(error);
+    }
+  );
 };

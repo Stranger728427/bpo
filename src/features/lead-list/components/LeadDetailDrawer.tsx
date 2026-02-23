@@ -1,4 +1,7 @@
-import { DetailDrawer, StatusBadge } from '@components/ui/DetailDrawer/DetailDrawer';
+import {
+  DetailDrawer,
+  StatusBadge,
+} from '@components/ui/DetailDrawer/DetailDrawer';
 import { CallRecord, getStatusLabel, getStatusVariant } from '@/types/call';
 
 interface LeadDetailDrawerProps {
@@ -7,7 +10,11 @@ interface LeadDetailDrawerProps {
   lead: CallRecord | null;
 }
 
-export function LeadDetailDrawer({ isOpen, onClose, lead }: LeadDetailDrawerProps) {
+export function LeadDetailDrawer({
+  isOpen,
+  onClose,
+  lead,
+}: LeadDetailDrawerProps) {
   if (!lead) return null;
 
   const infoFields = [
@@ -28,7 +35,7 @@ export function LeadDetailDrawer({ isOpen, onClose, lead }: LeadDetailDrawerProp
   // Parse duration to get total time in minutes.seconds format
   const parseDuration = (duration: string): number => {
     const [minutes, seconds] = duration.split(':').map(Number);
-    return minutes + (seconds / 60);
+    return minutes + seconds / 60;
   };
 
   const totalTime = parseDuration(lead.duration);
@@ -41,7 +48,7 @@ export function LeadDetailDrawer({ isOpen, onClose, lead }: LeadDetailDrawerProp
       infoFields={infoFields}
       transcript={lead.transcript}
       callSummary={lead.callSummary}
-      notes={lead.notes}
+      notes={lead.notes as any}
       currentTime={totalTime * 0.63} // Mock: 63% progress
       totalTime={totalTime}
       onPlay={() => console.log('Play audio')}

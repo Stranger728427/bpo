@@ -1,4 +1,11 @@
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Sector } from 'recharts';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  // Sector,
+} from 'recharts';
 import { useState, useCallback } from 'react';
 import styles from './MultiSegmentDonutChart.module.scss';
 
@@ -29,7 +36,10 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
     return (
       <div className={styles.tooltip}>
         <div className={styles.tooltipRow}>
-          <span className={styles.tooltipDot} style={{ backgroundColor: item.payload.color }} />
+          <span
+            className={styles.tooltipDot}
+            style={{ backgroundColor: item.payload.color }}
+          />
           <span className={styles.tooltipName}>{item.name}</span>
           <span className={styles.tooltipValue}>{item.value}%</span>
         </div>
@@ -48,7 +58,10 @@ function CustomLegend({ payload }: CustomLegendProps) {
     <div className={styles.legend}>
       {payload?.map((entry, index) => (
         <div key={index} className={styles.legendItem}>
-          <span className={styles.legendDot} style={{ backgroundColor: entry.color }} />
+          <span
+            className={styles.legendDot}
+            style={{ backgroundColor: entry.color }}
+          />
           <span>{entry.value}</span>
         </div>
       ))}
@@ -56,35 +69,36 @@ function CustomLegend({ payload }: CustomLegendProps) {
   );
 }
 
-interface ActiveShapeProps {
-  cx: number;
-  cy: number;
-  innerRadius: number;
-  outerRadius: number;
-  startAngle: number;
-  endAngle: number;
-  fill: string;
-  payload: DonutSegment;
-  percent: number;
-}
+// interface ActiveShapeProps {
+//   cx: number;
+//   cy: number;
+//   innerRadius: number;
+//   outerRadius: number;
+//   startAngle: number;
+//   endAngle: number;
+//   fill: string;
+//   payload: DonutSegment;
+//   percent: number;
+// }
 
-function renderActiveShape(props: ActiveShapeProps) {
-  const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } = props;
+// function renderActiveShape(props: ActiveShapeProps) {
+//   const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } =
+//     props;
 
-  return (
-    <g>
-      <Sector
-        cx={cx}
-        cy={cy}
-        innerRadius={innerRadius - 2}
-        outerRadius={outerRadius + 4}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        fill={fill}
-      />
-    </g>
-  );
-}
+//   return (
+//     <g>
+//       <Sector
+//         cx={cx}
+//         cy={cy}
+//         innerRadius={innerRadius - 2}
+//         outerRadius={outerRadius + 4}
+//         startAngle={startAngle}
+//         endAngle={endAngle}
+//         fill={fill}
+//       />
+//     </g>
+//   );
+// }
 
 export function MultiSegmentDonutChart({
   data,
@@ -112,17 +126,23 @@ export function MultiSegmentDonutChart({
       {showLegend && (
         <div className={styles.legendWrapper}>
           <CustomLegend
-            payload={data.map((item) => ({ value: item.name, color: item.color }))}
+            payload={data.map((item) => ({
+              value: item.name,
+              color: item.color,
+            }))}
           />
         </div>
       )}
-      <div className={styles.chartWrapper} style={{ width: size, height: size }}>
+      <div
+        className={styles.chartWrapper}
+        style={{ width: size, height: size }}
+      >
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Tooltip content={<CustomTooltip />} />
             <Pie
-              activeIndex={activeIndex}
-              activeShape={renderActiveShape}
+              // activeIndex={activeIndex}
+              // activeShape={renderActiveShape}
               data={data}
               cx="50%"
               cy="50%"
@@ -138,7 +158,11 @@ export function MultiSegmentDonutChart({
               animationDuration={800}
             >
               {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} className={styles.segment} />
+                <Cell
+                  key={`cell-${index}`}
+                  fill={entry.color}
+                  className={styles.segment}
+                />
               ))}
             </Pie>
           </PieChart>

@@ -1,30 +1,18 @@
-image: node:20
 pipelines:
   branches:
-    deploy/s3:
+    main:
       - step:
-          name: Build & Deploy to S3 (Stage)
-          deployment: staging
+          name: Frontend CI for Stage
+          runs-on:
+            - self.hosted
+            - linux.shell
+            - stage
           script:
             - node -v
             - npm -v
-
-            # Create env file
-            - echo $VITE_API_BASE_URL
-
-            # Install & Build
+            - echo "VITE_API_BASE_URL=$VITE_API_BASE_URL" > .env
+            - cat .env
             - npm ci
             - npm run build
-
-            # Install AWS CLI
-            - apt-get update && apt-get install -y python3-pip
-            - pip install awscli
-
-            # Configure AWS
-            - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-            - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-            - aws configure set default.region $AWS_DEFAULT_REGION
-
-            # Deploy to S3
-            - aws s3 sync ./dist/ s3://$S3_BUCKET_NAME/ --delete
-            - aws s3 cp s3://$S3_BUCKET_NAME/index.html s3://${S3_BUCKET_NAME}/index.html --metadata-directive REPLACE --cache-control "max-age=300" --content-type "text/html"
+            # copy the build
+            - sudo cp -r dist/* /var/www/html/

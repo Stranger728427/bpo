@@ -1,0 +1,176 @@
+.drawer {
+  /* Header */
+  :global(.ant-drawer-header) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-md $spacing-lg;
+    border-bottom: $border-width-thin solid $color-gray-200;
+  }
+
+  :global(.ant-drawer-title) {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $color-gray-900;
+  }
+
+  /* Body */
+  :global(.ant-drawer-body) {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+}
+
+/* Main Container */
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: $spacing-md;
+  gap: $spacing-md;
+  overflow-y: auto;
+}
+
+/* ================= INFO SECTION ================= */
+
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  padding: $spacing-md;
+  background: $color-gray-50;
+  border-radius: $border-radius-md;
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-sm 0;
+  border-bottom: $border-width-thin solid $color-gray-200;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.infoLabel {
+  font-size: $font-size-sm;
+  color: $color-gray-500;
+}
+
+.infoValue {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-gray-900;
+  text-align: right;
+}
+
+/* ================= SUMMARY SECTION ================= */
+
+.summaryWrapper {
+  display: flex;
+  justify-content: flex-end; // aligns to right (optional)
+  margin-top: -$spacing-sm;  // tighter to info section
+  margin-bottom: $spacing-sm;
+}
+
+.summaryButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: $font-size-sm;
+  color: $color-primary;
+
+  &:hover {
+    background: rgba($color-primary, 0.08);
+  }
+}
+
+.summaryContent {
+  max-width: 320px;
+  font-size: $font-size-sm;
+}
+
+
+/* ================= TRANSCRIPT SECTION ================= */
+
+.transcriptSection {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: $spacing-sm;
+  scroll-behavior: smooth;
+}
+
+/* Transcript List */
+.transcript {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+/* Chat Message Bubble */
+.message {
+  max-width: 80%;
+  padding: $spacing-md;
+  border-radius: $border-radius-lg;
+  font-size: $font-size-sm;
+  line-height: $line-height-relaxed;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+}
+
+/* AI Message */
+.message.ai {
+  align-self: flex-start;
+  background: rgba($color-primary, 0.08);
+}
+
+/* User Message */
+.message.user {
+  align-self: flex-end;
+  background: $color-gray-100;
+}
+
+/* Message Header */
+.messageHeader {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-xs;
+}
+
+.speakerIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: $border-radius-sm;
+  background: $color-primary-bg;
+  color: $color-primary;
+  font-size: 12px;
+}
+
+.speakerName {
+  font-weight: $font-weight-medium;
+  font-size: $font-size-xs;
+  color: $color-gray-600;
+}
+
+/* Message Text */
+.messageText {
+  margin: 0;
+  color: $color-gray-800;
+}
+
+/* Empty State */
+.emptyState {
+  text-align: center;
+  padding: $spacing-xl;
+  color: $color-gray-400;
+  font-size: $font-size-sm;
+}

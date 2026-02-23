@@ -1,10 +1,10 @@
 import axios, { AxiosInstance } from 'axios';
-import { env } from '@/app/config/env';
 
 export const axiosInstance: AxiosInstance = axios.create({
-  baseURL: env.API_BASE_URL,
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 });

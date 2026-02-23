@@ -1,14 +1,22 @@
-import { DetailDrawer, StatusBadge } from '@components/ui/DetailDrawer/DetailDrawer';
-import { CallRecord, getStatusLabel, getStatusVariant } from '@/types/call';
+import {
+  DetailDrawer,
+  StatusBadge,
+} from '@components/ui/DetailDrawer/DetailDrawer';
 import { useState } from 'react';
 import { Note } from './NoteChat/NotesChat';
+import { CallRecord } from '@/types/call';
+import { getStatusLabel, getStatusVariant } from '@/types/call';
 interface CallLogDetailDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   callLog: CallRecord | null;
 }
 
-export function CallLogDetailDrawer({ isOpen, onClose, callLog }: CallLogDetailDrawerProps) {
+export function CallLogDetailDrawer({
+  isOpen,
+  onClose,
+  callLog,
+}: CallLogDetailDrawerProps) {
   if (!callLog) return null;
 
   const infoFields = [
@@ -24,13 +32,15 @@ export function CallLogDetailDrawer({ isOpen, onClose, callLog }: CallLogDetailD
     { label: 'Customer Phone', value: callLog.phone },
     { label: 'Customer Name', value: callLog.name },
     { label: 'Timestamp', value: callLog.timestamp },
-    ...(callLog.cost !== undefined ? [{ label: 'Call Cost', value: `$ ${callLog.cost.toFixed(4)}` }] : []),
+    ...(callLog.cost !== undefined
+      ? [{ label: 'Call Cost', value: `$ ${callLog.cost.toFixed(4)}` }]
+      : []),
   ];
 
   // Parse duration to get total time in minutes.seconds format
   const parseDuration = (duration: string): number => {
     const [minutes, seconds] = duration.split(':').map(Number);
-    return minutes + (seconds / 60);
+    return minutes + seconds / 60;
   };
 
   const totalTime = parseDuration(callLog.duration);
@@ -40,7 +50,7 @@ export function CallLogDetailDrawer({ isOpen, onClose, callLog }: CallLogDetailD
 
   const handleAddNote = (newNote: Note) => {
     setNotes((prev) => [...prev, newNote]);
-  }
+  };
 
   return (
     <DetailDrawer

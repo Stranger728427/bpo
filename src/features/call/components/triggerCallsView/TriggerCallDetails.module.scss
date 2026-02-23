@@ -1,0 +1,28 @@
+.triggerTable {
+  .ant-table {
+    background: transparent;
+  }
+
+  .ant-table-thead > tr > th {
+    background: $color-white;
+    font-weight: 600;
+    color: $color-gray-200;
+    border-bottom: 1px solid $color-white;
+  }
+
+  .ant-table-tbody > tr > td {
+    border-bottom: 1px solid $color-white;
+  }
+
+  .ant-table-tbody > tr:hover > td {
+    background: $color-white;
+  }
+
+  .ant-table-container {
+    border-radius: 8px;
+  }
+
+  .ant-empty {
+    margin: 40px 0;
+  }
+}
