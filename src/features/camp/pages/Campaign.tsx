@@ -5,7 +5,6 @@ import styles from './Campaign.module.scss';
 import Banner from '@/components/layout/Banner/Banner';
 import { Pagination } from 'antd';
 import { HiOutlinePlus } from 'react-icons/hi';
-import { useGetAllCampaign } from '../component/services/api/useGetAllCampaign';
 import {
   Campaigns,
   getStatusLabel,
@@ -13,6 +12,7 @@ import {
 } from '../component/campaign.type';
 import { CampaignDetailModal } from '@/features/campaigns/components/CampaignDetailModal';
 import { CreateCampaignModal } from '@/features/campaigns/components/CreateCampaignModal';
+import { useGetAllCampaign } from '../component/api/useGetAllCampaign';
 
 function Campaign() {
   const [currentPage, setCurrentPage] = useState(1);

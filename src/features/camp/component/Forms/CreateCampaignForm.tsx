@@ -4,9 +4,9 @@ import Step1CampaignBasics from './Step1CampaignBasics';
 import Step2LeadsResources from './Step2LeadsResources';
 import Step3Scheduling from './Step3Scheduling';
 import Step4Review from './Step4Review';
-import { useCampaignCreate } from '../services/api/useCreateCampaign';
 import styles from './CreateCampaignForm.module.scss';
 import { CloseCircleOutlined } from '@ant-design/icons';
+import { useCampaignCreate } from '../api/useCreateCampaign';
 
 interface CreateCampaignModalProps {
   isOpen: boolean;

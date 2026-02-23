@@ -10,23 +10,23 @@ interface Props {
   updateFormData: (updates: Partial<CreateCampaignRequest>) => void;
 }
 
-const AI_ASSISTANTS = [
-  {
-    id: '1',
-    name: 'Agent 1',
-    model: 'gpt-4o',
-  },
-  {
-    id: '2',
-    name: 'Agent 2',
-    model: 'gpt-4o',
-  },
-  {
-    id: '3',
-    name: 'Agent 3',
-    model: 'gpt-4o',
-  },
-];
+// const AI_ASSISTANTS = [
+//   {
+//     id: '1',
+//     name: 'Agent 1',
+//     model: 'gpt-4o',
+//   },
+//   {
+//     id: '2',
+//     name: 'Agent 2',
+//     model: 'gpt-4o',
+//   },
+//   {
+//     id: '3',
+//     name: 'Agent 3',
+//     model: 'gpt-4o',
+//   },
+// ];
 
 const PHONE_NUMBERS = [
   {
@@ -69,7 +69,7 @@ function Step2LeadsResources({ formData, updateFormData }: Props) {
             </div>
           </div>
           <div className={styles.cardGrid}>
-            {AI_ASSISTANTS.map((assistant: any) => (
+            {/* {AI_ASSISTANTS.map((assistant: any) => (
               <button
                 key={assistant.id}
                 className={`${styles.selectionCard} ${formData.ai_assistant_id === assistant.id ? styles.selected : ''}`}
@@ -90,7 +90,7 @@ function Step2LeadsResources({ formData, updateFormData }: Props) {
                   </div>
                 )}
               </button>
-            ))}
+            ))} */}
           </div>
         </div>
 

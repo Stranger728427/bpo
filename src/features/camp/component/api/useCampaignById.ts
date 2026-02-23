@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { getCampaignByIdService } from "../getCampaignById.service";
+import { campaignService } from "../campaign.service";
 
 export const useCampaignById = (id: string) => useQuery({
     queryKey: ['campaigns', id],
-    queryFn: () => getCampaignByIdService(id),
+    queryFn: () => campaignService.getCampaignByIdService(id),
     enabled: !!id,
 })

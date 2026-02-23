@@ -1,9 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
-import { updateCampaignService } from "../updateCampaign.service";
-import { Campaigns } from "../../campaign.type";
 import { message } from "antd";
 import { AxiosError } from "axios";
+import { Campaigns } from "../campaign.type";
+import { campaignService } from "../campaign.service";
 
 interface UpdateCampaignParams {
     id: string;
@@ -14,7 +14,7 @@ export function useUpdateCampaign() {
   const queryClient = useQueryClient();
 
   const updateCampaign = ({ id, campaign }: UpdateCampaignParams) =>
-    updateCampaignService(id, campaign);
+    campaignService.updateCampaignService(id, campaign);
 
   return useMutation({
     mutationFn: updateCampaign,

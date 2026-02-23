@@ -6,8 +6,8 @@ import { AiOutlineDollarCircle } from 'react-icons/ai';
 import { IoTimeOutline } from 'react-icons/io5';
 import { HugeiconsCall02 } from '@/components/icons/CallLogs.icons';
 import { StreamlineFlexDollarIncrease } from '@/components/icons/ConversionRateIcon';
-import { useCampaignById } from '@/features/camp/component/services/api/useCampaignById';
 import { Campaigns } from '@/features/camp/component/campaign.type';
+import { useCampaignById } from '@/features/camp/component/api/useCampaignById';
 
 interface CampaignDetailModalProps {
   isOpen: boolean;
