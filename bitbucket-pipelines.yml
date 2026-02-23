@@ -1,6 +1,6 @@
 pipelines:
   branches:
-    keyclock:
+    main:
       - step:
           name: Frontend CI for Stage
           runs-on:
