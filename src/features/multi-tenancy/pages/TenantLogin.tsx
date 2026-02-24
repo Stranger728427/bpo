@@ -76,7 +76,7 @@ const TenantLogin = () => {
                 name="tenantId"
                 type="text"
                 disabled={isPending}
-                addonAfter={siteConfig.tenantName}
+                addonAfter={siteConfig.tenantBaseUrl}
               />
               <Button type="primary" htmlType="submit">
                 Login

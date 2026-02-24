@@ -1,16 +1,29 @@
 import axios from 'axios';
 import { signOut } from '@/app/store/Hooks/userAuth';
+import { AuthService } from '@/features/auth/components/services/authService.service';
+
+/**
+ * Auth endpoints that should NEVER trigger a token refresh on 401.
+ * A 401 on these means the user's credentials/code are wrong — not session expiry.
+ */
+const AUTH_ENDPOINTS_EXCLUDED_FROM_REFRESH = [
+  '/authcentral/login',   // tenant validation
+  '/authcentral/token',   // auth code exchange & token refresh itself
+];
+
+const isAuthEndpoint = (url: string = ''): boolean =>
+  AUTH_ENDPOINTS_EXCLUDED_FROM_REFRESH.some((endpoint) =>
+    url.includes(endpoint)
+  );
 
 /**
  * Performs a plain (no-interceptor) refresh token call.
  * Uses raw axios (NOT the intercepted instance) to avoid infinite retry loops.
+ * Uses PUT to align with the REST convention (updating an existing token resource).
  */
 const refreshTokenFlow = async (): Promise<void> => {
-  await axios.post(
-    `${import.meta.env.VITE_API_BASE_URL}/authcentral/token`,
-    { tokenType: 'REFRESH' },
-    { withCredentials: true }
-  );
+	const authService = AuthService();
+	await authService.refreshToken();
 };
 
 export const useApi = () => {
@@ -31,8 +44,13 @@ export const useApi = () => {
       async (error) => {
         const originalRequest = error.config;
 
-        // Only attempt to refresh if we get a 401 and haven't tried refreshing yet
-        if (error?.response?.status === 401 && !originalRequest._retry) {
+        const is401 = error?.response?.status === 401;
+        const alreadyRetried = originalRequest._retry;
+        const isExcluded = isAuthEndpoint(originalRequest?.url);
+
+        // Skip refresh for auth endpoints (login/token exchange) — a 401 there
+        // means wrong credentials, not an expired session.
+        if (is401 && !alreadyRetried && !isExcluded) {
           originalRequest._retry = true;
           try {
             console.log('Refreshing token...');

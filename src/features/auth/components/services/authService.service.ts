@@ -27,10 +27,9 @@ export const AuthService = () =>  {
 		return result?.data;
 	}
 
-
     const refreshToken = async () => {
         const result = await baseApi().put('/authcentral/token');
-        return result?.data;
+        return result;
     }
 
 	const logout = async () => {

@@ -1,9 +1,10 @@
-import axios from 'axios';
 import { notification } from 'antd';
 import { useNavigate } from 'react-router';
 import { logout } from '../Slice/userSlice';
 import { store } from '../store';
 import { persistor } from '@/app/store/store';
+import { AuthService } from '@/features/auth/components/services/authService.service';
+import { RoutePath } from '@/app/routes/RouthPath';
 
 /**
  * Clears the Redux store and persisted state.
@@ -23,11 +24,9 @@ export const clearSession = async (): Promise<void> => {
  * - Uses window.location.href instead of useNavigate (no React hook required).
  */
 export const signOut = async (): Promise<void> => {
+    const authService = AuthService();
     try {
-        await axios.delete(
-            `${import.meta.env.VITE_API_BASE_URL}/authcentral/token`,
-            { withCredentials: true }
-        );
+        await authService.logout();
     } catch {
         // Even if the API call fails, we still clear the local session
     } finally {
@@ -45,19 +44,17 @@ const useAuth = () => {
     const navigate = useNavigate();
 
     const signOutWithNotify = async () => {
+        const authService = AuthService();
         try {
-            await axios.delete(
-                `${import.meta.env.VITE_API_BASE_URL}/authcentral/token`,
-                { withCredentials: true }
-            );
-            navigate('/login');
+            await authService.logout();
+            navigate(RoutePath.LOGIN);
         } catch {
             notification.error({
                 message: 'Authentication session expired. Please re-login',
             });
         } finally {
             await clearSession();
-            navigate('/login'); // Ensure navigation happens
+            navigate(RoutePath.LOGIN); // Ensure navigation happens
         }
     };
 
