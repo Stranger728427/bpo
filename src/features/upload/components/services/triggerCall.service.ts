@@ -1,7 +1,6 @@
-import { axiosInstance } from '@/lib/axios/axiosInstance';
+import { useApi } from "@/lib/axios/interceptors";
 
 export const triggerCalls = async () => {
-  return await axiosInstance.post(
-    '/load-feedback-calls'
-  );
+  const { baseApi } = useApi();
+  return await baseApi().post('/load-feedback-calls');
 };

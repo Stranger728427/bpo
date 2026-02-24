@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query"
-import { callService } from "./services/call.service"
+import { CallService } from "./services/call.service"
 import { Call, CallResponse, TriggerCallResponse, urlParams } from "./call.types"
 
-
 export const useCall = (id:string, params: urlParams, isTriggerModalOpen?: boolean ) => {
+    const callService = CallService()
     const getCallLogs = useQuery<CallResponse>({
         queryKey: ['call-logs', params],
         queryFn: async ({signal}) => {

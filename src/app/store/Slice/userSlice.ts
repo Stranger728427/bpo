@@ -9,7 +9,6 @@ const initialState: UserAuth = {
 	userId: '',
 	username: '',
 	traits:[],
-	accessToken:''
 };
 
 export const userSlice = createSlice({

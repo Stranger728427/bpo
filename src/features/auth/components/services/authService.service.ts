@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/lib/axios/axiosInstance";
+import { useApi } from "@/lib/axios/interceptors";
 
 export type validateTenantRequest = {
 	tenantName: string;
@@ -8,33 +8,42 @@ export type AuthCodeRequest = {
 	tenantName: string;
 	authCode: string;
 };
-export const authService =  {
+export const AuthService = () =>  {
 
-	 validateTennant: async (payload: validateTenantRequest) => {
-		const result = await axiosInstance.post('/authcentral/login', payload);
+  const { baseApi } = useApi();
+
+	 const validateTennant = async (payload: validateTenantRequest) => {
+		const result = await baseApi().post('/authcentral/login', payload);
 		return result;
-	},
+	}
 
-	 validateAuthCode: async (payload: AuthCodeRequest) => {
-		const result = await axiosInstance.post('/authcentral/token', payload);
+	 const validateAuthCode = async (payload: AuthCodeRequest) => {
+		const result = await baseApi().post('/authcentral/token', payload);
 		return result;
-	},
-
-	 getUserDetails: async () => {
-		const result = await axiosInstance.get('/api/v1/users');
+	}
+	
+	 const getUserDetails = async () => {
+		const result = await baseApi().get('/api/v1/users');
 		return result?.data;
-	},
+	}
 
 
-    refreshToken: async (tenantName: string) => {
-        const result = await axiosInstance.put('/authcentral/token',{tenantName});
+    const refreshToken = async () => {
+        const result = await baseApi().put('/authcentral/token');
         return result?.data;
-    },
+    }
 
-	logout: async () => {
-		const result = await axiosInstance.delete('/authcentral/token',{
+	const logout = async () => {
+		const result = await baseApi().delete('/authcentral/token',{
 			withCredentials: true
 		});
 		return result?.data
+	}
+	return {
+		validateTennant,
+		validateAuthCode,
+		getUserDetails,
+		refreshToken,
+		logout
 	}
 }

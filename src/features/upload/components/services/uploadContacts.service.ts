@@ -1,10 +1,11 @@
-import { axiosInstance } from "@/lib/axios/axiosInstance";
+import { useApi } from "@/lib/axios/interceptors";
 
 export const uploadContacts = async (file: File) => {
+  const { baseApi } = useApi();
   const formData = new FormData();
   formData.append('file', file);
 
-  return await axiosInstance.post(
+  return await baseApi().post(
     '/feedback/upload-contacts',
     formData,
     {

@@ -1,5 +1,6 @@
-import { axiosInstance } from "@/lib/axios/axiosInstance";
+import { useApi } from "@/lib/axios/interceptors";
 
 export const truncateFile = async () => {
-  return await axiosInstance.post('/truncate_data');
+  const { baseApi } = useApi();
+  return await baseApi().post('/truncate_data');
 };
