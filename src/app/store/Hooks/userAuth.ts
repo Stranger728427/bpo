@@ -19,7 +19,6 @@ export const clearSession = async (): Promise<void> => {
  * Standalone signOut function — safe to call from Axios interceptors or anywhere
  * outside of a React component tree.
  *
- * - Calls the logout API via plain axios (NOT through the interceptor instance)
  *   to avoid circular dependency: interceptors → useAuth → AuthService → interceptors.
  * - Uses window.location.href instead of useNavigate (no React hook required).
  */
