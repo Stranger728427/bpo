@@ -1,28 +1,36 @@
-import { axiosInstance } from '@/lib/axios/axiosInstance';
+import { useApi } from '@/lib/axios/interceptors';
 import {
   CampaignListFilters,
   Campaigns,
   CreateCampaignRequest,
 } from './campaign.type';
 
-export const campaignService = {
-  createCampaign: async (campaign: CreateCampaignRequest) => {
-    const response = await axiosInstance.post('/campaigns', campaign);
-    return response.data;
-  },
+export const CampaignService = () => {
+  const { baseApi } = useApi();
 
-  getAllCampaignsService: async (params?: CampaignListFilters) => {
-    const response = await axiosInstance.get('/campaigns', { params });
+  const createCampaign= async(campaign: CreateCampaignRequest) => {
+    const response = await baseApi().post('/campaigns', campaign);
     return response.data;
-  },
+  }
 
-  getCampaignByIdService: async (id: string) => {
-    const response = await axiosInstance.get(`/campaigns/${id}`);
+  const getAllCampaignsService= async (params?: CampaignListFilters) => {
+    const response = await baseApi().get('/campaigns', { params });
     return response.data;
-  },
+  }
 
-  updateCampaignService: async (id: string, payload: Campaigns) => {
-    const response = await axiosInstance.put(`/api/campaign/${id}`, payload);
+  const getCampaignByIdService=  async (id: string) => {
+    const response = await baseApi().get(`/campaigns/${id}`);
     return response.data;
-  },
+  }
+
+  const updateCampaignService= async (id: string, payload: Campaigns) => {
+    const response = await baseApi().put(`/api/campaign/${id}`, payload);
+    return response.data;
+  }
+  return{
+    createCampaign,
+    getAllCampaignsService,
+    getCampaignByIdService,
+    updateCampaignService
+  }
 };

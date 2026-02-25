@@ -1,11 +1,17 @@
-import { axiosInstance } from "@/lib/axios/axiosInstance";
+import { useApi } from "@/lib/axios/interceptors";
 import { AxiosRequestConfig } from "axios";
 
 
-export const callService = {
+export const CallService = () => {
+    const { baseApi } = useApi();
 
-    getCallLogs: async (config:AxiosRequestConfig) =>  await axiosInstance.get('/api/calls', config),
-    getCallLogsById: async (id:string) =>  await axiosInstance.get(`/api/calls/${id}`),
-    getTriggerCall: async () =>  await axiosInstance.get('/api/calls/triggered')
-        
-} 
+    const getCallLogs = async (config:AxiosRequestConfig) =>  await baseApi().get('/api/calls', config)
+    const getCallLogsById = async (id:string) =>  await baseApi().get(`/api/calls/${id}`)
+    const getTriggerCall = async () =>  await baseApi().get('/api/calls/triggered')
+
+    return {
+    getCallLogs,
+    getCallLogsById,
+    getTriggerCall
+    }
+}

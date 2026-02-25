@@ -3,36 +3,62 @@ import { useNavigate } from 'react-router';
 import { logout } from '../Slice/userSlice';
 import { store } from '../store';
 import { persistor } from '@/app/store/store';
-import { authService } from '@/features/auth/components/services/authService.service';
+import { AuthService } from '@/features/auth/components/services/authService.service';
+import { RoutePath } from '@/app/routes/RouthPath';
 
 /**
- * Custom hook for handling authentication logic.
+ * Clears the Redux store and persisted state.
+ * Safe to call from anywhere (no React hook dependency).
+ */
+export const clearSession = async (): Promise<void> => {
+    store.dispatch(logout());
+    await persistor.purge();
+};
+
+/**
+ * Standalone signOut function — safe to call from Axios interceptors or anywhere
+ * outside of a React component tree.
+ *
+ *   to avoid circular dependency: interceptors → useAuth → AuthService → interceptors.
+ * - Uses window.location.href instead of useNavigate (no React hook required).
+ */
+export const signOut = async (): Promise<void> => {
+    const authService = AuthService();
+    try {
+        await authService.logout();
+    } catch {
+        // Even if the API call fails, we still clear the local session
+    } finally {
+        await clearSession();
+        window.location.href = '/login';
+    }
+};
+
+/**
+ * Custom hook for handling authentication logic inside React components.
+ * Wraps the standalone signOut with useNavigate for SPA-friendly navigation
+ * and adds a user-facing notification on session expiry.
  */
 const useAuth = () => {
     const navigate = useNavigate();
 
-    const clearSession = async () => {
-        store.dispatch(logout()); // Clear Redux state
-        await persistor.purge();  // Clear persisted state
-    };
-
-    const signOut = async () => {
+    const signOutWithNotify = async () => {
+        const authService = AuthService();
         try {
             await authService.logout();
-            navigate('/login');
-        } catch (logoutError) {
+            navigate(RoutePath.LOGIN);
+        } catch {
             notification.error({
                 message: 'Authentication session expired. Please re-login',
             });
-            // Even if API fails, continue to clear local session
         } finally {
             await clearSession();
-            navigate('/login'); // Ensure navigation happens
+            navigate(RoutePath.LOGIN); // Ensure navigation happens
         }
     };
 
     return {
-        signOut,
+        signOut: signOutWithNotify,
         clearSession,
     };
 };

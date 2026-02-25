@@ -5,7 +5,7 @@ import { Button } from '@components/ui/Button/Button';
 import styles from './LoginPage.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
-import { axiosInstance } from '@/lib/axios/axiosInstance';
+import { useApi } from '@/lib/axios/interceptors';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -17,6 +17,7 @@ function LoginPage() {
   );
 
   const navigate = useNavigate();
+  const { baseApi } = useApi();
 
   const validateForm = () => {
     const newErrors: { email?: string; password?: string } = {};
@@ -38,7 +39,7 @@ function LoginPage() {
   };
 
   const login = (payload: { email: string; password: string }) =>
-    axiosInstance.post('/login', payload);
+    baseApi().post('/login', payload);
 
   const mutate = useMutation({
     mutationFn: login,

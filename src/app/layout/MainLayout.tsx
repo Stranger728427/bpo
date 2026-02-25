@@ -43,12 +43,12 @@ function HeaderContent() {
           <RxHamburgerMenu size={24} />
         </button>
         <div className={styles.logo}>
-          <img src="/public/myaiLogo.svg" alt="logo" className={styles.logoText}></img>
+          <img src="/myaiLogo.svg" alt="logo" className={styles.logoText}></img>
         </div>
       </div>
       <div className={styles.headerRight}>
         <UserAvatar />
-      </div>  
+      </div>
     </>
   );
 }
