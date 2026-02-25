@@ -1,11 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import { CreateCampaignRequest } from "../campaign.type";
-import { campaignService } from "../campaign.service";
+import { CampaignService } from "../campaign.service";
 
 
 export const useCampaignCreate = () => useMutation({
     mutationKey: ['campaigns'],
-    mutationFn: (campaign: CreateCampaignRequest) => campaignService.createCampaign(campaign),
+    mutationFn: (campaign: CreateCampaignRequest) => CampaignService().createCampaign(campaign),
     onSuccess: () => {
         console.log("Campaign created successfully");
     },
