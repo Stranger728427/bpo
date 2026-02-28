@@ -12,7 +12,7 @@ export const SEARCH_TYPE = {
 
 export type SearchType = (typeof SEARCH_TYPE)[keyof typeof SEARCH_TYPE];
 
-export type CallStatus = 'completed' | 'missed' | 'failed' | 'in_progress' | 'busy' | 'no_answer' | 'completed'| 'voicemail' | 'ivr' | 'canceled' | 'unknown';
+export type CallStatus = 'completed' | 'missed' | 'failed' | 'in_progress' | 'busy' | 'no-answer' | 'completed'| 'voicemail' | 'ivr' | 'canceled' | 'unknown';
 
 export type CallIntent = 'positive' | 'negative' | 'neutral';
 
@@ -76,7 +76,7 @@ export const STATUS_CONFIG: Record<
   missed: { label: 'Missed', variant: 'warning' },
   failed: { label: 'Failed', variant: 'error' },
   busy: { label: 'Busy', variant: 'warning' },
-  no_answer: { label: 'No Answer', variant: 'warning' },
+  'no-answer': { label: 'No Answer', variant: 'warning' },
   voicemail: { label: 'Voicemail', variant: 'secondary' },
   ivr: { label: 'IVR', variant: 'info' },
   canceled: { label: 'Canceled', variant: 'secondary' },
