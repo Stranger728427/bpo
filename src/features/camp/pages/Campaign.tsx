@@ -11,8 +11,8 @@ import {
   getStatusVariant,
 } from '../component/campaign.type';
 import { CampaignDetailModal } from '@/features/campaigns/components/CampaignDetailModal';
-import { CreateCampaignModal } from '@/features/campaigns/components/CreateCampaignModal';
 import { useGetAllCampaign } from '../component/api/useGetAllCampaign';
+import CreateCampaignForm from '../component/Forms/CreateCampaignForm';
 
 function Campaign() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -148,7 +148,7 @@ function Campaign() {
       )}
 
       {/* Create Campaign Form */}
-      <CreateCampaignModal
+      <CreateCampaignForm
         isOpen={isCreateCampaignModalOpen}
         onClose={() => setIsCreateCampaignModalOpen(false)}
       />

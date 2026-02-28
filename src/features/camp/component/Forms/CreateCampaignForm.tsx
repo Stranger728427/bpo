@@ -7,6 +7,7 @@ import Step4Review from './Step4Review';
 import styles from './CreateCampaignForm.module.scss';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { useCampaignCreate } from '../api/useCreateCampaign';
+import { Modal } from '@/components/ui/Modal/Modal';
 
 interface CreateCampaignModalProps {
   isOpen: boolean;
@@ -90,13 +91,17 @@ function CreateCampaignForm({ isOpen, onClose }: CreateCampaignModalProps) {
     time_zone: formData.time_zone || null,
   };
 
+  const handleCloseWithReset = () => {
+    onClose();
+    setCurrentStep(1);
+    setFormData(initialState);
+  };
+
   const handleSubmit = async () => {
     try {
       console.log('Creating campaign:', payload);
       await CreateCampaign(payload);
-      onClose();
-      setFormData(initialState);
-      setCurrentStep(1);
+      handleCloseWithReset();
     } catch (error) {
       console.error('Error creating campaign:', error);
     }
@@ -116,74 +121,12 @@ function CreateCampaignForm({ isOpen, onClose }: CreateCampaignModalProps) {
   };
 
   return (
-    <div className={styles.overlay} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        {/* Header */}
-        <div className={styles.header}>
-          <div className={styles.headerContent}>
-            <h2 className={styles.title}>Create New Campaign</h2>
-            <p className={styles.subtitle}>
-              Configure the details for your calling campaign.
-            </p>
-          </div>
-          <button className={styles.closeButton} onClick={onClose}>
-            <CloseCircleOutlined />
-          </button>
-        </div>
-
-        {/* Step Indicator */}
-        <div className={styles.stepIndicator}>
-          <div className={styles.stepLabels}>
-            {STEPS.map((step) => (
-              <span
-                key={step.id}
-                className={`${styles.stepLabel} ${currentStep >= step.id ? styles.active : ''}`}
-              >
-                {step.label}
-              </span>
-            ))}
-          </div>
-          <div className={styles.stepProgress}>
-            <div className={styles.progressLine}>
-              <div
-                className={styles.progressFill}
-                style={{ width: `${((currentStep - 1) / 3) * 100}%` }}
-              />
-            </div>
-            {STEPS.map((step) => (
-              <div
-                key={step.id}
-                className={`${styles.stepDot} ${currentStep >= step.id ? styles.active : ''} ${currentStep === step.id ? styles.current : ''}`}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className={styles.content}>
-          {currentStep === 1 && (
-            <Step1CampaignBasics
-              formData={formData}
-              updateFormData={updateFormData}
-            />
-          )}
-          {currentStep === 2 && (
-            <Step2LeadsResources
-              formData={formData}
-              updateFormData={updateFormData}
-            />
-          )}
-          {currentStep === 3 && (
-            <Step3Scheduling
-              formData={formData}
-              updateFormData={updateFormData}
-              toggleDay={toggleDay}
-            />
-          )}
-          {currentStep === 4 && <Step4Review formData={formData} />}
-        </div>
-
-        {/* Footer */}
+    <Modal
+      open={isOpen}
+      width={900}
+      onCancel={handleCloseWithReset}
+      closeIcon={<CloseCircleOutlined size={24} />}
+      footer={
         <div className={styles.footer}>
           {currentStep > 1 && (
             <button className={styles.secondaryButton} onClick={handlePrevious}>
@@ -201,8 +144,69 @@ function CreateCampaignForm({ isOpen, onClose }: CreateCampaignModalProps) {
             </button>
           )}
         </div>
+      }
+      className={styles.modal}
+      title={
+        <div className={styles.headerContent}>
+          <h3 className={styles.title}>Create New Campaign</h3>
+          <p className={styles.subtitle}>
+            Configure the details for your calling campaign.
+          </p>
+        </div>
+      }
+    >
+      {/* Step Indicator */}
+      <div className={styles.stepIndicator}>
+        <div className={styles.stepLabels}>
+          {STEPS.map((step) => (
+            <span
+              key={step.id}
+              className={`${styles.stepLabel} ${currentStep >= step.id ? styles.active : ''}`}
+            >
+              {step.label}
+            </span>
+          ))}
+        </div>
+        <div className={styles.stepProgress}>
+          <div className={styles.progressLine}>
+            <div
+              className={styles.progressFill}
+              style={{ width: `${((currentStep - 1) / 3) * 100}%` }}
+            />
+          </div>
+          {STEPS.map((step) => (
+            <div
+              key={step.id}
+              className={`${styles.stepDot} ${currentStep >= step.id ? styles.active : ''} ${currentStep === step.id ? styles.current : ''}`}
+            />
+          ))}
+        </div>
       </div>
-    </div>
+
+      {/* Content */}
+      <div className={styles.content}>
+        {currentStep === 1 && (
+          <Step1CampaignBasics
+            formData={formData}
+            updateFormData={updateFormData}
+          />
+        )}
+        {currentStep === 2 && (
+          <Step2LeadsResources
+            formData={formData}
+            updateFormData={updateFormData}
+          />
+        )}
+        {currentStep === 3 && (
+          <Step3Scheduling
+            formData={formData}
+            updateFormData={updateFormData}
+            toggleDay={toggleDay}
+          />
+        )}
+        {currentStep === 4 && <Step4Review formData={formData} />}
+      </div>
+    </Modal>
   );
 }
 
