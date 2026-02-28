@@ -6,25 +6,14 @@ import { AiOutlineUser } from 'react-icons/ai';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { LucideBot } from '@/components/icons/CallLogs.icons';
 import dayjs from 'dayjs';
+import { Badge } from '@/components/ui/Badge/Badge';
+import { getStatusLabel, getStatusVariant } from '../components/call.types';
 
 interface CallLogDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   selectedCallId: string | null;
 }
-
-const getStatusColor = (status?: string) => {
-  switch (status) {
-    case 'completed':
-      return 'green';
-    case 'failed':
-      return 'red';
-    case 'missed':
-      return 'orange';
-    default:
-      return 'blue';
-  }
-};
 
 const ViewCall = ({ isOpen, onClose, selectedCallId }: CallLogDrawerProps) => {
   const { getCallLogsById } = useCall(selectedCallId as string, {
@@ -69,9 +58,9 @@ const ViewCall = ({ isOpen, onClose, selectedCallId }: CallLogDrawerProps) => {
 
                 <span className={styles.infoValue}>
                   {field.label.toLowerCase() === 'status' ? (
-                    <Tag color={getStatusColor(field.value as string)}>
-                      {field.value}
-                    </Tag>
+                    <Badge variant={getStatusVariant(field.value as string)}>
+                      {getStatusLabel(field.value)}
+                    </Badge>
                   ) : (
                     field.value || '-'
                   )}
