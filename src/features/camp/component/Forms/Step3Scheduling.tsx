@@ -6,6 +6,10 @@ import { ClockCircleOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { IoIosCheckmark } from 'react-icons/io';
 import { LuCalendar } from 'react-icons/lu';
 import { TbTimezone } from 'react-icons/tb';
+import { Flex, TimePicker, Tooltip, Typography } from 'antd';
+import dayjs from 'dayjs';
+import { BsArrowCounterclockwise } from 'react-icons/bs';
+import { TIME_ZONES } from '@/components/constants/Constant';
 
 interface Props {
   formData: CreateCampaignRequest;
@@ -75,32 +79,53 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
             </div>
           </div>
           <div className={styles.timeGrid}>
+            {/* Start Time */}
             <div className={styles.formGroup}>
               <label className={styles.label}>Start Time</label>
+
               <div className={styles.timeInput}>
                 <span className={styles.timeLabel}>From</span>
-                <input
-                  type="time"
-                  className={styles.input}
-                  value={formData?.start_time!}
-                  onChange={(e) =>
-                    updateFormData({ start_time: e.target.value })
+
+                <TimePicker
+                  use12Hours
+                  format="hh:mm A"
+                  className={styles.timePicker}
+                  suffixIcon={<ClockCircleOutlined />}
+                  value={
+                    formData?.start_time
+                      ? dayjs(formData.start_time, 'HH:mm')
+                      : null
+                  }
+                  onChange={(time) =>
+                    updateFormData({
+                      start_time: time ? time.format('HH:mm A') : '',
+                    })
                   }
                 />
-                <ClockCircleOutlined />
               </div>
             </div>
+
+            {/* End Time */}
             <div className={styles.formGroup}>
               <label className={styles.label}>End Time</label>
+
               <div className={styles.timeInput}>
                 <span className={styles.timeLabel}>To</span>
-                <input
-                  type="time"
-                  className={styles.input}
-                  value={formData?.end_time!}
-                  onChange={(e) => updateFormData({ end_time: e.target.value })}
+
+                <TimePicker
+                  use12Hours
+                  format="hh:mm A"
+                  className={styles.timePicker}
+                  suffixIcon={<ClockCircleOutlined />}
+                  value={
+                    formData?.end_time
+                      ? dayjs(formData.end_time, 'HH:mm A')
+                      : null
+                  }
+                  onChange={(time) =>
+                    updateFormData({ end_time: time?.format('HH:mm A') })
+                  }
                 />
-                <ClockCircleOutlined />
               </div>
             </div>
           </div>
@@ -108,83 +133,91 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
 
         {/* Retry Settings */}
         <div className={styles.section}>
-          <div className={styles.sectionHeader}>
+          {/* Header */}
+          <Flex gap={12} align="flex-start" className={styles.sectionHeader}>
             <div className={styles.sectionIcon}>
-              <RetryIcon />
-            </div>
-            <div>
-              <h3 className={styles.sectionTitle}>Retry Settings</h3>
-              <p className={styles.sectionSubtitle}>
-                Configure how many times to retry calls and how long to wait
-                between attempts
-              </p>
-            </div>
-          </div>
-          <div className={styles.formGridHalf}>
-            <div className={styles.formGroup}>
-              <label className={styles.label}>
-                Retry Attempts <InfoCircleOutlined />
-              </label>
-              <div className={styles.selectWrapper}>
-                <select
-                  className={styles.select}
-                  value={formData?.retry_attempts!}
-                  onChange={(e) =>
-                    updateFormData({ retry_attempts: Number(e.target.value) })
-                  }
-                >
-                  <option value="">Select</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="5">5</option>
-                </select>
-                <IoChevronDownCircleOutline />
-              </div>
-            </div>
-            <div className={styles.formGroup}>
-              <label className={styles.label}>
-                Retry Interval (Hours) <InfoCircleOutlined />
-              </label>
-              <div className={styles.selectWrapper}>
-                <select
-                  className={styles.select}
-                  value={formData?.retry_interval!}
-                  onChange={(e) =>
-                    updateFormData({ retry_interval: Number(e.target.value) })
-                  }
-                >
-                  <option value="">Select</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="4">4</option>
-                  <option value="8">8</option>
-                  <option value="24">24</option>
-                </select>
-                <IoChevronDownCircleOutline />
-              </div>
+              <BsArrowCounterclockwise size={20} />
             </div>
 
+            <div>
+              <Typography.Title level={5} className={styles.sectionTitle}>
+                Retry Settings
+              </Typography.Title>
+
+              <Typography.Text type="secondary">
+                Configure how many times to retry calls and how long to wait
+                between attempts
+              </Typography.Text>
+            </div>
+          </Flex>
+
+          {/* Form Fields */}
+          <div className={styles.formGridHalf}>
+            {/* Retry Attempts */}
             <div className={styles.formGroup}>
               <label className={styles.label}>
-                Status <InfoCircleOutlined />
+                Retry Attempts
+                <Tooltip title="Number of retry attempts">
+                  <InfoCircleOutlined />
+                </Tooltip>
               </label>
-              <div className={styles.selectWrapper}>
-                <Select
-                  placeholder="Select Status"
-                  className={styles.select}
-                  options={[
-                    { value: 'active', label: 'Active' },
-                    { value: 'paused', label: 'Paused' },
-                    { value: 'completed', label: 'Completed' },
-                  ]}
-                  onChange={(value) => {
-                    console.log(value);
-                    updateFormData({ status: value });
-                  }}
-                />
-              </div>
+
+              <Select
+                placeholder="Select"
+                value={formData?.retry_attempts}
+                options={[
+                  { value: 1, label: '1' },
+                  { value: 2, label: '2' },
+                  { value: 3, label: '3' },
+                  { value: 5, label: '5' },
+                ]}
+                onChange={(value) => updateFormData({ retry_attempts: value })}
+              />
             </div>
+
+            {/* Retry Interval */}
+            <div className={styles.formGroup}>
+              <label className={styles.label}>
+                Retry Interval (Hours)
+                <Tooltip title="Delay between retries">
+                  <InfoCircleOutlined />
+                </Tooltip>
+              </label>
+
+              <Select
+                placeholder="Select"
+                value={formData?.retry_interval}
+                options={[
+                  { value: 1, label: '1 Hour' },
+                  { value: 2, label: '2 Hours' },
+                  { value: 4, label: '4 Hours' },
+                  { value: 8, label: '8 Hours' },
+                  { value: 24, label: '24 Hours' },
+                ]}
+                onChange={(value) => updateFormData({ retry_interval: value })}
+              />
+            </div>
+
+            {/* Status */}
+            {/* <Flex vertical flex={1} className={styles.formGroup}>
+              <label className={styles.label}>
+                Status
+                <Tooltip title="Campaign status">
+                  <InfoCircleOutlined />
+                </Tooltip>
+              </label>
+
+              <Select
+                placeholder="Select Status"
+                value={formData?.status}
+                options={[
+                  { value: 'active', label: 'Active' },
+                  { value: 'paused', label: 'Paused' },
+                  { value: 'completed', label: 'Completed' },
+                ]}
+                onChange={(value) => updateFormData({ status: value })}
+              />
+            </Flex> */}
           </div>
         </div>
 
@@ -192,7 +225,7 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
         <div className={styles.section}>
           <div className={styles.sectionHeader}>
             <div className={styles.sectionIcon}>
-              <TbTimezone />
+              <TbTimezone size={20} />
             </div>
             <div>
               <h3 className={styles.sectionTitle}>Time Zone</h3>
@@ -202,17 +235,12 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
             </div>
           </div>
           <div className={styles.selectWrapper}>
-            <select
+            <Select
+              value={formData?.time_zone}
               className={styles.select}
-              value={formData?.time_zone!}
-              onChange={(e) => updateFormData({ time_zone: e.target.value })}
-            >
-              <option value="Eastern Time (ET)">Eastern Time (ET)</option>
-              <option value="Central Time (CT)">Central Time (CT)</option>
-              <option value="Mountain Time (MT)">Mountain Time (MT)</option>
-              <option value="Pacific Time (PT)">Pacific Time (PT)</option>
-            </select>
-            <IoChevronDownCircleOutline />
+              options={TIME_ZONES}
+              onChange={(value) => updateFormData({ time_zone: value })}
+            />
           </div>
         </div>
       </div>
