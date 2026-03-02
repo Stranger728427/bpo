@@ -3,7 +3,7 @@ import { Badge } from '@components/ui/Badge/Badge';
 import { ActionMenu } from '@components/ui/ActionMenu/ActionMenu';
 import styles from './Campaign.module.scss';
 import Banner from '@/components/layout/Banner/Banner';
-import { Pagination } from 'antd';
+import { Flex, Input, Pagination } from 'antd';
 import { HiOutlinePlus } from 'react-icons/hi';
 import {
   Campaigns,
@@ -13,42 +13,71 @@ import {
 import { CampaignDetailModal } from '@/features/campaigns/components/CampaignDetailModal';
 import { useGetAllCampaign } from '../component/api/useGetAllCampaign';
 import CreateCampaignForm from '../component/Forms/CreateCampaignForm';
+import { PiMagnifyingGlass } from 'react-icons/pi';
+import { Select } from '@/components/ui/Select/Select';
+import { SEARCH_TYPE, SearchType } from '@/features/call/components/call.types';
+import { useDebounce } from '@/components/Hooks/useDebounce';
+import { DEBOUNCE_TIMEOUT } from '@/components/constants/Constant';
 
 function Campaign() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [selectedCampaignId, setSelectedCampaignId] = useState<string | null>(
-    null
-  );
+  const [campaignAction, setCampaignAction] = useState<{
+    type: 'view' | 'edit' | null;
+    campaignId?: string;
+  }>({
+    type: null,
+  });
   const [isCreateCampaignModalOpen, setIsCreateCampaignModalOpen] =
     useState(false);
+  const [searchType, setSearchType] = useState<SearchType>(SEARCH_TYPE.NAME);
+  const [searchValue, setSearchValue] = useState<string>('');
 
+  const debouncedSearchValue = useDebounce(searchValue, DEBOUNCE_TIMEOUT);
   const param = useMemo(() => {
     return {
       page: currentPage,
       page_size: pageSize,
+      ...(debouncedSearchValue && {
+        [searchType]: debouncedSearchValue,
+      }),
     };
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, debouncedSearchValue, searchType]);
 
   const { data: campaigns } = useGetAllCampaign(param);
 
   const campaignData = campaigns?.data;
   const totalCampaigns = campaigns?.total;
 
-  const handleViewDetails = (id: string) => {
-    setSelectedCampaignId(id);
+  const handleSearchTypeChange = (value: SearchType) => {
+    setSearchType(value);
+    setSearchValue('');
+    setCurrentPage(1);
+  };
+
+  const onSearch = (value: string) => {
+    setSearchValue(value);
+    setCurrentPage(1);
   };
 
   const getActionItems = (campaign: Campaigns) => [
     {
       key: 'view',
       label: 'View Details',
-      onClick: () => handleViewDetails(campaign?.id),
+      onClick: () =>
+        setCampaignAction({
+          type: 'view',
+          campaignId: campaign.id,
+        }),
     },
     {
       key: 'edit',
       label: 'Edit',
-      onClick: () => setIsCreateCampaignModalOpen(true),
+      onClick: () =>
+        setCampaignAction({
+          type: 'edit',
+          campaignId: campaign.id,
+        }),
     },
     {
       key: 'end',
@@ -57,7 +86,6 @@ function Campaign() {
       onClick: () => console.log('End', campaign.id),
     },
   ];
-
   const pagination = {
     current: currentPage,
     total: totalCampaigns,
@@ -77,6 +105,28 @@ function Campaign() {
         <div className={styles.header}>
           <h1 className={styles.title}>Campaign</h1>
           <div className={styles.actions}>
+            <div className={styles.filters}>
+              <Flex gap={'small'}>
+                <Select
+                  value={searchType}
+                  onChange={(value: SearchType) =>
+                    handleSearchTypeChange(value)
+                  }
+                  options={[
+                    { label: 'Patient name', value: SEARCH_TYPE.NAME },
+                    { label: 'Phone number', value: SEARCH_TYPE.PHONE },
+                  ]}
+                />
+                <Input
+                  allowClear
+                  placeholder={`Search by ${searchType}`}
+                  value={searchValue}
+                  onChange={(e) => onSearch(e.target.value)}
+                  suffix={<PiMagnifyingGlass />}
+                />
+              </Flex>
+            </div>
+
             {/* Create Campaign Button */}
             <button
               className={styles.createButton}
@@ -139,18 +189,17 @@ function Campaign() {
       </div>
 
       {/* Campaign Detail Modal */}
-      {selectedCampaignId && (
-        <CampaignDetailModal
-          isOpen={Boolean(selectedCampaignId)}
-          onClose={() => setSelectedCampaignId(null)}
-          campaignId={selectedCampaignId}
-        />
-      )}
+      <CampaignDetailModal
+        isOpen={campaignAction.type === 'view'}
+        campaignId={campaignAction.campaignId!}
+        onClose={() => setCampaignAction({ type: null })}
+      />
 
       {/* Create Campaign Form */}
       <CreateCampaignForm
-        isOpen={isCreateCampaignModalOpen}
-        onClose={() => setIsCreateCampaignModalOpen(false)}
+        isOpen={campaignAction.type === 'edit'}
+        selectedCampaignId={campaignAction.campaignId!}
+        onClose={() => setCampaignAction({ type: null })}
       />
     </div>
   );

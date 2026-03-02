@@ -12,15 +12,12 @@
   padding: $spacing-lg;
 }
 
-.modal {
-  background-color: $color-gray-bg;
-  border-radius: $border-radius-lg;
-  width: 100%;
-  max-width: 1227px;
-  max-height: 90vh;
-  overflow: hidden;
+.modal :global(.ant-modal-body) {
   display: flex;
   flex-direction: column;
+  max-height: 65vh;
+  padding: 0;
+  overflow: hidden;
 }
 
 // Header

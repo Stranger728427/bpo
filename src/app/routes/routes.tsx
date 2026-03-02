@@ -50,7 +50,7 @@ export const routes: RouteObject[] = [
   },
   {
     path: RoutePath.ROOT,
-    // element: <ProtectedRoutes />,
+    element: <ProtectedRoutes />,
     children: [
       {
         path: '',

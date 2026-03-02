@@ -29,10 +29,11 @@ function Step1CampaignBasics({ formData, updateFormData }: Props) {
         <div className={styles.formGroup}>
           <label className={styles.label}>Campaign Name</label>
           <Input
-            placeholder="Winter Sale Blast"
+            placeholder="Enter campaign name"
             value={formData.name!}
             onChange={(e) => updateFormData({ name: e.target.value })}
             size="large"
+            required
           />
         </div>
 
