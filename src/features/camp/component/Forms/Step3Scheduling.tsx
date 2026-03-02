@@ -1,4 +1,3 @@
-import { IoChevronDownCircleOutline } from 'react-icons/io5';
 import styles from './CreateCampaignForm.module.scss';
 import { CreateCampaignRequest } from '../campaign.type';
 import { Select } from '@/components/ui/Select/Select';
@@ -16,18 +15,6 @@ interface Props {
   updateFormData: (updates: Partial<CreateCampaignRequest>) => void;
   toggleDay: (day: string) => void;
 }
-
-const RetryIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <path
-      d="M4 12C4 7.58172 7.58172 4 12 4C14.5 4 16.7 5.1 18.2 6.8L20 5V10H15L17 8C15.8 6.5 14 5.5 12 5.5C8.41015 5.5 5.5 8.41015 5.5 12C5.5 15.5899 8.41015 18.5 12 18.5C14.5 18.5 16.7 17.1 17.8 15"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
 
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -88,6 +75,7 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
 
                 <TimePicker
                   use12Hours
+                  size="large"
                   format="hh:mm A"
                   className={styles.timePicker}
                   suffixIcon={<ClockCircleOutlined />}
@@ -114,9 +102,11 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
 
                 <TimePicker
                   use12Hours
+                  size="large"
                   format="hh:mm A"
                   className={styles.timePicker}
                   suffixIcon={<ClockCircleOutlined />}
+                  disabled={!formData.start_time}
                   value={
                     formData?.end_time
                       ? dayjs(formData.end_time, 'HH:mm A')
@@ -165,6 +155,7 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
               <Select
                 placeholder="Select"
                 value={formData?.retry_attempts}
+                size="large"
                 options={[
                   { value: 1, label: '1' },
                   { value: 2, label: '2' },
@@ -186,6 +177,8 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
 
               <Select
                 placeholder="Select"
+                size="large"
+                // className={styles.select}
                 value={formData?.retry_interval}
                 options={[
                   { value: 1, label: '1 Hour' },
@@ -236,8 +229,10 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
           </div>
           <div className={styles.selectWrapper}>
             <Select
+              placeholder="Select Time Zone"
               value={formData?.time_zone}
-              className={styles.select}
+              size="large"
+              // className={styles.select}
               options={TIME_ZONES}
               onChange={(value) => updateFormData({ time_zone: value })}
             />

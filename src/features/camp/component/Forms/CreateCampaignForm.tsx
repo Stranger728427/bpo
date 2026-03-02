@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CreateCampaignRequest } from '../campaign.type';
 import Step1CampaignBasics from './Step1CampaignBasics';
 import Step2LeadsResources from './Step2LeadsResources';
@@ -8,10 +8,13 @@ import styles from './CreateCampaignForm.module.scss';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { useCampaignCreate } from '../api/useCreateCampaign';
 import { Modal } from '@/components/ui/Modal/Modal';
+import { useUpdateCampaign } from '../api/useUpdateCampaign';
+import { useCampaignById } from '../api/useCampaignById';
 
 interface CreateCampaignModalProps {
   isOpen: boolean;
   onClose: () => void;
+  selectedCampaignId: string;
 }
 
 const STEPS = [
@@ -21,10 +24,15 @@ const STEPS = [
   { id: 4, label: 'Review & Create' },
 ];
 
-function CreateCampaignForm({ isOpen, onClose }: CreateCampaignModalProps) {
+function CreateCampaignForm({
+  isOpen,
+  onClose,
+  selectedCampaignId,
+}: CreateCampaignModalProps) {
   const initialState: CreateCampaignRequest = {
+    id: null,
     name: null,
-    status: null,
+    status: 'active',
     type: null,
 
     start_date: null,
@@ -53,8 +61,9 @@ function CreateCampaignForm({ isOpen, onClose }: CreateCampaignModalProps) {
   const [formData, setFormData] = useState<CreateCampaignRequest>(initialState);
 
   const { mutateAsync: CreateCampaign } = useCampaignCreate();
-
-  if (!isOpen) return null;
+  const { mutateAsync: updateCampaign } = useUpdateCampaign();
+  const { data } = useCampaignById(selectedCampaignId);
+  const campaign = data?.campaign;
 
   const handleNext = () => {
     if (currentStep < 4) setCurrentStep(currentStep + 1);
@@ -64,9 +73,40 @@ function CreateCampaignForm({ isOpen, onClose }: CreateCampaignModalProps) {
     if (currentStep > 1) setCurrentStep(currentStep - 1);
   };
 
+  useEffect(() => {
+    if (!campaign) return;
+    setFormData({
+      id: campaign?.id,
+      name: campaign.name ?? null,
+      status: campaign.status ?? 'active',
+      type: campaign.type ?? null,
+
+      start_date: campaign.start_date ?? null,
+      end_date: campaign.end_date ?? null,
+
+      contacts_count: campaign.contacts_count ?? 0,
+
+      ai_assistant_id: campaign.ai_assistant_id ?? null,
+      ai_assistant_name: campaign.ai_assistant_name ?? null,
+      leads_list_id: campaign.leads_list_id ?? null,
+
+      phone_number: campaign.phone_number ?? null,
+
+      calling_days: campaign.calling_days ?? [],
+
+      start_time: campaign.start_time ?? null,
+      end_time: campaign.end_time ?? null,
+
+      retry_attempts: campaign.retry_attempts ?? null,
+      retry_interval: campaign.retry_interval ?? null,
+
+      time_zone: campaign.time_zone ?? null,
+    });
+  }, [campaign]);
+
   const payload: CreateCampaignRequest = {
     name: formData.name,
-    status: formData.status,
+    status: 'active',
     type: formData.type,
 
     start_date: formData.start_date || null,
@@ -99,11 +139,23 @@ function CreateCampaignForm({ isOpen, onClose }: CreateCampaignModalProps) {
 
   const handleSubmit = async () => {
     try {
-      console.log('Creating campaign:', payload);
-      await CreateCampaign(payload);
+      console.log(
+        selectedCampaignId ? 'Updating campaign:' : 'Creating campaign:',
+        payload
+      );
+
+      if (selectedCampaignId) {
+        await updateCampaign({
+          id: selectedCampaignId,
+          campaign: payload,
+        });
+      } else {
+        await CreateCampaign(payload);
+      }
+
       handleCloseWithReset();
     } catch (error) {
-      console.error('Error creating campaign:', error);
+      console.error('Campaign submit error:', error);
     }
   };
 
@@ -119,6 +171,8 @@ function CreateCampaignForm({ isOpen, onClose }: CreateCampaignModalProps) {
         : [...(prev?.calling_days || []), day],
     }));
   };
+
+  console.log('idddddd', selectedCampaignId);
 
   return (
     <Modal
@@ -140,7 +194,7 @@ function CreateCampaignForm({ isOpen, onClose }: CreateCampaignModalProps) {
             </button>
           ) : (
             <button className={styles.primaryButton} onClick={handleSubmit}>
-              Create Campaign
+              {selectedCampaignId ? 'Update Campaign' : 'Create Campaign'}
             </button>
           )}
         </div>
@@ -148,7 +202,9 @@ function CreateCampaignForm({ isOpen, onClose }: CreateCampaignModalProps) {
       className={styles.modal}
       title={
         <div className={styles.headerContent}>
-          <h3 className={styles.title}>Create New Campaign</h3>
+          <h3 className={styles.title}>
+            {selectedCampaignId ? 'Update Campaign' : 'Create New Campaign'}
+          </h3>
           <p className={styles.subtitle}>
             Configure the details for your calling campaign.
           </p>
