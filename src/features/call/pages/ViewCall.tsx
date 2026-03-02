@@ -1,6 +1,6 @@
 import { useCall } from '../components/useCall';
 import { Drawer } from '@/components/ui/Drawer/Drawer';
-import { Button, Divider, Popover, Skeleton, Tag, Tooltip } from 'antd';
+import { Button, Divider, Popover, Skeleton, Tooltip } from 'antd';
 import styles from '../pages/ViewCall.module.scss';
 import { AiOutlineUser } from 'react-icons/ai';
 import { InfoCircleOutlined } from '@ant-design/icons';
