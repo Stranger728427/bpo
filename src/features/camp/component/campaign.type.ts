@@ -2,28 +2,22 @@
 export type CampaignStatus = 'active' | 'paused' | 'completed';
 export type CampaignType = 'onboarding' | 'lead_generation' | 'reminder' | 'survey';
 
-// export enum CampaignType {
-//   ONBOARDING = 'onboarding',
-//   LEAD_GENERATION = 'lead_generation',
-//   REMINDER = 'reminder',
-//   SURVEY = 'survey',
-// }
-
 export interface Campaigns {
-  id: string;
+  id: string | null;
   name: string;
   status: CampaignStatus;
   type: CampaignType;
   start_date: string;
   end_date: string;
-  calls_made?: number;
+  // calls_made?: number;
   conversion_rate?: number;
   spend?: number;
   contacts_count?: number;
-  ai_assistant_id?: string;
-  ai_assistant_name?: string;
-  phone_number_id?: string;
-  phone_number?: string;
+  // ai_assistant_id?: string;
+  // ai_assistant_name?: string;
+  // phone_number_id?: string;
+  // phone_number?: string;
+  // scheduling
   calling_days?: string[];
   start_time?: string;
   end_time?: string;
@@ -82,8 +76,9 @@ export interface CampaignDetailResponse {
 }
 
 export interface CreateCampaignRequest {
+  id:string | null;
   name: string | null;
-  status: CampaignStatus | null;
+  // status: CampaignStatus | null;
   type: CampaignType | null;
 
   start_date: string | null;
@@ -91,93 +86,26 @@ export interface CreateCampaignRequest {
 
   contacts_count: number | null;
 
-  ai_assistant_id: string | null;
-  ai_assistant_name: string | null;
+  // ai_assistant_id: string | null;
+  // ai_assistant_name: string | null;
 
-  leads_list_id: string | null;
+  // leads_list_id: string | null;
 
-  phone_number: string | null;
+  // phone_number: string | null;
 
   calling_days: string[] | null;
   start_time: string | null;
   end_time: string | null;
 
-  retry_attempts: number | null;
-  retry_interval: number | null;
+  // retry_attempts: number | null;
+  // retry_interval: number | null;
 
   time_zone: string | null;
+  csvId?:string | null;
 }
-
-export interface CreateCampaignResponse {
-  campaign: Campaigns;
-  message?: string;
-}
-
-export interface UpdateCampaignRequest {
-  name?: string;
-  type?: CampaignType;
-  start_date?: string;
-  end_date?: string;
-  ai_assistant_id?: string;
-  phone_number_id?: string;
-  calling_days?: string[];
-  start_time?: string;
-  end_time?: string;
-  retry_attempts?: number;
-  retry_interval?: number;
-  time_zone?: string;
-}
-
-export interface UpdateCampaignResponse {
-  campaign: Campaigns;
-  message?: string;
-}
-
-export interface UpdateCampaignStatusRequest {
-  status: CampaignStatus;
-}
-
-export interface UpdateCampaignStatusResponse {
-  campaign: Campaigns;
-  message?: string;
-}
-
-export interface DeleteCampaignResponse {
-  success: boolean;
-  message: string;
-}
-
 export interface UploadLeadsRequest {
   campaign_id: string;
   file: File;
-}
-
-export interface UploadLeadsResponse {
-  success: boolean;
-  leads_count: number;
-  message?: string;
-}
-
-export interface PhoneNumber {
-  id: string;
-  label: string;
-  number: string;
-  status: 'active' | 'inactive';
-}
-
-export interface PhoneNumbersResponse {
-  phone_numbers: PhoneNumber[];
-}
-
-export interface AIAssistant {
-  id: string;
-  name: string;
-  model: string;
-  model_id: string;
-}
-
-export interface AIAssistantsResponse {
-  ai_assistants: AIAssistant[];
 }
 
 export const getStatusLabel = (status: CampaignStatus): string => {

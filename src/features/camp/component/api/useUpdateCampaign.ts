@@ -6,7 +6,7 @@ import { Campaigns } from "../campaign.type";
 import { CampaignService } from "../campaign.service";
 
 interface UpdateCampaignParams {
-    id: string;
+    id: string | null;
     campaign: Campaigns;
 }
 
@@ -15,7 +15,7 @@ export function useUpdateCampaign() {
   const campaignService = CampaignService();
 
   const updateCampaign = ({ id, campaign }: UpdateCampaignParams) =>
-    campaignService.updateCampaignService(id, campaign);
+    campaignService.updateCampaignService(id!, campaign);
 
   return useMutation({
     mutationFn: updateCampaign,
