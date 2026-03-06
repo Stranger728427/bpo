@@ -67,7 +67,7 @@ function Campaign() {
       onClick: () =>
         setCampaignAction({
           type: 'view',
-          campaignId: campaign.id,
+          campaignId: campaign?.id!,
         }),
     },
     {
@@ -76,7 +76,7 @@ function Campaign() {
       onClick: () =>
         setCampaignAction({
           type: 'edit',
-          campaignId: campaign.id,
+          campaignId: campaign?.id!,
         }),
     },
     {
@@ -148,7 +148,7 @@ function Campaign() {
               <th>Status</th>
               <th>Type</th>
               <th>Start / End</th>
-              <th>Calls made</th>
+              {/* <th>Calls made</th> */}
               <th>Conversion rate</th>
               <th>Spend</th>
               <th>Action</th>
@@ -167,7 +167,7 @@ function Campaign() {
                 <td>
                   {campaign?.start_date} – {campaign?.end_date}
                 </td>
-                <td>{campaign?.calls_made?.toLocaleString()}</td>
+                {/* <td>{campaign?.calls_made?.toLocaleString()}</td> */}
                 <td>{campaign?.conversion_rate}%</td>
                 <td>{campaign?.spend?.toLocaleString()} credits</td>
                 <td>
@@ -197,9 +197,14 @@ function Campaign() {
 
       {/* Create Campaign Form */}
       <CreateCampaignForm
-        isOpen={campaignAction.type === 'edit'}
-        selectedCampaignId={campaignAction.campaignId!}
-        onClose={() => setCampaignAction({ type: null })}
+        isOpen={isCreateCampaignModalOpen}
+        selectedCampaignId={
+          campaignAction.type === 'edit' ? campaignAction.campaignId : null
+        }
+        onClose={() => {
+          setCampaignAction({ type: null });
+          setIsCreateCampaignModalOpen(false);
+        }}
       />
     </div>
   );

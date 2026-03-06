@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { CreateCampaignRequest } from '../campaign.type';
+import { Campaigns, CreateCampaignRequest } from '../campaign.type';
 import Step1CampaignBasics from './Step1CampaignBasics';
 import Step2LeadsResources from './Step2LeadsResources';
 import Step3Scheduling from './Step3Scheduling';
@@ -14,7 +14,7 @@ import { useCampaignById } from '../api/useCampaignById';
 interface CreateCampaignModalProps {
   isOpen: boolean;
   onClose: () => void;
-  selectedCampaignId: string;
+  selectedCampaignId: string | null | undefined;
 }
 
 const STEPS = [
@@ -32,7 +32,7 @@ function CreateCampaignForm({
   const initialState: CreateCampaignRequest = {
     id: null,
     name: null,
-    status: 'active',
+    // status: 'active',
     type: null,
 
     start_date: null,
@@ -40,19 +40,19 @@ function CreateCampaignForm({
 
     contacts_count: 0,
 
-    ai_assistant_id: null,
-    ai_assistant_name: null,
+    // ai_assistant_id: null,
+    // ai_assistant_name: null,
 
-    leads_list_id: null,
+    // leads_list_id: null,
 
-    phone_number: null,
+    // phone_number: null,
 
     calling_days: [],
     start_time: null,
     end_time: null,
 
-    retry_attempts: null,
-    retry_interval: null,
+    // retry_attempts: null,
+    // retry_interval: null,
 
     time_zone: null,
   };
@@ -61,8 +61,9 @@ function CreateCampaignForm({
   const [formData, setFormData] = useState<CreateCampaignRequest>(initialState);
 
   const { mutateAsync: CreateCampaign } = useCampaignCreate();
-  const { mutateAsync: updateCampaign } = useUpdateCampaign();
-  const { data } = useCampaignById(selectedCampaignId);
+  const { mutateAsync: updateCampaign, isPending: isUpdating } =
+    useUpdateCampaign();
+  const { data } = useCampaignById(selectedCampaignId!);
   const campaign = data?.campaign;
 
   const handleNext = () => {
@@ -78,7 +79,7 @@ function CreateCampaignForm({
     setFormData({
       id: campaign?.id,
       name: campaign.name ?? null,
-      status: campaign.status ?? 'active',
+      // status: campaign.status ?? 'active',
       type: campaign.type ?? null,
 
       start_date: campaign.start_date ?? null,
@@ -86,27 +87,28 @@ function CreateCampaignForm({
 
       contacts_count: campaign.contacts_count ?? 0,
 
-      ai_assistant_id: campaign.ai_assistant_id ?? null,
-      ai_assistant_name: campaign.ai_assistant_name ?? null,
-      leads_list_id: campaign.leads_list_id ?? null,
+      // ai_assistant_id: campaign.ai_assistant_id ?? null,
+      // ai_assistant_name: campaign.ai_assistant_name ?? null,
+      // leads_list_id: campaign.leads_list_id ?? null,
 
-      phone_number: campaign.phone_number ?? null,
+      // phone_number: campaign.phone_number ?? null,
 
       calling_days: campaign.calling_days ?? [],
 
       start_time: campaign.start_time ?? null,
       end_time: campaign.end_time ?? null,
 
-      retry_attempts: campaign.retry_attempts ?? null,
-      retry_interval: campaign.retry_interval ?? null,
+      // retry_attempts: campaign.retry_attempts ?? null,
+      // retry_interval: campaign.retry_interval ?? null,
 
       time_zone: campaign.time_zone ?? null,
     });
   }, [campaign]);
 
   const payload: CreateCampaignRequest = {
+    id: crypto.randomUUID(),
     name: formData.name,
-    status: 'active',
+    // status: 'active',
     type: formData.type,
 
     start_date: formData.start_date || null,
@@ -114,19 +116,19 @@ function CreateCampaignForm({
 
     contacts_count: formData.contacts_count,
 
-    ai_assistant_id: formData.ai_assistant_id || null,
-    ai_assistant_name: formData.ai_assistant_name || null,
-    leads_list_id: formData.leads_list_id || null,
+    // ai_assistant_id: formData.ai_assistant_id || null,
+    // ai_assistant_name: formData.ai_assistant_name || null,
+    // leads_list_id: formData.leads_list_id || null,
 
-    phone_number: formData.phone_number,
+    // phone_number: formData.phone_number,
 
     calling_days: formData.calling_days,
 
     start_time: formData.start_time || null,
     end_time: formData.end_time || null,
 
-    retry_attempts: Number(formData.retry_attempts),
-    retry_interval: Number(formData.retry_interval),
+    // retry_attempts: Number(formData.retry_attempts),
+    // retry_interval: Number(formData.retry_interval),
 
     time_zone: formData.time_zone || null,
   };
@@ -139,15 +141,10 @@ function CreateCampaignForm({
 
   const handleSubmit = async () => {
     try {
-      console.log(
-        selectedCampaignId ? 'Updating campaign:' : 'Creating campaign:',
-        payload
-      );
-
       if (selectedCampaignId) {
         await updateCampaign({
           id: selectedCampaignId,
-          campaign: payload,
+          campaign: payload as Campaigns,
         });
       } else {
         await CreateCampaign(payload);
@@ -172,11 +169,10 @@ function CreateCampaignForm({
     }));
   };
 
-  console.log('idddddd', selectedCampaignId);
-
   return (
     <Modal
-      open={isOpen}
+      open={isOpen ? isOpen : Boolean(selectedCampaignId)}
+      loading={isUpdating}
       width={900}
       onCancel={handleCloseWithReset}
       closeIcon={<CloseCircleOutlined size={24} />}
