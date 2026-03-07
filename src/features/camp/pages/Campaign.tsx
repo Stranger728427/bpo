@@ -3,7 +3,7 @@ import { Badge } from '@components/ui/Badge/Badge';
 import { ActionMenu } from '@components/ui/ActionMenu/ActionMenu';
 import styles from './Campaign.module.scss';
 import Banner from '@/components/layout/Banner/Banner';
-import { Flex, Input, Pagination } from 'antd';
+import { Flex, Input, Pagination, Table } from 'antd';
 import { HiOutlinePlus } from 'react-icons/hi';
 import {
   Campaigns,
@@ -18,22 +18,29 @@ import { Select } from '@/components/ui/Select/Select';
 import { SEARCH_TYPE, SearchType } from '@/features/call/components/call.types';
 import { useDebounce } from '@/components/Hooks/useDebounce';
 import { DEBOUNCE_TIMEOUT } from '@/components/constants/Constant';
+import { TableSkeleton } from '@/components/TableSkeleton/TableSkeleton';
+import UploadPage from '@/features/upload/pages/UploadPage';
 
 function Campaign() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [isUplodaModalOpen, setIsUploadModalOpen] = useState<boolean>(false);
+
   const [campaignAction, setCampaignAction] = useState<{
     type: 'view' | 'edit' | null;
     campaignId?: string;
   }>({
     type: null,
   });
+
   const [isCreateCampaignModalOpen, setIsCreateCampaignModalOpen] =
     useState(false);
+
   const [searchType, setSearchType] = useState<SearchType>(SEARCH_TYPE.NAME);
   const [searchValue, setSearchValue] = useState<string>('');
 
   const debouncedSearchValue = useDebounce(searchValue, DEBOUNCE_TIMEOUT);
+
   const param = useMemo(() => {
     return {
       page: currentPage,
@@ -44,7 +51,7 @@ function Campaign() {
     };
   }, [currentPage, pageSize, debouncedSearchValue, searchType]);
 
-  const { data: campaigns } = useGetAllCampaign(param);
+  const { data: campaigns, isPending } = useGetAllCampaign(param);
 
   const campaignData = campaigns?.data;
   const totalCampaigns = campaigns?.total;
@@ -80,12 +87,12 @@ function Campaign() {
         }),
     },
     {
-      key: 'end',
-      label: 'End',
-      danger: true,
-      onClick: () => console.log('End', campaign.id),
+      key: 'upload',
+      label: 'Upload Csv',
+      onClick: () => setIsUploadModalOpen(true),
     },
   ];
+
   const pagination = {
     current: currentPage,
     total: totalCampaigns,
@@ -98,15 +105,67 @@ function Campaign() {
     },
   };
 
+  const columns = [
+    {
+      title: 'Campaign',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status: string) => (
+        <Badge variant={getStatusVariant(status as any)}>
+          {getStatusLabel(status as any)}
+        </Badge>
+      ),
+    },
+    {
+      title: 'Type',
+      dataIndex: 'type',
+      key: 'type',
+    },
+    {
+      title: 'Start / End',
+      key: 'date',
+      render: (_: any, record: Campaigns) => (
+        <>
+          {record.start_date} - {record.end_date}
+        </>
+      ),
+    },
+    {
+      title: 'Conversion rate',
+      dataIndex: 'conversion_rate',
+      key: 'conversion_rate',
+      render: (value: number) => `${value}%`,
+    },
+    {
+      title: 'Spend',
+      dataIndex: 'spend',
+      key: 'spend',
+      render: (value: number) => `${value?.toLocaleString()} credits`,
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (_: any, record: Campaigns) => (
+        <ActionMenu items={getActionItems(record)} />
+      ),
+    },
+  ];
+
   return (
     <div className={styles.container}>
       <Banner>
         {/* Header */}
         <div className={styles.header}>
           <h1 className={styles.title}>Campaign</h1>
+
           <div className={styles.actions}>
             <div className={styles.filters}>
-              <Flex gap={'small'}>
+              <Flex gap="small">
                 <Select
                   value={searchType}
                   onChange={(value: SearchType) =>
@@ -117,6 +176,7 @@ function Campaign() {
                     { label: 'Phone number', value: SEARCH_TYPE.PHONE },
                   ]}
                 />
+
                 <Input
                   allowClear
                   placeholder={`Search by ${searchType}`}
@@ -127,7 +187,7 @@ function Campaign() {
               </Flex>
             </div>
 
-            {/* Create Campaign Button */}
+            {/* Create Campaign */}
             <button
               className={styles.createButton}
               onClick={() => setIsCreateCampaignModalOpen(true)}
@@ -141,42 +201,18 @@ function Campaign() {
 
       {/* Table */}
       <div className={styles.tableWrapper}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Campaign</th>
-              <th>Status</th>
-              <th>Type</th>
-              <th>Start / End</th>
-              {/* <th>Calls made</th> */}
-              <th>Conversion rate</th>
-              <th>Spend</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {campaignData?.map((campaign: Campaigns) => (
-              <tr key={campaign?.id}>
-                <td>{campaign?.name}</td>
-                <td>
-                  <Badge variant={getStatusVariant(campaign?.status)}>
-                    {getStatusLabel(campaign?.status)}
-                  </Badge>
-                </td>
-                <td>{campaign?.type}</td>
-                <td>
-                  {campaign?.start_date} – {campaign?.end_date}
-                </td>
-                {/* <td>{campaign?.calls_made?.toLocaleString()}</td> */}
-                <td>{campaign?.conversion_rate}%</td>
-                <td>{campaign?.spend?.toLocaleString()} credits</td>
-                <td>
-                  <ActionMenu items={getActionItems(campaign)} />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {isPending ? (
+          <TableSkeleton rows={10} columns={7} />
+        ) : (
+          <Table
+            bordered={false}
+            columns={columns}
+            dataSource={campaignData}
+            rowKey="id"
+            pagination={false}
+            className={styles.table}
+          />
+        )}
       </div>
 
       {/* Footer */}
@@ -188,14 +224,14 @@ function Campaign() {
         </div>
       </div>
 
-      {/* Campaign Detail Modal */}
+      {/* View Campaign */}
       <CampaignDetailModal
         isOpen={campaignAction.type === 'view'}
         campaignId={campaignAction.campaignId!}
         onClose={() => setCampaignAction({ type: null })}
       />
 
-      {/* Create Campaign Form */}
+      {/* Create / Edit Campaign */}
       <CreateCampaignForm
         isOpen={isCreateCampaignModalOpen}
         selectedCampaignId={
@@ -205,6 +241,10 @@ function Campaign() {
           setCampaignAction({ type: null });
           setIsCreateCampaignModalOpen(false);
         }}
+      />
+      <UploadPage
+        open={isUplodaModalOpen}
+        onClose={() => setIsUploadModalOpen(false)}
       />
     </div>
   );
