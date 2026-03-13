@@ -1,7 +1,7 @@
 import { useApi } from "@/lib/axios/interceptors";
 
 
-export const ploadService = () => {
+export const UploadService = () => {
     const { baseApi } = useApi();
 
 const uploadContacts = async (file: File) => {
@@ -19,7 +19,7 @@ const truncateFile = async () => {
 }
 
 const triggerCalls = async () => {
-    return baseApi().post('/load-feedback-calls');
+    return baseApi().post('/get_num_feedback');
 }
 
     return {

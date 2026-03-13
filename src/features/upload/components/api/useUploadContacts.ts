@@ -1,8 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
-import { uploadContacts } from '../services/uploadContacts.service';
+import { UploadService } from '../upload.service';
 
 export const useUploadContactsMutation = () => {
+  const uploadService = UploadService();
   return useMutation({
-    mutationFn: uploadContacts,
+    mutationFn: uploadService.uploadContacts,
   });
 };

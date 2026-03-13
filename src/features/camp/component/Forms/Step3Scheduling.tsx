@@ -122,9 +122,9 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
         </div>
 
         {/* Retry Settings */}
-        <div className={styles.section}>
+        {/* <div className={styles.section}> */}
           {/* Header */}
-          <Flex gap={12} align="flex-start" className={styles.sectionHeader}>
+          {/* <Flex gap={12} align="flex-start" className={styles.sectionHeader}>
             <div className={styles.sectionIcon}>
               <BsArrowCounterclockwise size={20} />
             </div>
@@ -139,12 +139,12 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
                 between attempts
               </Typography.Text>
             </div>
-          </Flex>
+          </Flex> */}
 
           {/* Form Fields */}
-          <div className={styles.formGridHalf}>
+          {/* <div className={styles.formGridHalf}> */}
             {/* Retry Attempts */}
-            <div className={styles.formGroup}>
+            {/* <div className={styles.formGroup}>
               <label className={styles.label}>
                 Retry Attempts
                 <Tooltip title="Number of retry attempts">
@@ -164,10 +164,10 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
                 ]}
                 onChange={(value) => updateFormData({ retry_attempts: value })}
               />
-            </div>
+            </div> */}
 
             {/* Retry Interval */}
-            <div className={styles.formGroup}>
+            {/* <div className={styles.formGroup}>
               <label className={styles.label}>
                 Retry Interval (Hours)
                 <Tooltip title="Delay between retries">
@@ -189,7 +189,7 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
                 ]}
                 onChange={(value) => updateFormData({ retry_interval: value })}
               />
-            </div>
+            </div> */}
 
             {/* Status */}
             {/* <Flex vertical flex={1} className={styles.formGroup}>
@@ -211,9 +211,9 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
                 onChange={(value) => updateFormData({ status: value })}
               />
             </Flex> */}
-          </div>
-        </div>
-
+          {/* </div> */}
+        {/* </div> */}
+      
         {/* Time Zone */}
         <div className={styles.section}>
           <div className={styles.sectionHeader}>

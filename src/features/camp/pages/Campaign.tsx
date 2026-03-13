@@ -74,7 +74,7 @@ function Campaign() {
       onClick: () =>
         setCampaignAction({
           type: 'view',
-          campaignId: campaign?.id!,
+          campaignId: campaign?.campaignId!,
         }),
     },
     {
@@ -83,7 +83,7 @@ function Campaign() {
       onClick: () =>
         setCampaignAction({
           type: 'edit',
-          campaignId: campaign?.id!,
+          campaignId: campaign?.campaignId!,
         }),
     },
     {

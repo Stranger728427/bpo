@@ -47,13 +47,13 @@ export function Step4Review({ formData }: Props) {
                         '-'}
                     </span>
                   </div>
-                  <div className={styles.summaryRow}>
+                  {/* <div className={styles.summaryRow}>
                     <span className={styles.summaryLabel}>Leads:</span>
                     <span className={styles.summaryValue}>
                       {formData?.contacts_count ?? '-'} Leads
                     </span>
-                  </div>
-                </div>
+                  </div> */}
+                </div>  
               </div>
             </Badge.Ribbon>
             <Badge.Ribbon
@@ -73,7 +73,7 @@ export function Step4Review({ formData }: Props) {
                   <div className={styles.summaryRow}>
                     <span className={styles.summaryLabel}>Calling Hours:</span>
                     <span className={styles.summaryValue}>
-                      {[formData?.start_time, formData?.end_time].join('-') ||
+                      {[formData?.start_time, formData?.end_time].join(' - ') ||
                         '-'}
                     </span>
                   </div>
@@ -86,7 +86,7 @@ export function Step4Review({ formData }: Props) {
                 </div>
               </div>
             </Badge.Ribbon>
-            <Badge.Ribbon
+            {/* <Badge.Ribbon
               className={styles.summaryNumber}
               text="3"
               placement="start"
@@ -108,8 +108,8 @@ export function Step4Review({ formData }: Props) {
                   </div>
                 </div>
               </div>
-            </Badge.Ribbon>
-            <Badge.Ribbon
+            </Badge.Ribbon> */}
+            {/* <Badge.Ribbon
               className={styles.summaryNumber}
               text="4"
               placement="start"
@@ -131,7 +131,7 @@ export function Step4Review({ formData }: Props) {
                   </div>
                 </div>
               </div>
-            </Badge.Ribbon>
+            </Badge.Ribbon> */}
           </div>
         </div>
       </div>

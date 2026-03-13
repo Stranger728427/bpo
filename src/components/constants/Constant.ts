@@ -1,5 +1,8 @@
 import { tenantName } from "@/utils/helpers/helper";
 
+// /openai
+export const API_TYPE = 'gemini'
+
 export const DEBOUNCE_TIMEOUT = 500;
 
 export const siteConfig = {
@@ -8,8 +11,11 @@ export const siteConfig = {
 }
 
 export const TIME_ZONES = [
-  { value: 'ET', label: 'Eastern Time (ET)' },
-  { value: 'CT', label: 'Central Time (CT)' },
-  { value: 'MT', label: 'Mountain Time (MT)' },
-  { value: 'PT', label: 'Pacific Time (PT)' },
+  { value: 'America/New_York', label: 'Eastern Time (ET)' },
+  { value: 'America/Chicago', label: 'Central Time (CT)' },
+  { value: 'America/Denver', label: 'Mountain Time (MT)' },
+  { value: 'America/Phoenix', label: 'Mountain Time - Arizona' },
+  { value: 'America/Los_Angeles', label: 'Pacific Time (PT)' },
+  { value: 'America/Anchorage', label: 'Alaska Time (AKT)' },
+  { value: 'Pacific/Honolulu', label: 'Hawaii Time (HT)' }
 ];

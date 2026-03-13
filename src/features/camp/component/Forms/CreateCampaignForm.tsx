@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Campaigns, CreateCampaignRequest } from '../campaign.type';
 import Step1CampaignBasics from './Step1CampaignBasics';
-import Step2LeadsResources from './Step2LeadsResources';
 import Step3Scheduling from './Step3Scheduling';
 import Step4Review from './Step4Review';
 import styles from './CreateCampaignForm.module.scss';
@@ -10,6 +9,7 @@ import { useCampaignCreate } from '../api/useCreateCampaign';
 import { Modal } from '@/components/ui/Modal/Modal';
 import { useUpdateCampaign } from '../api/useUpdateCampaign';
 import { useCampaignById } from '../api/useCampaignById';
+import { Steps } from 'antd';
 
 interface CreateCampaignModalProps {
   isOpen: boolean;
@@ -18,11 +18,11 @@ interface CreateCampaignModalProps {
 }
 
 const STEPS = [
-  { id: 1, label: 'Campaign Basics' },
-  { id: 2, label: 'Leads & Resources' },
-  { id: 3, label: 'Scheduling' },
-  { id: 4, label: 'Review & Create' },
+  { title: 'Campaign Basics' },
+  { title: 'Scheduling' },
+  { title: 'Review & Create' },
 ];
+
 
 function CreateCampaignForm({
   isOpen,
@@ -30,7 +30,7 @@ function CreateCampaignForm({
   selectedCampaignId,
 }: CreateCampaignModalProps) {
   const initialState: CreateCampaignRequest = {
-    id: null,
+    campaignId: null,
     name: null,
     // status: 'active',
     type: null,
@@ -38,7 +38,7 @@ function CreateCampaignForm({
     start_date: null,
     end_date: null,
 
-    contacts_count: 0,
+    // contacts_count: 0,
 
     // ai_assistant_id: null,
     // ai_assistant_name: null,
@@ -55,9 +55,10 @@ function CreateCampaignForm({
     // retry_interval: null,
 
     time_zone: null,
+    csvId: null,
   };
 
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<CreateCampaignRequest>(initialState);
 
   const { mutateAsync: CreateCampaign } = useCampaignCreate();
@@ -67,17 +68,21 @@ function CreateCampaignForm({
   const campaign = data?.campaign;
 
   const handleNext = () => {
-    if (currentStep < 4) setCurrentStep(currentStep + 1);
+    if (currentStep < 3) setCurrentStep(currentStep + 1);
   };
 
   const handlePrevious = () => {
-    if (currentStep > 1) setCurrentStep(currentStep - 1);
+    if (currentStep > 0) setCurrentStep(currentStep - 1);
+  };
+
+  const onChangeStep = (value: number) => {
+    setCurrentStep(value);
   };
 
   useEffect(() => {
     if (!campaign) return;
     setFormData({
-      id: campaign?.id,
+      campaignId: campaign?.id,
       name: campaign.name ?? null,
       // status: campaign.status ?? 'active',
       type: campaign.type ?? null,
@@ -85,7 +90,7 @@ function CreateCampaignForm({
       start_date: campaign.start_date ?? null,
       end_date: campaign.end_date ?? null,
 
-      contacts_count: campaign.contacts_count ?? 0,
+      // contacts_count: campaign.contacts_count ?? 0,
 
       // ai_assistant_id: campaign.ai_assistant_id ?? null,
       // ai_assistant_name: campaign.ai_assistant_name ?? null,
@@ -102,11 +107,12 @@ function CreateCampaignForm({
       // retry_interval: campaign.retry_interval ?? null,
 
       time_zone: campaign.time_zone ?? null,
+      csvId:campaign?.id
     });
   }, [campaign]);
 
   const payload: CreateCampaignRequest = {
-    id: crypto.randomUUID(),
+    campaignId: crypto.randomUUID(),
     name: formData.name,
     // status: 'active',
     type: formData.type,
@@ -114,7 +120,7 @@ function CreateCampaignForm({
     start_date: formData.start_date || null,
     end_date: formData.end_date || null,
 
-    contacts_count: formData.contacts_count,
+    // contacts_count: formData.contacts_count,
 
     // ai_assistant_id: formData.ai_assistant_id || null,
     // ai_assistant_name: formData.ai_assistant_name || null,
@@ -131,6 +137,7 @@ function CreateCampaignForm({
     // retry_interval: Number(formData.retry_interval),
 
     time_zone: formData.time_zone || null,
+    csvId:crypto.randomUUID()
   };
 
   const handleCloseWithReset = () => {
@@ -178,13 +185,13 @@ function CreateCampaignForm({
       closeIcon={<CloseCircleOutlined size={24} />}
       footer={
         <div className={styles.footer}>
-          {currentStep > 1 && (
+          {currentStep > 0 && (
             <button className={styles.secondaryButton} onClick={handlePrevious}>
               Previous Page
             </button>
           )}
           <div className={styles.footerSpacer} />
-          {currentStep < 4 ? (
+          {currentStep < 2 ? (
             <button className={styles.primaryButton} onClick={handleNext}>
               Save & Proceed
             </button>
@@ -208,7 +215,7 @@ function CreateCampaignForm({
       }
     >
       {/* Step Indicator */}
-      <div className={styles.stepIndicator}>
+      {/* <div className={styles.stepIndicator}>
         <div className={styles.stepLabels}>
           {STEPS.map((step) => (
             <span
@@ -233,30 +240,36 @@ function CreateCampaignForm({
             />
           ))}
         </div>
-      </div>
+      </div> */}
 
+       <Steps
+        current={currentStep}
+        onChange={onChangeStep}
+        items={STEPS}
+      />
+    
       {/* Content */}
       <div className={styles.content}>
-        {currentStep === 1 && (
+        {currentStep === 0 && (
           <Step1CampaignBasics
             formData={formData}
             updateFormData={updateFormData}
           />
         )}
-        {currentStep === 2 && (
+        {/* {currentStep === 2 && (
           <Step2LeadsResources
             formData={formData}
             updateFormData={updateFormData}
           />
-        )}
-        {currentStep === 3 && (
+        )} */}
+        {currentStep === 1 && (
           <Step3Scheduling
             formData={formData}
-            updateFormData={updateFormData}
+            updateFormData={updateFormData} 
             toggleDay={toggleDay}
           />
         )}
-        {currentStep === 4 && <Step4Review formData={formData} />}
+        {currentStep === 2 && <Step4Review formData={formData} />}
       </div>
     </Modal>
   );

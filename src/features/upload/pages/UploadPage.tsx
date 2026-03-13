@@ -4,10 +4,10 @@ import { useMutation } from '@tanstack/react-query';
 import styles from './UploadPage.module.scss';
 import { Modal } from '@/components/ui/Modal/Modal';
 import { useUploadContactsMutation } from '../components/api/useUploadContacts';
-import { triggerCalls } from '../components/services/triggerCall.service';
 import UploadFile from '@/components/upload/UploadFile';
 import { useTruncateFileMutation } from '../components/api/useTruncateFile';
 import { Spinner } from '@/components/ui/Spinner/Spinner';
+import { useTriggerCalls } from '../components/api/useTriggerCall';
 
 export default function UploadPage({
   open,
@@ -21,10 +21,8 @@ export default function UploadPage({
 
   const fileMutation = useUploadContactsMutation();
   const truncateFileMutation = useTruncateFileMutation();
+  const triggerCallsMutation = useTriggerCalls()
 
-  const triggerCallsMutation = useMutation({
-    mutationFn: triggerCalls,
-  });
 
   const handleFileUpload = async (selectedFile: File | null) => {
     if (!selectedFile) {

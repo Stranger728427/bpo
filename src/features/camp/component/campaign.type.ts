@@ -3,7 +3,7 @@ export type CampaignStatus = 'active' | 'paused' | 'completed';
 export type CampaignType = 'onboarding' | 'lead_generation' | 'reminder' | 'survey';
 
 export interface Campaigns {
-  id: string | null;
+  campaignId: string | null;
   name: string;
   status: CampaignStatus;
   type: CampaignType;
@@ -76,7 +76,7 @@ export interface CampaignDetailResponse {
 }
 
 export interface CreateCampaignRequest {
-  id:string | null;
+  campaignId:string | null;
   name: string | null;
   // status: CampaignStatus | null;
   type: CampaignType | null;
@@ -84,7 +84,7 @@ export interface CreateCampaignRequest {
   start_date: string | null;
   end_date: string | null;
 
-  contacts_count: number | null;
+  // contacts_count: number | null;
 
   // ai_assistant_id: string | null;
   // ai_assistant_name: string | null;

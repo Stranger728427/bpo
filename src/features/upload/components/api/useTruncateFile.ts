@@ -1,8 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
-import { truncateFile } from "../services/truncateFile.service";
+import { UploadService } from "../upload.service";
 
 export const useTruncateFileMutation = () => {
+  const uploadService = UploadService();
   return useMutation({
-    mutationFn: truncateFile,
+    mutationFn: uploadService.truncateFile,
   });
 };
