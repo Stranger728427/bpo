@@ -1,13 +1,12 @@
 import styles from './CreateCampaignForm.module.scss';
 import { CreateCampaignRequest } from '../campaign.type';
 import { Select } from '@/components/ui/Select/Select';
-import { ClockCircleOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { ClockCircleOutlined } from '@ant-design/icons';
 import { IoIosCheckmark } from 'react-icons/io';
 import { LuCalendar } from 'react-icons/lu';
 import { TbTimezone } from 'react-icons/tb';
-import { Flex, TimePicker, Tooltip, Typography } from 'antd';
+import { TimePicker } from 'antd';
 import dayjs from 'dayjs';
-import { BsArrowCounterclockwise } from 'react-icons/bs';
 import { TIME_ZONES } from '@/components/constants/Constant';
 
 interface Props {

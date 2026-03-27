@@ -11,12 +11,9 @@ import {
   SEARCH_TYPE,
 } from '../components/call.types';
 import ViewCall from './ViewCall';
-import { Button, Empty, Flex, Input, Pagination } from 'antd';
-import UploadPage from '@/features/upload/pages/UploadPage';
-import TriggerCallDetails from '../components/triggerCallsView/TriggerCallDetails';
+import { Empty, Flex, Input, Pagination } from 'antd';
 import { TableSkeleton } from '@/components/TableSkeleton/TableSkeleton';
 import { Badge } from '@/components/ui/Badge/Badge';
-import { IoCloudUploadOutline } from 'react-icons/io5';
 import { Select } from '@/components/ui/Select/Select';
 import { useDebounce } from '@/components/Hooks/useDebounce';
 import { DEBOUNCE_TIMEOUT } from '@/components/constants/Constant';
@@ -24,8 +21,6 @@ import { formatCallTriggeredAt } from '@/utils/helpers/helper';
 
 const CallPage = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [isUplodaModalOpen, setIsUploadModalOpen] = useState<boolean>(false);
-  const [isTriggerModalOpen, setIsTriggerModalOpen] = useState<boolean>(false);
   const [selectedCallId, setSelectedCallId] = useState<string | null>(null);
   const [pageSize, setPageSize] = useState<number>(10);
   const [searchType, setSearchType] = useState<SearchType>(SEARCH_TYPE.NAME);
@@ -43,10 +38,9 @@ const CallPage = () => {
     };
   }, [currentPage, pageSize, debouncedSearchValue, searchType]);
 
-  const { getCallLogs, getTriggerCall } = useCall(
+  const { getCallLogs } = useCall(
     selectedCallId as string,
     param,
-    isTriggerModalOpen
   );
 
   const callLogs = getCallLogs?.data?.data;
@@ -105,25 +99,6 @@ const CallPage = () => {
                 suffix={<PiMagnifyingGlass />}
               />
             </Flex>
-
-            {isTriggerModalOpen && (
-              <TriggerCallDetails
-                open={isTriggerModalOpen}
-                onClose={() => setIsTriggerModalOpen(false)}
-                callsTrigger={getTriggerCall}
-              />
-            )}
-
-            <Button type="primary" onClick={() => setIsUploadModalOpen(true)}>
-              <IoCloudUploadOutline />
-              <span>Upload Contacts</span>
-            </Button>
-            {isUplodaModalOpen && (
-              <UploadPage
-                open={isUplodaModalOpen}
-                onClose={() => setIsUploadModalOpen(false)}
-              />
-            )}
           </div>
         </div>
       </Banner>

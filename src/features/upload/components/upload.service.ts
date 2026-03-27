@@ -27,9 +27,9 @@ const uploadContacts = async (
   );
 };
 
-const truncateFile = async () => {
-    return baseApi().delete(`/${LLM_TYPE}/campaign/{campaign_id}/leads`);
-}
+const deleteFile = async (id: string) => {
+  return baseApi().delete(`/${LLM_TYPE}/campaign/${id}/leads`);
+};
 
 const triggerCalls = async (id:string) => {
     return baseApi().post(`/${LLM_TYPE}/get_num_feedback`,{campaign_id:id});
@@ -37,7 +37,7 @@ const triggerCalls = async (id:string) => {
 
     return {
         uploadContacts,
-        truncateFile,
+        deleteFile,
         triggerCalls,
     }
 }

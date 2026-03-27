@@ -53,7 +53,7 @@ export const useFileUpload = ({campaignId}:UseFileUploadProps) => {
 
   const handleTruncateFile = useCallback(async () => {
     try {
-      await truncateFileMutation.mutateAsync();
+      await truncateFileMutation.mutateAsync(campaignId!);
       message.success('File removed successfully');
       resetState();
     } catch {
