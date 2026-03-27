@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { signOut } from '@/app/store/Hooks/userAuth';
 import { AuthService } from '@/features/auth/components/services/authService.service';
-import { API_TYPE } from '@/components/constants/Constant';
 
 /**
  * Auth endpoints that should NEVER trigger a token refresh on 401.
@@ -30,7 +29,7 @@ const refreshTokenFlow = async (): Promise<void> => {
 export const useApi = () => {
   const baseApi = (headers?: Record<any, any>) => {
     const instance = axios.create({
-      baseURL: `${import.meta.env.VITE_API_BASE_URL}/${API_TYPE}`,
+      baseURL: import.meta.env.VITE_API_BASE_URL,
       timeout: 120000,
       withCredentials: true,
       headers: {
