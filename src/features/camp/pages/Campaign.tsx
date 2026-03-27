@@ -24,17 +24,14 @@ import UploadPage from '@/features/upload/pages/UploadPage';
 function Campaign() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [isUplodaModalOpen, setIsUploadModalOpen] = useState<boolean>(false);
 
   const [campaignAction, setCampaignAction] = useState<{
-    type: 'view' | 'edit' | null;
-    campaignId?: string;
+    type: 'view' | 'edit' | 'create' | 'upload' | null;
+    campaignId: string | null;
   }>({
     type: null,
+    campaignId: null,
   });
-
-  const [isCreateCampaignModalOpen, setIsCreateCampaignModalOpen] =
-    useState(false);
 
   const [searchType, setSearchType] = useState<SearchType>(SEARCH_TYPE.NAME);
   const [searchValue, setSearchValue] = useState<string>('');
@@ -67,31 +64,47 @@ function Campaign() {
     setCurrentPage(1);
   };
 
-  const getActionItems = (campaign: Campaigns) => [
-    {
-      key: 'view',
-      label: 'View Details',
-      onClick: () =>
-        setCampaignAction({
-          type: 'view',
-          campaignId: campaign?.campaignId!,
-        }),
-    },
-    {
-      key: 'edit',
-      label: 'Edit',
-      onClick: () =>
-        setCampaignAction({
-          type: 'edit',
-          campaignId: campaign?.campaignId!,
-        }),
-    },
-    {
-      key: 'upload',
-      label: 'Upload Csv',
-      onClick: () => setIsUploadModalOpen(true),
-    },
-  ];
+  const getActionItems = (campaign: any) => {
+    const id = campaign?.id || campaign?.campaignId;
+    return [
+      {
+        key: 'view',
+        label: 'View Details',
+        onClick: () => {
+          if (!id) return;
+
+          setCampaignAction({
+            type: 'view',
+            campaignId: id,
+          });
+        },
+      },
+      {
+        key: 'edit',
+        label: 'Edit',
+        onClick: () => {
+          if (!id) return;
+
+          setCampaignAction({
+            type: 'edit',
+            campaignId: id,
+          });
+        },
+      },
+      {
+        key: 'upload',
+        label: 'Upload Csv',
+        onClick: () => {
+          if (!id) return;
+
+          setCampaignAction({
+            type: 'upload',
+            campaignId: id,
+          });
+        },
+      },
+    ];
+  };
 
   const pagination = {
     current: currentPage,
@@ -156,6 +169,8 @@ function Campaign() {
     },
   ];
 
+  
+
   return (
     <div className={styles.container}>
       <Banner>
@@ -190,7 +205,9 @@ function Campaign() {
             {/* Create Campaign */}
             <button
               className={styles.createButton}
-              onClick={() => setIsCreateCampaignModalOpen(true)}
+              onClick={() =>
+                setCampaignAction({ type: 'create', campaignId: null })
+              }
             >
               <HiOutlinePlus size={18} />
               <span>Create Campaign</span>
@@ -226,26 +243,25 @@ function Campaign() {
 
       {/* View Campaign */}
       <CampaignDetailModal
-        isOpen={campaignAction.type === 'view'}
-        campaignId={campaignAction.campaignId!}
-        onClose={() => setCampaignAction({ type: null })}
+        isOpen={campaignAction.type === 'view' && !!campaignAction.campaignId}
+        campaignId={campaignAction.campaignId}
+        onClose={() => setCampaignAction({ type: null, campaignId: null })}
       />
 
       {/* Create / Edit Campaign */}
       <CreateCampaignForm
-        isOpen={isCreateCampaignModalOpen}
-        selectedCampaignId={
-          campaignAction.type === 'edit' ? campaignAction.campaignId : null
+        isOpen={
+          campaignAction.type === 'create' ||
+          (campaignAction.type === 'edit' && !!campaignAction.campaignId)
         }
-        onClose={() => {
-          setCampaignAction({ type: null });
-          setIsCreateCampaignModalOpen(false);
-        }}
+        selectedCampaignId={campaignAction.campaignId}
+        onClose={() => setCampaignAction({ type: null, campaignId: null })}
       />
-      <UploadPage
-        open={isUplodaModalOpen}
-        onClose={() => setIsUploadModalOpen(false)}
-      />
+    <UploadPage
+  open={campaignAction.type === 'upload' && !!campaignAction.campaignId}
+  selectedCampaignId={campaignAction.campaignId}
+  onClose={() => setCampaignAction({ type: null, campaignId: null })}
+/>
     </div>
   );
 }

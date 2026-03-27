@@ -1,7 +1,7 @@
 import { tenantName } from "@/utils/helpers/helper";
 
 // /openai
-export const API_TYPE = 'gemini'
+export const LLM_TYPE = 'gemini'
 
 export const DEBOUNCE_TIMEOUT = 500;
 

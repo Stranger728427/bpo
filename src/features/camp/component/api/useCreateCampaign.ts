@@ -1,16 +1,21 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CreateCampaignRequest } from "../campaign.type";
 import { CampaignService } from "../campaign.service";
+import { message } from "antd";
 
+export const useCampaignCreate = () => {
+  const queryClient = useQueryClient();
 
-export const useCampaignCreate = () => useMutation({
-    mutationKey: ['campaigns'],
+  return useMutation({
+    mutationKey: ['campaign_create'],
     mutationFn: (campaign: CreateCampaignRequest) => CampaignService().createCampaign(campaign),
     onSuccess: () => {
-        console.log("Campaign created successfully");
+        queryClient.invalidateQueries({ queryKey: ['campaigns'] });
+        message.success("Campaign created successfully");
     },
     onError: (error) => {
-        console.log("Failed to create campaign", error);
+        console.error("Failed to create campaign", error);
+        message.error("Failed to create campaign");
     }
-})
-    
+  });
+};

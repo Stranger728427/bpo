@@ -23,7 +23,6 @@ const STEPS = [
   { title: 'Review & Create' },
 ];
 
-
 function CreateCampaignForm({
   isOpen,
   onClose,
@@ -31,6 +30,7 @@ function CreateCampaignForm({
 }: CreateCampaignModalProps) {
   const initialState: CreateCampaignRequest = {
     campaignId: null,
+    csvId: null,
     name: null,
     // status: 'active',
     type: null,
@@ -55,7 +55,6 @@ function CreateCampaignForm({
     // retry_interval: null,
 
     time_zone: null,
-    csvId: null,
   };
 
   const [currentStep, setCurrentStep] = useState(0);
@@ -68,7 +67,7 @@ function CreateCampaignForm({
   const campaign = data?.campaign;
 
   const handleNext = () => {
-    if (currentStep < 3) setCurrentStep(currentStep + 1);
+    if (currentStep < 4) setCurrentStep(currentStep + 1);
   };
 
   const handlePrevious = () => {
@@ -79,40 +78,27 @@ function CreateCampaignForm({
     setCurrentStep(value);
   };
 
+  // Populate formData for edit mode; for create mode seed the stable IDs
   useEffect(() => {
     if (!campaign) return;
-    setFormData({
-      campaignId: campaign?.id,
-      name: campaign.name ?? null,
-      // status: campaign.status ?? 'active',
-      type: campaign.type ?? null,
-
-      start_date: campaign.start_date ?? null,
-      end_date: campaign.end_date ?? null,
-
-      // contacts_count: campaign.contacts_count ?? 0,
-
-      // ai_assistant_id: campaign.ai_assistant_id ?? null,
-      // ai_assistant_name: campaign.ai_assistant_name ?? null,
-      // leads_list_id: campaign.leads_list_id ?? null,
-
-      // phone_number: campaign.phone_number ?? null,
-
-      calling_days: campaign.calling_days ?? [],
-
-      start_time: campaign.start_time ?? null,
-      end_time: campaign.end_time ?? null,
-
-      // retry_attempts: campaign.retry_attempts ?? null,
-      // retry_interval: campaign.retry_interval ?? null,
-
-      time_zone: campaign.time_zone ?? null,
-      csvId:campaign?.id
+      setFormData({
+        campaignId: campaign?.id,
+        csvId:campaign?.id,
+        name: campaign.name ?? null,
+        type: campaign.type ?? null,
+        start_date: campaign.start_date ?? null,
+        end_date: campaign.end_date ?? null,
+        calling_days: campaign.calling_days ?? [],
+        start_time: campaign.start_time ?? null,
+        end_time: campaign.end_time ?? null,
+        time_zone: campaign.time_zone ?? null,
+      
     });
   }, [campaign]);
 
   const payload: CreateCampaignRequest = {
-    campaignId: crypto.randomUUID(),
+    campaignId: formData.campaignId || crypto.randomUUID(),
+    csvId: formData.csvId || crypto.randomUUID(),
     name: formData.name,
     // status: 'active',
     type: formData.type,
@@ -120,31 +106,19 @@ function CreateCampaignForm({
     start_date: formData.start_date || null,
     end_date: formData.end_date || null,
 
-    // contacts_count: formData.contacts_count,
-
-    // ai_assistant_id: formData.ai_assistant_id || null,
-    // ai_assistant_name: formData.ai_assistant_name || null,
-    // leads_list_id: formData.leads_list_id || null,
-
-    // phone_number: formData.phone_number,
-
     calling_days: formData.calling_days,
 
     start_time: formData.start_time || null,
     end_time: formData.end_time || null,
 
-    // retry_attempts: Number(formData.retry_attempts),
-    // retry_interval: Number(formData.retry_interval),
-
     time_zone: formData.time_zone || null,
-    csvId:crypto.randomUUID()
   };
 
   const handleCloseWithReset = () => {
     onClose();
-    setCurrentStep(1);
+    setCurrentStep(0);
     setFormData(initialState);
-  };
+      };
 
   const handleSubmit = async () => {
     try {
@@ -178,7 +152,7 @@ function CreateCampaignForm({
 
   return (
     <Modal
-      open={isOpen ? isOpen : Boolean(selectedCampaignId)}
+      open={isOpen}
       loading={isUpdating}
       width={900}
       onCancel={handleCloseWithReset}
@@ -214,40 +188,8 @@ function CreateCampaignForm({
         </div>
       }
     >
-      {/* Step Indicator */}
-      {/* <div className={styles.stepIndicator}>
-        <div className={styles.stepLabels}>
-          {STEPS.map((step) => (
-            <span
-              key={step.id}
-              className={`${styles.stepLabel} ${currentStep >= step.id ? styles.active : ''}`}
-            >
-              {step.label}
-            </span>
-          ))}
-        </div>
-        <div className={styles.stepProgress}>
-          <div className={styles.progressLine}>
-            <div
-              className={styles.progressFill}
-              style={{ width: `${((currentStep - 1) / 3) * 100}%` }}
-            />
-          </div>
-          {STEPS.map((step) => (
-            <div
-              key={step.id}
-              className={`${styles.stepDot} ${currentStep >= step.id ? styles.active : ''} ${currentStep === step.id ? styles.current : ''}`}
-            />
-          ))}
-        </div>
-      </div> */}
+      <Steps current={currentStep} onChange={onChangeStep} items={STEPS} />
 
-       <Steps
-        current={currentStep}
-        onChange={onChangeStep}
-        items={STEPS}
-      />
-    
       {/* Content */}
       <div className={styles.content}>
         {currentStep === 0 && (
@@ -265,7 +207,7 @@ function CreateCampaignForm({
         {currentStep === 1 && (
           <Step3Scheduling
             formData={formData}
-            updateFormData={updateFormData} 
+            updateFormData={updateFormData}
             toggleDay={toggleDay}
           />
         )}

@@ -4,27 +4,28 @@ import {
   Campaigns,
   CreateCampaignRequest,
 } from './campaign.type';
+import { LLM_TYPE } from '@/components/constants/Constant';
 
 export const CampaignService = () => {
   const { baseApi } = useApi();
 
   const createCampaign= async(campaign: CreateCampaignRequest) => {
-    const response = await baseApi().post('/campaign', campaign);
+    const response = await baseApi().post(`/${LLM_TYPE}/campaign`, campaign);
     return response.data;
   }
 
   const getAllCampaignsService= async (params?: CampaignListFilters) => {
-    const response = await baseApi().get('/campaign', { params });
+    const response = await baseApi().get(`/${LLM_TYPE}/campaign`, { params });
     return response.data;
   }
 
   const getCampaignByIdService=  async (id: string) => {
-    const response = await baseApi().get(`/campaign/${id}`);
+    const response = await baseApi().get(`/${LLM_TYPE}/campaign/${id}`);
     return response.data;
   }
 
-  const updateCampaignService= async (id: string, payload: Campaigns) => {
-    const response = await baseApi().put(`campaign/${id}`, payload);
+  const updateCampaignService= async (payload: Campaigns) => {
+    const response = await baseApi().post(`/${LLM_TYPE}/campaign/update`, payload);
     return response.data;
   }
   return{
