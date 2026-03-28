@@ -99,9 +99,9 @@ const CallPage = () => {
       key: 'intent',
     },
     {
-      title: 'Duration',
-      dataIndex: 'call_duration',
-      key: 'call_duration',
+      title: 'Campaign',
+      dataIndex: 'campaign_name',
+      key: 'campaign_name',
     },
     {
       title: 'Triggered At',

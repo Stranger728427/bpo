@@ -1,4 +1,3 @@
-import { Button } from 'antd';
 import styles from './UploadPage.module.scss';
 import { Modal } from '@/components/ui/Modal/Modal';
 import UploadFile from '@/components/upload/UploadFile';
@@ -19,11 +18,8 @@ export default function UploadPage({
     file,
     fileInputRef,
     handleFileUpload,
-    handleTriggerCalls,
     handleTruncateFile,
     isUploading,
-    isTriggering,
-    // isTruncating,
     isSuccess,
     resetState,
   } = useFileUpload({campaignId:selectedCampaignId! });
@@ -82,25 +78,6 @@ export default function UploadPage({
         </div>
 
         {/* Trigger Section - Only after upload success */}
-        {isSuccess && file && (
-          <div className={styles.compactCard}>
-            <h3 className={styles.cardTitle}>
-              Start calling uploaded contacts. Calls will be triggered
-              automatically based on the uploaded schedule.
-            </h3>
-
-            <Button
-              danger
-              type="primary"
-              block
-              loading={isTriggering}
-              disabled={isTriggering}
-              onClick={handleTriggerCalls}
-            >
-              Trigger Calls
-            </Button>
-          </div>
-        )}
       </div>
     </Modal>
   );
