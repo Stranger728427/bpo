@@ -188,7 +188,8 @@ function Campaign() {
                   }
                   options={[
                     { label: 'Patient name', value: SEARCH_TYPE.NAME },
-                    { label: 'Phone number', value: SEARCH_TYPE.PHONE },
+                    { label: 'Status', value: SEARCH_TYPE.STATUS },
+                    { label: 'Campaign Type', value: SEARCH_TYPE.TYPE }
                   ]}
                 />
 

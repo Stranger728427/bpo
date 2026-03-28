@@ -58,9 +58,11 @@ export interface CampaignCallOutcome {
 }
 
 export interface CampaignListFilters {
-  search?: string;
+  name?: string;
+  status?: string;
+  type?: string;
   page?: number;
-  pageSize?: number;
+  page_size?: number;
 }
 
 export interface CampaignListResponse {
