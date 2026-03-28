@@ -61,7 +61,7 @@ const ViewCall = ({ isOpen, onClose, selectedCallId }: CallLogDrawerProps) => {
                 <span className={styles.infoValue}>
                   {field.label.toLowerCase() === 'status' ? (
                     <Badge variant={getStatusVariant(field.value as string)}>
-                      {getStatusLabel(field.value)}
+                      {getStatusLabel(field?.value)}
                     </Badge>
                   ) : (
                     field.value || '-'
