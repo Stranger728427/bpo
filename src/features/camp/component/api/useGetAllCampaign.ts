@@ -6,6 +6,6 @@ export const useGetAllCampaign = (params?: CampaignListFilters) => useQuery<Camp
     queryKey: ['campaigns', params],
     queryFn: () => CampaignService().getAllCampaignsService(params),
     refetchOnWindowFocus:true,
-    enabled: !!params?.page && !!params?.pageSize
+    enabled: !!params?.page && !!params?.page_size
     
 })
