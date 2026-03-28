@@ -10,7 +10,7 @@ pipelines:
           script:
             - node -v
             - npm -v
-            - echo "VITE_API_BASE_URL="$STAGE_BASE_URL" > .env
+            - echo "VITE_API_BASE_URL=$STAGE_BASE_URL" > .env
             - cat .env
             - npm ci
             - npm run build
