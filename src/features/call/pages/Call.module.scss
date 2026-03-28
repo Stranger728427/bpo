@@ -116,6 +116,7 @@
 }
 
 // Table
+// Table
 .tableWrapper {
   flex: 1;
   background-color: $color-white;
@@ -132,38 +133,45 @@
 
 .table {
   width: 100%;
-  border-collapse: collapse;
   font-size: $font-size-sm;
 
-  thead {
-    th {
-      padding: 14px 20px;
-      text-align: left;
-      font-weight: $font-weight-medium;
-      color: $color-gray-500;
-      background-color: $color-white;
-      border-bottom: 1px solid $color-gray-100;
-      white-space: nowrap;
-      font-size: 13px;
+  :global(.ant-table) {
+    border: none;
+  }
+
+  :global(.ant-table-container) {
+    border: none;
+  }
+
+  :global(.ant-table-thead > tr > th) {
+    padding: $spacing-md;
+    text-align: left;
+    font-weight: $font-weight-medium;
+    color: $color-gray-500;
+    background-color: $color-white;
+    border-bottom: none !important;
+    white-space: nowrap;
+    font-size: 13px;
+  }
+
+  :global(.ant-table-tbody > tr) {
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: $color-gray-50;
     }
   }
 
-  tbody {
-    tr {
-      @include transition;
+  :global(.ant-table-tbody > tr > td) {
+    padding: $spacing-md;
+    color: $color-gray-700;
+    white-space: nowrap;
+    border-bottom: none !important;
+    font-size: 13px;
+  }
 
-      &:hover {
-        background-color: $color-gray-50;
-      }
-    }
-
-    td {
-      padding: 14px 20px;
-      color: $color-gray-700;
-      white-space: nowrap;
-      // border-bottom: 1px solid $color-gray-100;
-      font-size: 13px;
-    }
+  :global(.ant-table-cell) {
+    border: none !important;
   }
 }
 

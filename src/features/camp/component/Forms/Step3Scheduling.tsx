@@ -8,6 +8,7 @@ import { TbTimezone } from 'react-icons/tb';
 import { TimePicker } from 'antd';
 import dayjs from 'dayjs';
 import { TIME_ZONES } from '@/components/constants/Constant';
+import { useMemo } from 'react';
 
 interface Props {
   formData: CreateCampaignRequest;
@@ -18,6 +19,25 @@ interface Props {
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
+  const startTime = useMemo(
+    () => (formData?.start_time ? dayjs(formData.start_time, 'HH:mm') : null),
+    [formData?.start_time]
+  );
+
+  const disabledTime = useMemo(() => {
+    if (!startTime) return undefined;
+
+    const startHour = startTime.hour();
+    const startMinute = startTime.minute();
+
+    return () => ({
+      disabledHours: () => [...Array(startHour).keys()],
+
+      disabledMinutes: (selectedHour: number) =>
+        selectedHour === startHour ? [...Array(startMinute).keys()] : [],
+    });
+  }, [startTime]);
+
   return (
     <div className={styles.stepContent}>
       {' '}
@@ -73,9 +93,8 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
                 <span className={styles.timeLabel}>From</span>
 
                 <TimePicker
-                  use12Hours
                   size="large"
-                  format="hh:mm A"
+                  format="hh:mm"
                   className={styles.timePicker}
                   suffixIcon={<ClockCircleOutlined />}
                   value={
@@ -85,7 +104,7 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
                   }
                   onChange={(time) =>
                     updateFormData({
-                      start_time: time ? time.format('HH:mm A') : '',
+                      start_time: time ? time.format('HH:mm') : '',
                     })
                   }
                 />
@@ -98,21 +117,22 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
 
               <div className={styles.timeInput}>
                 <span className={styles.timeLabel}>To</span>
-
                 <TimePicker
-                  use12Hours
                   size="large"
-                  format="hh:mm A"
+                  format="HH:mm"
                   className={styles.timePicker}
                   suffixIcon={<ClockCircleOutlined />}
-                  disabled={!formData.start_time}
+                  disabled={!startTime}
                   value={
                     formData?.end_time
-                      ? dayjs(formData.end_time, 'HH:mm A')
+                      ? dayjs(formData.end_time, 'HH:mm')
                       : null
                   }
+                  disabledTime={disabledTime}
                   onChange={(time) =>
-                    updateFormData({ end_time: time?.format('HH:mm A') })
+                    updateFormData({
+                      end_time: time ? time.format('HH:mm') : '',
+                    })
                   }
                 />
               </div>
@@ -122,8 +142,8 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
 
         {/* Retry Settings */}
         {/* <div className={styles.section}> */}
-          {/* Header */}
-          {/* <Flex gap={12} align="flex-start" className={styles.sectionHeader}>
+        {/* Header */}
+        {/* <Flex gap={12} align="flex-start" className={styles.sectionHeader}>
             <div className={styles.sectionIcon}>
               <BsArrowCounterclockwise size={20} />
             </div>
@@ -140,10 +160,10 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
             </div>
           </Flex> */}
 
-          {/* Form Fields */}
-          {/* <div className={styles.formGridHalf}> */}
-            {/* Retry Attempts */}
-            {/* <div className={styles.formGroup}>
+        {/* Form Fields */}
+        {/* <div className={styles.formGridHalf}> */}
+        {/* Retry Attempts */}
+        {/* <div className={styles.formGroup}>
               <label className={styles.label}>
                 Retry Attempts
                 <Tooltip title="Number of retry attempts">
@@ -165,8 +185,8 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
               />
             </div> */}
 
-            {/* Retry Interval */}
-            {/* <div className={styles.formGroup}>
+        {/* Retry Interval */}
+        {/* <div className={styles.formGroup}>
               <label className={styles.label}>
                 Retry Interval (Hours)
                 <Tooltip title="Delay between retries">
@@ -190,8 +210,8 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
               />
             </div> */}
 
-            {/* Status */}
-            {/* <Flex vertical flex={1} className={styles.formGroup}>
+        {/* Status */}
+        {/* <Flex vertical flex={1} className={styles.formGroup}>
               <label className={styles.label}>
                 Status
                 <Tooltip title="Campaign status">
@@ -210,9 +230,9 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
                 onChange={(value) => updateFormData({ status: value })}
               />
             </Flex> */}
-          {/* </div> */}
         {/* </div> */}
-      
+        {/* </div> */}
+
         {/* Time Zone */}
         <div className={styles.section}>
           <div className={styles.sectionHeader}>

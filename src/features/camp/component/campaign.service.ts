@@ -25,7 +25,7 @@ export const CampaignService = () => {
   }
 
   const updateCampaignService= async (payload: Campaigns) => {
-    const response = await baseApi().post(`/${LLM_TYPE}/campaign/update`, payload);
+    const response = await baseApi().put(`/${LLM_TYPE}/campaign/update`, payload);
     return response.data;
   }
   return{

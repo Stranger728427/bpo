@@ -1,13 +1,10 @@
 import { Badge } from '@components/ui/Badge/Badge';
 import styles from './CampaignDetailModal.module.scss';
-import { HugeiconsCall02 } from '@/components/icons/CallLogs.icons';
-import { StreamlineFlexDollarIncrease } from '@/components/icons/ConversionRateIcon';
 
 import { useCampaignById } from '@/features/camp/component/api/useCampaignById';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { Modal } from '@/components/ui/Modal/Modal';
-import { Statistic, Descriptions, Card, Tag } from 'antd';
-import { IoTimeOutline } from 'react-icons/io5';
+import { Descriptions, Card, Tag } from 'antd';
 
 interface CampaignDetailModalProps {
   isOpen: boolean;
@@ -85,7 +82,7 @@ export function CampaignDetailModal({
         {/* Stats Cards */}
         <div className={styles.statsGrid}>
           {/* Contacts Count */}
-          <div className={styles.statCard}>
+          {/* <div className={styles.statCard}>
             <div className={styles.statHeader}>
               <span className={styles.statLabel}>Contacts</span>
               <HugeiconsCall02 />
@@ -94,10 +91,10 @@ export function CampaignDetailModal({
               value={campaign?.contacts_count ?? 0}
               className={styles.statValue}
             />
-          </div>
+          </div> */}
 
           {/* Calls Made */}
-          <div className={styles.statCard}>
+          {/* <div className={styles.statCard}>
             <div className={styles.statHeader}>
               <span className={styles.statLabel}>Calls made</span>
               <HugeiconsCall02 />
@@ -106,10 +103,10 @@ export function CampaignDetailModal({
               value={campaign?.calls_made ?? 0}
               className={styles.statValue}
             />
-          </div>
+          </div> */}
 
           {/* Conversion Rate */}
-          <div className={styles.statCard}>
+          {/* <div className={styles.statCard}>
             <div className={styles.statHeader}>
               <span className={styles.statLabel}>Conversion rate</span>
               <StreamlineFlexDollarIncrease />
@@ -121,28 +118,28 @@ export function CampaignDetailModal({
               className={styles.statValue}
             />
 
-            {/* <div className={styles.statChange}>
+             <div className={styles.statChange}>
               {performance?.conversion_rate_change ?? 0}%
-            </div> */}
-          </div>
+            </div>
+          </div> */}
 
           {/* Spend */}
-          <div className={styles.statCard}>
+          {/* <div className={styles.statCard}>
             <div className={styles.statHeader}>
               <span className={styles.statLabel}>Avg call duration</span>
               <IoTimeOutline size={24} />
             </div>
 
-            {/* <Statistic
+            <Statistic
               value={performance?.avg_call_duration ?? '00:00'}
               valueStyle={{ fontSize: 28, fontWeight: 700 }}
               className={styles.statValue}
-            /> */}
+            />
 
-            {/* <div className={styles.statChange}>
+            <div className={styles.statChange}>
               {performance?.avg_call_duration_change ?? 0}%
-            </div> */}
-          </div>
+            </div>
+          </div> */}
 
           {/* Average Cost */}
           {/* <div className={styles.statCard}>
