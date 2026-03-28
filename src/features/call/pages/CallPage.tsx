@@ -137,6 +137,7 @@ const CallPage = () => {
                 options={[
                   { label: 'Patient name', value: SEARCH_TYPE.NAME },
                   { label: 'Phone number', value: SEARCH_TYPE.PHONE },
+                  { label: 'Campaign', value: SEARCH_TYPE.CAMPAIGN }
                 ]}
               />
               <Input
