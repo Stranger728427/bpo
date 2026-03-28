@@ -8,7 +8,8 @@ export interface CallTranscriptItem {
 export const SEARCH_TYPE = {
   NAME: 'name',
   STATUS:'status',
-  TYPE:'type'
+  TYPE:'type',
+  PHONE:'number'
 
 } as const;
 
