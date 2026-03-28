@@ -5,5 +5,7 @@ import { CampaignService } from "../campaign.service";
 export const useGetAllCampaign = (params?: CampaignListFilters) => useQuery<CampaignListResponse>({
     queryKey: ['campaigns', params],
     queryFn: () => CampaignService().getAllCampaignsService(params),
+    refetchOnWindowFocus:true,
+    enabled: !!params?.page && !!params?.pageSize
     
 })
