@@ -9,7 +9,8 @@ export const SEARCH_TYPE = {
   NAME: 'name',
   STATUS:'status',
   TYPE:'type',
-  PHONE:'number'
+  PHONE:'number',
+  CAMPAIGN:'campaign_name'
 
 } as const;
 
