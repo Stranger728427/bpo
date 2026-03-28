@@ -9,7 +9,7 @@ import { useCampaignCreate } from '../api/useCreateCampaign';
 import { Modal } from '@/components/ui/Modal/Modal';
 import { useUpdateCampaign } from '../api/useUpdateCampaign';
 import { useCampaignById } from '../api/useCampaignById';
-import { Steps } from 'antd';
+import { Skeleton, Steps } from 'antd';
 
 interface CreateCampaignModalProps {
   isOpen: boolean;
@@ -60,7 +60,8 @@ function CreateCampaignForm({
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<CreateCampaignRequest>(initialState);
 
-  const { mutateAsync: CreateCampaign } = useCampaignCreate();
+  const { mutateAsync: CreateCampaign, isPending: isCreating } =
+    useCampaignCreate();
   const { mutateAsync: updateCampaign, isPending: isUpdating } =
     useUpdateCampaign();
   const { data } = useCampaignById(selectedCampaignId!);
@@ -78,23 +79,30 @@ function CreateCampaignForm({
     setCurrentStep(value);
   };
 
-  // Populate formData for edit mode; for create mode seed the stable IDs
+  // Reset form when opening in create mode
   useEffect(() => {
-    if (!campaign) return;
-      setFormData({
-        campaignId: campaign?.id,
-        csvId:campaign?.id,
-        name: campaign.name ?? null,
-        type: campaign.type ?? null,
-        start_date: campaign.start_date ?? null,
-        end_date: campaign.end_date ?? null,
-        calling_days: campaign.calling_days ?? [],
-        start_time: campaign.start_time ?? null,
-        end_time: campaign.end_time ?? null,
-        time_zone: campaign.time_zone ?? null,
-      
+    if (isOpen && !selectedCampaignId) {
+      setCurrentStep(0);
+      setFormData(initialState);
+    }
+  }, [isOpen, selectedCampaignId]);
+
+  // Populate formData for edit mode only
+  useEffect(() => {
+    if (!campaign || !selectedCampaignId) return;
+    setFormData({
+      campaignId: campaign?.id,
+      csvId: campaign?.id,
+      name: campaign.name ?? null,
+      type: campaign.type ?? null,
+      start_date: campaign.start_date ?? null,
+      end_date: campaign.end_date ?? null,
+      calling_days: campaign.calling_days ?? [],
+      start_time: campaign.start_time ?? null,
+      end_time: campaign.end_time ?? null,
+      time_zone: campaign.time_zone ?? null,
     });
-  }, [campaign]);
+  }, [campaign, selectedCampaignId]);
 
   const payload: CreateCampaignRequest = {
     campaignId: formData.campaignId || crypto.randomUUID(),
@@ -118,7 +126,7 @@ function CreateCampaignForm({
     onClose();
     setCurrentStep(0);
     setFormData(initialState);
-      };
+  };
 
   const handleSubmit = async () => {
     try {
@@ -150,13 +158,20 @@ function CreateCampaignForm({
     }));
   };
 
+  const getButtonText = () => {
+  if (isCreating || isUpdating) {
+    return selectedCampaignId ? 'Updating...' : 'Creating...';
+  }
+  return selectedCampaignId ? 'Update Campaign' : 'Create Campaign';
+};
+
   return (
     <Modal
       open={isOpen}
-      loading={isUpdating}
       width={900}
       onCancel={handleCloseWithReset}
       closeIcon={<CloseCircleOutlined size={24} />}
+      destroyOnHidden
       footer={
         <div className={styles.footer}>
           {currentStep > 0 && (
@@ -170,9 +185,13 @@ function CreateCampaignForm({
               Save & Proceed
             </button>
           ) : (
-            <button className={styles.primaryButton} onClick={handleSubmit}>
-              {selectedCampaignId ? 'Update Campaign' : 'Create Campaign'}
-            </button>
+          <button
+  className={styles.primaryButton}
+  onClick={handleSubmit}
+  disabled={isCreating || isUpdating}
+>
+  {getButtonText()}
+</button>
           )}
         </div>
       }
@@ -192,27 +211,33 @@ function CreateCampaignForm({
 
       {/* Content */}
       <div className={styles.content}>
-        {currentStep === 0 && (
-          <Step1CampaignBasics
-            formData={formData}
-            updateFormData={updateFormData}
-          />
-        )}
+  {isCreating || isUpdating ? (
+    <Skeleton active paragraph={{ rows: 6 }} />
+  ) : (
+    <>
+      {currentStep === 0 && (
+        <Step1CampaignBasics
+          formData={formData}
+          updateFormData={updateFormData}
+        />
+      )}
         {/* {currentStep === 2 && (
           <Step2LeadsResources
             formData={formData}
             updateFormData={updateFormData}
           />
         )} */}
-        {currentStep === 1 && (
-          <Step3Scheduling
-            formData={formData}
-            updateFormData={updateFormData}
-            toggleDay={toggleDay}
-          />
-        )}
-        {currentStep === 2 && <Step4Review formData={formData} />}
-      </div>
+      {currentStep === 1 && (
+        <Step3Scheduling
+          formData={formData}
+          updateFormData={updateFormData}
+          toggleDay={toggleDay}
+        />
+      )}
+      {currentStep === 2 && <Step4Review formData={formData} />}
+    </>
+  )}
+</div>
     </Modal>
   );
 }

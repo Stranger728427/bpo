@@ -94,7 +94,7 @@ function Step3Scheduling({ formData, updateFormData, toggleDay }: Props) {
 
                 <TimePicker
                   size="large"
-                  format="hh:mm"
+                  format="HH:mm"
                   className={styles.timePicker}
                   suffixIcon={<ClockCircleOutlined />}
                   value={

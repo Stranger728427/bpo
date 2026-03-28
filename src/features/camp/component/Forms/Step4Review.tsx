@@ -43,7 +43,14 @@ export function Step4Review({ formData }: Props) {
                   <div className={styles.summaryRow}>
                     <span className={styles.summaryLabel}>Date:</span>
                     <span className={styles.summaryValue}>
-                      {[formData?.start_date, formData?.end_date].join('-') ||
+                      {[formData?.start_date, formData?.end_date].join(' - ') ||
+                        '-'}
+                    </span>
+                  </div>
+                   <div className={styles.summaryRow}>
+                    <span className={styles.summaryLabel}>Type:</span>
+                    <span className={styles.summaryValue}>
+                      { formData.type||
                         '-'}
                     </span>
                   </div>

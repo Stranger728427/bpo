@@ -17,5 +17,6 @@ export const TIME_ZONES = [
   { value: 'America/Phoenix', label: 'Mountain Time - Arizona' },
   { value: 'America/Los_Angeles', label: 'Pacific Time (PT)' },
   { value: 'America/Anchorage', label: 'Alaska Time (AKT)' },
-  { value: 'Pacific/Honolulu', label: 'Hawaii Time (HT)' }
+  { value: 'Pacific/Honolulu', label: 'Hawaii Time (HT)' },
+  { value: 'Asia/Kolkata', label: 'India Standard Time (IST)' }
 ];

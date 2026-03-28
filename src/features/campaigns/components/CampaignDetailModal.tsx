@@ -47,6 +47,7 @@ export function CampaignDetailModal({
       closeIcon={<CloseCircleOutlined size={24} />}
       footer={null}
       width={1000}
+      destroyOnHidden
       title={
         <div className={styles.header}>
           <div className={styles.headerContent}>
