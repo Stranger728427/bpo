@@ -6,7 +6,7 @@ import { Campaigns } from "../campaign.type";
 import { CampaignService } from "../campaign.service";
 
 interface UpdateCampaignParams {
-    id: string | null;
+    id: string;
     campaign: Campaigns;
 }
 
