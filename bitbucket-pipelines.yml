@@ -1,6 +1,6 @@
 pipelines:
   branches:
-    pipeline_change:
+    main:
       - step:
           name: Frontend CI for Stage
           runs-on:
@@ -11,23 +11,6 @@ pipelines:
             - node -v
             - npm -v
             - echo "VITE_API_BASE_URL=$VITE_API_BASE_URL" > .env
-            - cat .env
-            - npm ci
-            - npm run build
-            # copy the build
-            - sudo cp -r dist/* /var/www/html/
-            - sudo systemctl restart nginx
-
-      - step:
-          name: Frontend CI for Prod
-          runs-on:
-            - self.hosted
-            - linux.shell
-            - prod
-          script:
-            - node -v
-            - npm -v
-            - echo "VITE_API_BASE_URL=$PROD_BASE_URL" > .env
             - cat .env
             - npm ci
             - npm run build
