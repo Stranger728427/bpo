@@ -1,4 +1,3 @@
-import { LLM_TYPE } from "@/components/constants/Constant";
 import { useApi } from "@/lib/axios/interceptors";
 
 
@@ -8,16 +7,16 @@ export const UploadService = () => {
 const uploadContacts = async (
   file: File,
   campaignId: string,
-  csvId: string
+  // csvId: string
 ) => {
   const formData = new FormData();
 
   formData.append('file', file);
   formData.append('campaign_id', campaignId);
-  formData.append('csvId', csvId);
+  // formData.append('csvId', csvId);
 
   return baseApi().post(
-    `/${LLM_TYPE}/campaign/upload-leads`,
+    `/campaigns/upload-leads`,
     formData,
     {
       headers: {
@@ -28,11 +27,11 @@ const uploadContacts = async (
 };
 
 const deleteFile = async (id: string) => {
-  return baseApi().delete(`/${LLM_TYPE}/campaign/${id}/leads`);
+  return baseApi().delete(`/campaigns/${id}/leads`);
 };
 
 const triggerCalls = async (id:string) => {
-    return baseApi().post(`/${LLM_TYPE}/get_num_feedback`,{campaign_id:id});
+    return baseApi().post(`/get_num_feedback`,{campaign_id:id});
 }
 
     return {

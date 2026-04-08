@@ -78,30 +78,13 @@ export interface CampaignDetailResponse {
 }
 
 export interface CreateCampaignRequest {
-  campaignId:string | null;
   name: string | null;
-  // status: CampaignStatus | null;
   type: CampaignType | null;
-
   start_date: string | null;
   end_date: string | null;
-
-  // contacts_count: number | null;
-
-  // ai_assistant_id: string | null;
-  // ai_assistant_name: string | null;
-
-  // leads_list_id: string | null;
-
-  // phone_number: string | null;
-
   calling_days: string[] | null;
   start_time: string | null;
   end_time: string | null;
-
-  // retry_attempts: number | null;
-  // retry_interval: number | null;
-
   time_zone: string | null;
   csvId?:string | null;
 }

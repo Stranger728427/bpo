@@ -23,7 +23,7 @@ import UploadPage from '@/features/upload/pages/UploadPage';
 
 function Campaign() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(20);
 
   const [campaignAction, setCampaignAction] = useState<{
     type: 'view' | 'edit' | 'create' | 'upload' | null;
@@ -91,18 +91,18 @@ function Campaign() {
           });
         },
       },
-      {
-        key: 'upload',
-        label: 'Upload Csv',
-        onClick: () => {
-          if (!id) return;
+      // {
+      //   key: 'upload',
+      //   label: 'Upload Csv',
+      //   onClick: () => {
+      //     if (!id) return;
 
-          setCampaignAction({
-            type: 'upload',
-            campaignId: id,
-          });
-        },
-      },
+      //     setCampaignAction({
+      //       type: 'upload',
+      //       campaignId: id,
+      //     });
+      //   },
+      // },
     ];
   };
 
@@ -111,7 +111,7 @@ function Campaign() {
     total: totalCampaigns,
     pageSize: pageSize,
     showSizeChanger: true,
-    pageSizeOptions: [10, 20, 50, 100],
+    pageSizeOptions: [20, 50, 100],
     onChange: (page: number, pageSize: number) => {
       setCurrentPage(page);
       setPageSize(pageSize);
