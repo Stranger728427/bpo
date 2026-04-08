@@ -15,7 +15,6 @@ export const useUploadContactsMutation = () => {
       uploadService.uploadContacts(
         data.file,
         data.campaignId!,
-        data.csvId
       ),
   });
 };

@@ -13,7 +13,6 @@ import { Skeleton, Steps, Tooltip } from 'antd';
 import { useFileUpload } from '@/features/upload/useFileUpload';
 import UploadFile from '@/components/upload/UploadFile';
 import { Spinner } from '@/components/ui/Spinner/Spinner';
-import { useNavigate } from 'react-router-dom';
 
 interface CreateCampaignModalProps {
   isOpen: boolean;
@@ -40,8 +39,7 @@ function CreateCampaignForm({
 
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<CreateCampaignRequest>(initialState);
-  const campaignId = useRef<string>('');
-  const navigate = useNavigate();
+  const campaignId = useRef<string | null>(null);
 
   const {
     mutateAsync: CreateCampaign,
@@ -148,6 +146,7 @@ function CreateCampaignForm({
     setCurrentStep(0);
     setFormData(initialState);
     resetState();
+    campaignId.current=null;
   };
 
   const handleSubmit = async () => {
