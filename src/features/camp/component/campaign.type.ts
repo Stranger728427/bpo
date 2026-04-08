@@ -78,6 +78,7 @@ export interface CampaignDetailResponse {
 }
 
 export interface CreateCampaignRequest {
+  campaignId?:string;
   name: string | null;
   type: CampaignType | null;
   start_date: string | null;

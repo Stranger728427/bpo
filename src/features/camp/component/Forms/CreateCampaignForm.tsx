@@ -105,6 +105,7 @@ function CreateCampaignForm({
   useEffect(() => {
     if (!campaign || !selectedCampaignId) return;
     setFormData({
+      campaignId:campaign?.id,
       csvId: campaign?.id,
       name: campaign?.name ?? null,
       type: campaign?.type ?? null,
@@ -126,7 +127,7 @@ function CreateCampaignForm({
 //   // }, 500); // slight delay ensures trigger
 // };
 
-  const payload: CreateCampaignRequest = {
+  const payload:Omit<CreateCampaignRequest,'campaignId'> = {
     csvId: formData.csvId || crypto.randomUUID(),
     name: formData.name,
     type: formData.type,
@@ -154,7 +155,10 @@ function CreateCampaignForm({
       if (selectedCampaignId) {
         await updateCampaign({
           id: selectedCampaignId,
-          campaign: payload as Campaigns,
+          campaign: {
+            ...formData,
+            campaignId:selectedCampaignId
+          } as Campaigns
         });
       } else {
          const res = await CreateCampaign(payload);

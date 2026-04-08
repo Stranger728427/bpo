@@ -9,7 +9,7 @@ import { LLM_TYPE } from '@/components/constants/Constant';
 export const CampaignService = () => {
   const { baseApi } = useApi();
 
-  const createCampaign= async(campaign: CreateCampaignRequest) => {
+  const createCampaign= async(campaign: Omit<CreateCampaignRequest,'campaignId'>) => {
     const response = await baseApi().post(`/campaigns`, campaign,{params:{model:LLM_TYPE}});
     return response.data;
   }

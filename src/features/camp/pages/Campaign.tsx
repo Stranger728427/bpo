@@ -19,7 +19,6 @@ import { SEARCH_TYPE, SearchType } from '@/features/call/components/call.types';
 import { useDebounce } from '@/components/Hooks/useDebounce';
 import { DEBOUNCE_TIMEOUT } from '@/components/constants/Constant';
 import { TableSkeleton } from '@/components/TableSkeleton/TableSkeleton';
-import UploadPage from '@/features/upload/pages/UploadPage';
 
 function Campaign() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -169,8 +168,6 @@ function Campaign() {
     },
   ];
 
-  
-
   return (
     <div className={styles.container}>
       <Banner>
@@ -189,7 +186,7 @@ function Campaign() {
                   options={[
                     { label: 'Patient name', value: SEARCH_TYPE.NAME },
                     { label: 'Status', value: SEARCH_TYPE.STATUS },
-                    { label: 'Campaign Type', value: SEARCH_TYPE.TYPE }
+                    { label: 'Campaign Type', value: SEARCH_TYPE.TYPE },
                   ]}
                 />
 
@@ -253,16 +250,16 @@ function Campaign() {
       <CreateCampaignForm
         isOpen={
           campaignAction.type === 'create' ||
-          (campaignAction.type === 'edit' && !!campaignAction.campaignId)
+          (campaignAction.type === 'edit' && !!campaignAction?.campaignId)
         }
         selectedCampaignId={campaignAction.campaignId}
         onClose={() => setCampaignAction({ type: null, campaignId: null })}
       />
-    <UploadPage
+      {/* <UploadPage
   open={campaignAction.type === 'upload' && !!campaignAction.campaignId}
   selectedCampaignId={campaignAction.campaignId}
   onClose={() => setCampaignAction({ type: null, campaignId: null })}
-/>
+/> */}
     </div>
   );
 }
