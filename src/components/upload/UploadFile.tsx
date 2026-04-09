@@ -16,7 +16,7 @@ type UploadFileProps = {
     href: string;
   };
   FileIcon?: React.ReactNode;
-  onRemoveFile?: () => Promise<void>; // truncate from parent
+  onRemoveFile: () => void // truncate from parent
   isRemoving?: boolean; // loading state from parent
 };
 

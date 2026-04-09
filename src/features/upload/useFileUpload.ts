@@ -1,76 +1,66 @@
 import { useRef, useState, useCallback } from 'react';
-import { useTriggerCalls } from './components/api/useTriggerCall';
 import { useTruncateFileMutation } from './components/api/useTruncateFile';
 import { useUploadContactsMutation } from './components/api/useUploadContacts';
-import { message } from 'antd';
 
 type UseFileUploadProps = {
-  campaignId?: string;
-//   onUploadSuccess?: (csvId: string) => void;
+  campaignId: string;
 };
 
-export const useFileUpload = ({campaignId}:UseFileUploadProps) => {
+export const useFileUpload = ({ campaignId }: UseFileUploadProps) => {
   const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fileMutation = useUploadContactsMutation();
   const truncateFileMutation = useTruncateFileMutation();
-  const triggerCallsMutation = useTriggerCalls();
 
   const resetState = useCallback(() => {
     setFile(null);
     fileMutation.reset();
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
+
+    const input = fileInputRef.current;
+    if (!input) return;
+
+    input.value = '';
   }, [fileMutation]);
 
-  const handleFileUpload = useCallback(async (selectedFile: File | null) => {
-    if (!selectedFile) {
-      resetState();
-      return;
-    }
+  const handleFileUpload = useCallback(
+    (selectedFile: File | null) => {
+      if (!selectedFile) {
+        resetState();
+        return;
+      }
 
-    try {
-      await fileMutation.mutateAsync({file:selectedFile, campaignId, csvId:crypto.randomUUID()});
-      message.success('Contacts uploaded successfully');
-      setFile(selectedFile);
-    } catch {
-      message.error('Upload failed');
-      resetState();
-    }
-  }, [fileMutation, resetState]);
+      fileMutation.mutate(
+        { file: selectedFile, campaignId },
+        {
+          onSuccess: () => {
+            setFile(selectedFile);
+          },
+          onError: () => {
+            resetState();
+          },
+        }
+      );
+    },
+    [fileMutation, resetState, campaignId]
+  );
 
-  const handleTriggerCalls = useCallback(async () => {
-    try {
-      await triggerCallsMutation.mutateAsync(campaignId!);
-      message.success('Calls triggered successfully');
-      resetState();
-    } catch {
-      message.error('Trigger calls failed');
-    }
-  }, [triggerCallsMutation, resetState]);
-
-  const handleTruncateFile = useCallback(async () => {
-    try {
-      await truncateFileMutation.mutateAsync(campaignId!);
-      message.success('File removed successfully');
-      resetState();
-    } catch {
-      message.error('Remove file failed');
-    }
-  }, [truncateFileMutation, resetState]);
+  const handleTruncateFile = useCallback(() => {
+    truncateFileMutation.mutate(campaignId!, {
+      onSuccess: () => {
+        resetState();
+      },
+    });
+  }, [truncateFileMutation, resetState, campaignId]);
 
   return {
     file,
     fileInputRef,
     handleFileUpload,
-    handleTriggerCalls,
     handleTruncateFile,
     resetState,
     isUploading: fileMutation.isPending,
-    isTriggering: triggerCallsMutation.isPending,
     isTruncating: truncateFileMutation.isPending,
-    isSuccess:fileMutation?.isSuccess,
+    isSuccess: fileMutation?.isSuccess,
   };
 };

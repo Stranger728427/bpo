@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import { UploadService } from '../upload.service';
+import { message } from 'antd';
 
 type UploadContactsPayload = {
   file: File;
-  campaignId: string | undefined;
-  csvId: string;
+  campaignId: string;
 };
 
 export const useUploadContactsMutation = () => {
@@ -16,5 +16,15 @@ export const useUploadContactsMutation = () => {
         data.file,
         data.campaignId!,
       ),
+
+    onSuccess: () => {
+      message.success('Contacts uploaded successfully');
+    },
+
+    onError: () => {
+      message.error('Upload failed');
+    },
   });
+
+
 };
