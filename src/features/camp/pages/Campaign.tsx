@@ -32,7 +32,7 @@ function Campaign() {
     campaignId: null,
   });
 
-  const [searchType, setSearchType] = useState<SearchType>(SEARCH_TYPE.NAME);
+  const [searchType, setSearchType] = useState<SearchType>(SEARCH_TYPE.CAMPAIGN);
   const [searchValue, setSearchValue] = useState<string>('');
 
   const debouncedSearchValue = useDebounce(searchValue, DEBOUNCE_TIMEOUT);
@@ -178,25 +178,23 @@ function Campaign() {
           <div className={styles.actions}>
             <div className={styles.filters}>
               <Flex gap="small">
-                <Select
-                  value={searchType}
-                  onChange={(value: SearchType) =>
-                    handleSearchTypeChange(value)
-                  }
-                  options={[
-                    { label: 'Patient name', value: SEARCH_TYPE.NAME },
-                    { label: 'Status', value: SEARCH_TYPE.STATUS },
-                    { label: 'Campaign Type', value: SEARCH_TYPE.TYPE },
-                  ]}
-                />
+               <Select
+  value={searchType}
+  onChange={(value: SearchType) => handleSearchTypeChange(value)}
+  options={[
+    { label: 'Campaign', value: SEARCH_TYPE.CAMPAIGN },
+    { label: 'Status', value: SEARCH_TYPE.STATUS },
+    { label: 'Type', value: SEARCH_TYPE.TYPE },
+  ]}
+/>
 
-                <Input
-                  allowClear
-                  placeholder={`Search by ${searchType}`}
-                  value={searchValue}
-                  onChange={(e) => onSearch(e.target.value)}
-                  suffix={<PiMagnifyingGlass />}
-                />
+<Input
+  allowClear
+  placeholder={`Search by ${searchType}`}
+  value={searchValue}
+  onChange={(e) => onSearch(e.target.value)}
+  suffix={<PiMagnifyingGlass />}
+/>
               </Flex>
             </div>
 

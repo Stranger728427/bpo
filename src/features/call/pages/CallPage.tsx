@@ -24,7 +24,7 @@ const CallPage = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedCallId, setSelectedCallId] = useState<string | null>(null);
   const [pageSize, setPageSize] = useState<number>(10);
-  const [searchType, setSearchType] = useState<SearchType>(SEARCH_TYPE.NAME);
+  const [searchType, setSearchType] = useState<SearchType>(SEARCH_TYPE.PATIENT);
   const [searchValue, setSearchValue] = useState<string>('');
 
   const debouncedSearchValue = useDebounce(searchValue, DEBOUNCE_TIMEOUT);
@@ -135,8 +135,8 @@ const CallPage = () => {
                 value={searchType}
                 onChange={(value: SearchType) => handleSearchTypeChange(value)}
                 options={[
-                  { label: 'Patient name', value: SEARCH_TYPE.NAME },
-                  { label: 'Phone number', value: SEARCH_TYPE.PHONE },
+                  { label: 'Patient', value: SEARCH_TYPE.PATIENT },
+                  { label: 'Phone', value: SEARCH_TYPE.PHONE },
                   { label: 'Campaign', value: SEARCH_TYPE.CAMPAIGN }
                 ]}
               />
