@@ -1,4 +1,3 @@
-// campaign.schema.ts
 import { z } from "zod";
 
 export const campaignSchema = z.object({
