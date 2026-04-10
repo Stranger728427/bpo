@@ -1,6 +1,6 @@
 import { useCall } from '../components/useCall';
 import { Drawer } from '@/components/ui/Drawer/Drawer';
-import { Button, Divider, Popover, Skeleton, Tooltip } from 'antd';
+import { Button, Divider, Popover, Skeleton } from 'antd';
 import styles from '../pages/ViewCall.module.scss';
 import { AiOutlineUser } from 'react-icons/ai';
 import { InfoCircleOutlined } from '@ant-design/icons';
@@ -30,6 +30,7 @@ const ViewCall = ({ isOpen, onClose, selectedCallId }: CallLogDrawerProps) => {
     { label: 'Patient Name', value: call?.patient_name },
     { label: 'Phone Number', value: call?.phone_number },
     { label: 'Status', value: call?.status },
+    {label:'Campaign', value: call?.campaign_name},
     { label: 'Call Duration', value: call?.call_duration },
     { label: 'Intent', value: call?.intent },
     {
@@ -45,6 +46,7 @@ const ViewCall = ({ isOpen, onClose, selectedCallId }: CallLogDrawerProps) => {
       placement="right"
       className={styles.drawer}
       title="Call Details"
+      
     >
       {getCallLogsById?.isLoading ? (
         <Skeleton active paragraph={{ rows: 6 }} />
@@ -59,7 +61,7 @@ const ViewCall = ({ isOpen, onClose, selectedCallId }: CallLogDrawerProps) => {
                 <span className={styles.infoValue}>
                   {field.label.toLowerCase() === 'status' ? (
                     <Badge variant={getStatusVariant(field.value as string)}>
-                      {getStatusLabel(field.value)}
+                      {getStatusLabel(field?.value!)}
                     </Badge>
                   ) : (
                     field.value || '-'
@@ -72,7 +74,6 @@ const ViewCall = ({ isOpen, onClose, selectedCallId }: CallLogDrawerProps) => {
           {/* Summary Action (Below Info Section) */}
           {call?.summary && (
             <div className={styles.summaryWrapper}>
-              <Tooltip title="Click to view summary">
                 <Popover
                   content={
                     <div className={styles.summaryContent}>{call.summary}</div>
@@ -82,6 +83,7 @@ const ViewCall = ({ isOpen, onClose, selectedCallId }: CallLogDrawerProps) => {
                   placement="bottom"
                 >
                   <Button
+                  title='click to view summary'
                     type="text"
                     icon={<InfoCircleOutlined />}
                     className={styles.summaryButton}
@@ -89,7 +91,6 @@ const ViewCall = ({ isOpen, onClose, selectedCallId }: CallLogDrawerProps) => {
                     View Summary
                   </Button>
                 </Popover>
-              </Tooltip>
             </div>
           )}
 

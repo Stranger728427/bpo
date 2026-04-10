@@ -3,7 +3,6 @@ import { Badge } from '@components/ui/Badge/Badge';
 import { ActionMenu } from '@components/ui/ActionMenu/ActionMenu';
 import { Dropdown } from '@components/ui/Dropdown/Dropdown';
 import type { MenuProps } from 'antd';
-import { CreateCampaignModal } from '../components/CreateCampaignModal';
 import styles from './CampaignsPage.module.scss';
 import Banner from '@/components/layout/Banner/Banner';
 
@@ -128,17 +127,6 @@ const CalendarIcon = () => (
   </svg>
 );
 
-const PlusIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path
-      d="M8 3V13M3 8H13"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-    />
-  </svg>
-);
-
 const ChevronDownIcon = () => (
   <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
     <path
@@ -221,7 +209,6 @@ function CampaignsPage() {
   //   null
   // );
   // const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [campaignTypeFilter, setCampaignTypeFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [dateFilter, setDateFilter] = useState('today');
@@ -336,13 +323,13 @@ function CampaignsPage() {
             </Dropdown>
 
             {/* Create Campaign Button */}
-            <button
+            {/* <button
               className={styles.createButton}
               onClick={() => setIsCreateModalOpen(true)}
             >
               <PlusIcon />
               <span>Create Campaign</span>
-            </button>
+            </button> */}
           </div>
         </div>
       </Banner>
@@ -434,10 +421,10 @@ function CampaignsPage() {
       )} */}
 
       {/* Create Campaign Modal */}
-      <CreateCampaignModal
+      {/* <CreateCampaignModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
-      />
+      /> */}
     </div>
   );
 }

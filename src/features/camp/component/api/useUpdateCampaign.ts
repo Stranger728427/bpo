@@ -14,14 +14,15 @@ export function useUpdateCampaign() {
   const queryClient = useQueryClient();
   const campaignService = CampaignService();
 
-  const updateCampaign = ({ id, campaign }: UpdateCampaignParams) =>
-    campaignService.updateCampaignService(id, campaign);
+  const updateCampaign = ({ campaign }: UpdateCampaignParams) =>
+    campaignService.updateCampaignService(campaign);
 
   return useMutation({
     mutationFn: updateCampaign,
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['campaigns'] });
+      message.success('Campaign updated successfully');
     },
 
     onError: (error: AxiosError<any>) => {

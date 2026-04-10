@@ -3,7 +3,7 @@ import { Badge } from '@components/ui/Badge/Badge';
 import { ActionMenu } from '@components/ui/ActionMenu/ActionMenu';
 import styles from './Campaign.module.scss';
 import Banner from '@/components/layout/Banner/Banner';
-import { Pagination } from 'antd';
+import { Flex, Input, Pagination, Table } from 'antd';
 import { HiOutlinePlus } from 'react-icons/hi';
 import {
   Campaigns,
@@ -11,64 +11,162 @@ import {
   getStatusVariant,
 } from '../component/campaign.type';
 import { CampaignDetailModal } from '@/features/campaigns/components/CampaignDetailModal';
-import { CreateCampaignModal } from '@/features/campaigns/components/CreateCampaignModal';
 import { useGetAllCampaign } from '../component/api/useGetAllCampaign';
+import CreateCampaignForm from '../component/Forms/CreateCampaignForm';
+import { PiMagnifyingGlass } from 'react-icons/pi';
+import { Select } from '@/components/ui/Select/Select';
+import { SEARCH_TYPE, SearchType } from '@/features/call/components/call.types';
+import { useDebounce } from '@/components/Hooks/useDebounce';
+import { DEBOUNCE_TIMEOUT } from '@/components/constants/Constant';
+import { TableSkeleton } from '@/components/TableSkeleton/TableSkeleton';
 
 function Campaign() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const [selectedCampaignId, setSelectedCampaignId] = useState<string | null>(
-    null
-  );
-  const [isCreateCampaignModalOpen, setIsCreateCampaignModalOpen] =
-    useState(false);
+  const [pageSize, setPageSize] = useState(20);
+
+  const [campaignAction, setCampaignAction] = useState<{
+    type: 'view' | 'edit' | 'create' | 'upload' | null;
+    campaignId: string | null;
+  }>({
+    type: null,
+    campaignId: null,
+  });
+
+  const [searchType, setSearchType] = useState<SearchType>(SEARCH_TYPE.CAMPAIGN);
+  const [searchValue, setSearchValue] = useState<string>('');
+
+  const debouncedSearchValue = useDebounce(searchValue, DEBOUNCE_TIMEOUT);
 
   const param = useMemo(() => {
     return {
       page: currentPage,
       page_size: pageSize,
+      ...(debouncedSearchValue && {
+        [searchType]: debouncedSearchValue,
+      }),
     };
-  }, [currentPage, pageSize]);
+  }, [currentPage, pageSize, debouncedSearchValue, searchType]);
 
-  const { data: campaigns } = useGetAllCampaign(param);
+  const { data: campaigns, isPending } = useGetAllCampaign(param);
 
   const campaignData = campaigns?.data;
   const totalCampaigns = campaigns?.total;
 
-  const handleViewDetails = (id: string) => {
-    setSelectedCampaignId(id);
+  const handleSearchTypeChange = (value: SearchType) => {
+    setSearchType(value);
+    setSearchValue('');
+    setCurrentPage(1);
   };
 
-  const getActionItems = (campaign: Campaigns) => [
-    {
-      key: 'view',
-      label: 'View Details',
-      onClick: () => handleViewDetails(campaign?.id),
-    },
-    {
-      key: 'edit',
-      label: 'Edit',
-      onClick: () => setIsCreateCampaignModalOpen(true),
-    },
-    {
-      key: 'end',
-      label: 'End',
-      danger: true,
-      onClick: () => console.log('End', campaign.id),
-    },
-  ];
+  const onSearch = (value: string) => {
+    setSearchValue(value);
+    setCurrentPage(1);
+  };
+
+  const getActionItems = (campaign: any) => {
+    const id = campaign?.id || campaign?.campaignId;
+    return [
+      {
+        key: 'view',
+        label: 'View Details',
+        onClick: () => {
+          if (!id) return;
+
+          setCampaignAction({
+            type: 'view',
+            campaignId: id,
+          });
+        },
+      },
+      {
+        key: 'edit',
+        label: 'Edit',
+        onClick: () => {
+          if (!id) return;
+
+          setCampaignAction({
+            type: 'edit',
+            campaignId: id,
+          });
+        },
+      },
+      // {
+      //   key: 'upload',
+      //   label: 'Upload Csv',
+      //   onClick: () => {
+      //     if (!id) return;
+
+      //     setCampaignAction({
+      //       type: 'upload',
+      //       campaignId: id,
+      //     });
+      //   },
+      // },
+    ];
+  };
 
   const pagination = {
     current: currentPage,
     total: totalCampaigns,
     pageSize: pageSize,
     showSizeChanger: true,
-    pageSizeOptions: [10, 20, 50, 100],
+    pageSizeOptions: [20, 50, 100],
     onChange: (page: number, pageSize: number) => {
       setCurrentPage(page);
       setPageSize(pageSize);
     },
   };
+
+  const columns = [
+    {
+      title: 'Campaign',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status: string) => (
+        <Badge variant={getStatusVariant(status as any)}>
+          {getStatusLabel(status as any)}
+        </Badge>
+      ),
+    },
+    {
+      title: 'Type',
+      dataIndex: 'type',
+      key: 'type',
+    },
+    {
+      title: 'Start / End',
+      key: 'date',
+      render: (_: any, record: Campaigns) => (
+        <>
+          {record.start_date} - {record.end_date}
+        </>
+      ),
+    },
+    {
+      title: 'Conversion rate',
+      dataIndex: 'conversion_rate',
+      key: 'conversion_rate',
+      render: (value: number) => `${value}%`,
+    },
+    {
+      title: 'Spend',
+      dataIndex: 'spend',
+      key: 'spend',
+      render: (value: number) => `${value?.toLocaleString()} credits`,
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (_: any, record: Campaigns) => (
+        <ActionMenu items={getActionItems(record)} />
+      ),
+    },
+  ];
 
   return (
     <div className={styles.container}>
@@ -76,11 +174,36 @@ function Campaign() {
         {/* Header */}
         <div className={styles.header}>
           <h1 className={styles.title}>Campaign</h1>
+
           <div className={styles.actions}>
-            {/* Create Campaign Button */}
+            <div className={styles.filters}>
+              <Flex gap="small">
+               <Select
+  value={searchType}
+  onChange={(value: SearchType) => handleSearchTypeChange(value)}
+  options={[
+    { label: 'Campaign', value: SEARCH_TYPE.CAMPAIGN },
+    { label: 'Status', value: SEARCH_TYPE.STATUS },
+    { label: 'Type', value: SEARCH_TYPE.TYPE },
+  ]}
+/>
+
+<Input
+  allowClear
+  placeholder={`Search by ${searchType}`}
+  value={searchValue}
+  onChange={(e) => onSearch(e.target.value)}
+  suffix={<PiMagnifyingGlass />}
+/>
+              </Flex>
+            </div>
+
+            {/* Create Campaign */}
             <button
               className={styles.createButton}
-              onClick={() => setIsCreateCampaignModalOpen(true)}
+              onClick={() =>
+                setCampaignAction({ type: 'create', campaignId: null })
+              }
             >
               <HiOutlinePlus size={18} />
               <span>Create Campaign</span>
@@ -91,42 +214,18 @@ function Campaign() {
 
       {/* Table */}
       <div className={styles.tableWrapper}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Campaign</th>
-              <th>Status</th>
-              <th>Type</th>
-              <th>Start / End</th>
-              <th>Calls made</th>
-              <th>Conversion rate</th>
-              <th>Spend</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {campaignData?.map((campaign: Campaigns) => (
-              <tr key={campaign?.id}>
-                <td>{campaign?.name}</td>
-                <td>
-                  <Badge variant={getStatusVariant(campaign?.status)}>
-                    {getStatusLabel(campaign?.status)}
-                  </Badge>
-                </td>
-                <td>{campaign?.type}</td>
-                <td>
-                  {campaign?.start_date} – {campaign?.end_date}
-                </td>
-                <td>{campaign?.calls_made?.toLocaleString()}</td>
-                <td>{campaign?.conversion_rate}%</td>
-                <td>{campaign?.spend?.toLocaleString()} credits</td>
-                <td>
-                  <ActionMenu items={getActionItems(campaign)} />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {isPending ? (
+          <TableSkeleton rows={10} columns={7} />
+        ) : (
+          <Table
+            bordered={false}
+            columns={columns}
+            dataSource={campaignData}
+            rowKey="id"
+            pagination={false}
+            className={styles.table}
+          />
+        )}
       </div>
 
       {/* Footer */}
@@ -138,20 +237,27 @@ function Campaign() {
         </div>
       </div>
 
-      {/* Campaign Detail Modal */}
-      {selectedCampaignId && (
-        <CampaignDetailModal
-          isOpen={Boolean(selectedCampaignId)}
-          onClose={() => setSelectedCampaignId(null)}
-          campaignId={selectedCampaignId}
-        />
-      )}
-
-      {/* Create Campaign Form */}
-      <CreateCampaignModal
-        isOpen={isCreateCampaignModalOpen}
-        onClose={() => setIsCreateCampaignModalOpen(false)}
+      {/* View Campaign */}
+      <CampaignDetailModal
+        isOpen={campaignAction.type === 'view' && !!campaignAction.campaignId}
+        campaignId={campaignAction.campaignId}
+        onClose={() => setCampaignAction({ type: null, campaignId: null })}
       />
+
+      {/* Create / Edit Campaign */}
+      <CreateCampaignForm
+        isOpen={
+          campaignAction.type === 'create' ||
+          (campaignAction.type === 'edit' && !!campaignAction?.campaignId)
+        }
+        selectedCampaignId={campaignAction.campaignId}
+        onClose={() => setCampaignAction({ type: null, campaignId: null })}
+      />
+      {/* <UploadPage
+  open={campaignAction.type === 'upload' && !!campaignAction.campaignId}
+  selectedCampaignId={campaignAction.campaignId}
+  onClose={() => setCampaignAction({ type: null, campaignId: null })}
+/> */}
     </div>
   );
 }

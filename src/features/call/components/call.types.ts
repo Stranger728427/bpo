@@ -6,8 +6,11 @@ export interface CallTranscriptItem {
 }
 
 export const SEARCH_TYPE = {
-  NAME: 'name',
-  PHONE: 'number',
+  PATIENT: 'patient',
+  CAMPAIGN:'name',
+  STATUS:'status',
+  TYPE:'type',
+  PHONE:'phone',
 } as const;
 
 export type SearchType = (typeof SEARCH_TYPE)[keyof typeof SEARCH_TYPE];

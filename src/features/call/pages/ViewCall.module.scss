@@ -28,8 +28,8 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: $spacing-md;
-  gap: $spacing-md;
+  padding: $spacing-sm;
+  gap: $spacing-sm;
   overflow-y: auto;
 }
 
@@ -38,8 +38,7 @@
 .infoSection {
   display: flex;
   flex-direction: column;
-  gap: $spacing-sm;
-  padding: $spacing-md;
+  padding: $spacing-sm;
   background: $color-gray-50;
   border-radius: $border-radius-md;
 }

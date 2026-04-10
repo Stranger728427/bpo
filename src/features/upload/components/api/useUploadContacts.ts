@@ -1,8 +1,30 @@
 import { useMutation } from '@tanstack/react-query';
-import { uploadContacts } from '../services/uploadContacts.service';
+import { UploadService } from '../upload.service';
+import { message } from 'antd';
+
+type UploadContactsPayload = {
+  file: File;
+  campaignId: string;
+};
 
 export const useUploadContactsMutation = () => {
+  const uploadService = UploadService();
+
   return useMutation({
-    mutationFn: uploadContacts,
+    mutationFn: (data: UploadContactsPayload) =>
+      uploadService.uploadContacts(
+        data.file,
+        data.campaignId!,
+      ),
+
+    onSuccess: () => {
+      message.success('Contacts uploaded successfully');
+    },
+
+    onError: () => {
+      message.error('Upload failed');
+    },
   });
+
+
 };

@@ -1,79 +1,34 @@
-import { useState, useRef } from 'react';
-import { message, Button } from 'antd';
-import { useMutation } from '@tanstack/react-query';
 import styles from './UploadPage.module.scss';
 import { Modal } from '@/components/ui/Modal/Modal';
-import { useUploadContactsMutation } from '../components/api/useUploadContacts';
-import { triggerCalls } from '../components/services/triggerCall.service';
 import UploadFile from '@/components/upload/UploadFile';
-import { useTruncateFileMutation } from '../components/api/useTruncateFile';
 import { Spinner } from '@/components/ui/Spinner/Spinner';
+import { useFileUpload } from '../useFileUpload';
 
 export default function UploadPage({
   open,
   onClose,
+  selectedCampaignId,
+  
 }: {
   open: boolean;
   onClose: () => void;
+   selectedCampaignId: string | null;
 }) {
-  const [file, setFile] = useState<File | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const {
+    file,
+    fileInputRef,
+    handleFileUpload,
+    handleTruncateFile,
+    isUploading,
+    isSuccess,
+    resetState,
+  } = useFileUpload({campaignId:selectedCampaignId! });
 
-  const fileMutation = useUploadContactsMutation();
-  const truncateFileMutation = useTruncateFileMutation();
-
-  const triggerCallsMutation = useMutation({
-    mutationFn: triggerCalls,
-  });
-
-  const handleFileUpload = async (selectedFile: File | null) => {
-    if (!selectedFile) {
-      setFile(null);
-      return;
-    }
-
-    try {
-      await fileMutation.mutateAsync(selectedFile);
-      message.success('Contacts uploaded successfully');
-      setFile(selectedFile);
-    } catch {
-      message.error('Upload failed');
-      setFile(null);
-    }
-  };
-
-  const handleTriggerCalls = async () => {
-    try {
-      await triggerCallsMutation.mutateAsync();
-      message.success('Calls triggered successfully');
-      handleCloseAndReset();
-    } catch {
-      message.error('Trigger calls failed');
-    }
-  };
-
-  const handleTruncateFile = async () => {
-    try {
-      await truncateFileMutation.mutateAsync();
-      message.success('File removed successfully');
-      resetState();
-    } catch {
-      message.error('Remove file failed');
-    }
-  };
-
-  const resetState = () => {
-    setFile(null);
-    fileMutation.reset();
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  };
-
-  const handleCloseAndReset = () => {
+ const handleCloseAndReset = () => {
     resetState();
     onClose();
   };
+ 
 
   return (
     <Modal
@@ -89,7 +44,7 @@ export default function UploadPage({
         {/* Upload Section - Only before upload success */}
 
         <div className={styles.compactCard}>
-          {!fileMutation.isSuccess && !file && (
+          {!isSuccess && !file && (
             <>
               <h3 className={styles.cardTitle}>Upload Contacts</h3>
               <p className={styles.cardDescription}>
@@ -98,7 +53,7 @@ export default function UploadPage({
             </>
           )}
 
-          {fileMutation.isPending ? (
+          {isUploading ? (
             <div
               style={{
                 display: 'flex',
@@ -123,25 +78,6 @@ export default function UploadPage({
         </div>
 
         {/* Trigger Section - Only after upload success */}
-        {fileMutation.isSuccess && file && (
-          <div className={styles.compactCard}>
-            <h3 className={styles.cardTitle}>
-              Start calling uploaded contacts. Calls will be triggered
-              automatically based on the uploaded schedule.
-            </h3>
-
-            <Button
-              danger
-              type="primary"
-              block
-              loading={triggerCallsMutation.isPending}
-              disabled={triggerCallsMutation.isPending}
-              onClick={handleTriggerCalls}
-            >
-              Trigger Calls
-            </Button>
-          </div>
-        )}
       </div>
     </Modal>
   );
