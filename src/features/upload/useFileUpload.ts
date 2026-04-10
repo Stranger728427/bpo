@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 import { useTruncateFileMutation } from './components/api/useTruncateFile';
 import { useUploadContactsMutation } from './components/api/useUploadContacts';
 
@@ -9,9 +9,19 @@ type UseFileUploadProps = {
 export const useFileUpload = ({ campaignId }: UseFileUploadProps) => {
   const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+   const [progress, setProgress] = useState(0);
 
   const fileMutation = useUploadContactsMutation();
   const truncateFileMutation = useTruncateFileMutation();
+
+  // upload progress event
+   useEffect(() => {
+    const interval = setInterval(() => {
+      setProgress((prev) => (prev < 100 ? prev + 1 : 100));
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const resetState = useCallback(() => {
     setFile(null);
@@ -31,7 +41,7 @@ export const useFileUpload = ({ campaignId }: UseFileUploadProps) => {
       }
 
       fileMutation.mutate(
-        { file: selectedFile, campaignId },
+        { file: selectedFile, campaignId, onProgress:setProgress },
         {
           onSuccess: () => {
             setFile(selectedFile);
@@ -59,6 +69,7 @@ export const useFileUpload = ({ campaignId }: UseFileUploadProps) => {
     handleFileUpload,
     handleTruncateFile,
     resetState,
+    progress,
     isUploading: fileMutation.isPending,
     isTruncating: truncateFileMutation.isPending,
     isSuccess: fileMutation?.isSuccess,

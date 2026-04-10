@@ -1,5 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
-import { Campaigns, CreateCampaignRequest } from '../campaign.type';
+import {
+  CampaignFormValues,
+  Campaigns,
+  CampaignType,
+  step1Fields,
+  step2Fields,
+  step3Fields,
+} from '../campaign.type';
 import Step1CampaignBasics from './Step1CampaignBasics';
 import Step3Scheduling from './Step3Scheduling';
 import Step4Review from './Step4Review';
@@ -13,6 +20,9 @@ import { Skeleton, Steps, Tooltip } from 'antd';
 import { useFileUpload } from '@/features/upload/useFileUpload';
 import UploadFile from '@/components/upload/UploadFile';
 import { Spinner } from '@/components/ui/Spinner/Spinner';
+import { FormProvider, useForm } from 'react-hook-form';
+import { campaignSchema } from '../../schema/Campaign.schema';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 interface CreateCampaignModalProps {
   isOpen: boolean;
@@ -25,43 +35,26 @@ function CreateCampaignForm({
   onClose,
   selectedCampaignId,
 }: CreateCampaignModalProps) {
-  const initialState: CreateCampaignRequest = {
-    csvId: null,
-    name: null,
-    type: null,
-    start_date: null,
-    end_date: null,
-    calling_days: [],
-    start_time: null,
-    end_time: null,
-    time_zone: null,
-  };
-
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState<CreateCampaignRequest>(initialState);
   const campaignId = useRef<string | null>(null);
 
-  const {
-    mutateAsync: CreateCampaign,
-    isPending: isCreating,
-    isSuccess: isCreateCampaignCompleted,
-  } = useCampaignCreate();
-  const { mutateAsync: updateCampaign, isPending: isUpdating } =
-    useUpdateCampaign();
-  const { data } = useCampaignById(selectedCampaignId!);
-  const campaign = data?.campaign;
-
-  const handleNext = () => {
-    if (currentStep < 4) setCurrentStep(currentStep + 1);
+  const initialValues: CampaignFormValues = {
+    campaignId: '',
+    name: '',
+    type: '' as CampaignType,
+    start_date: '',
+    end_date: '',
+    calling_days: [],
+    start_time: '',
+    end_time: '',
+    time_zone: '',
   };
 
-  const handlePrevious = () => {
-    if (currentStep > 0) setCurrentStep(currentStep - 1);
-  };
-
-  const onChangeStep = (value: number) => {
-    setCurrentStep(value);
-  };
+  // React Hook Form setup
+  const methods = useForm<CampaignFormValues>({
+    resolver: zodResolver(campaignSchema),
+    defaultValues: initialValues,
+  });
 
   const {
     file,
@@ -73,7 +66,59 @@ function CreateCampaignForm({
     isSuccess,
   } = useFileUpload({ campaignId: campaignId.current || selectedCampaignId! });
 
-  console.log(campaignId)
+  const { handleSubmit, reset } = methods;
+
+  const {
+    mutateAsync: CreateCampaign,
+    isPending: isCreating,
+    isSuccess: isCreateCampaignCompleted,
+  } = useCampaignCreate();
+
+  const { mutateAsync: updateCampaign, isPending: isUpdating } =
+    useUpdateCampaign();
+
+  const { data } = useCampaignById(selectedCampaignId!);
+
+  const campaign = data?.campaign;
+
+  // Populate formData for edit mode only
+  useEffect(() => {
+    if (!campaign || !selectedCampaignId) return;
+
+    reset({
+      campaignId: campaign?.id,
+      name: campaign?.name ?? '',
+      type: campaign?.type ?? '',
+      start_date: campaign?.start_date ?? '',
+      end_date: campaign?.end_date ?? '',
+      calling_days: campaign?.calling_days ?? [],
+      start_time: campaign?.start_time ?? '',
+      end_time: campaign?.end_time ?? '',
+      time_zone: campaign?.time_zone ?? '',
+    });
+  }, [campaign, selectedCampaignId, reset]);
+
+  const handleNext = async () => {
+    let fieldsToValidate = [] as any;
+
+    if (currentStep === 0) fieldsToValidate = step1Fields;
+    if (currentStep === 1) fieldsToValidate = step2Fields;
+    if (currentStep === 2) fieldsToValidate = step3Fields;
+
+    const isValid = await methods.trigger(fieldsToValidate);
+
+    if (isValid) {
+      setCurrentStep((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentStep > 0) setCurrentStep(currentStep - 1);
+  };
+
+  const onChangeStep = (value: number) => {
+    setCurrentStep(value);
+  };
 
   const STEPS = [
     { title: 'Campaign Basics' },
@@ -81,103 +126,59 @@ function CreateCampaignForm({
     { title: 'Review & Create' },
     {
       title: (
-          <Tooltip
-            title={(!isCreateCampaignCompleted && !selectedCampaignId) && 'Please submit the form first'}
-          >
-            <span>Leads Upload</span>
-          </Tooltip>
+        <Tooltip
+          title={
+            !isCreateCampaignCompleted &&
+            !selectedCampaignId &&
+            'Please submit the form first'
+          }
+        >
+          <span>Leads Upload</span>
+        </Tooltip>
       ),
       disabled: !(selectedCampaignId || isCreateCampaignCompleted),
     },
   ];
 
-  // Reset form when opening in create mode
-  useEffect(() => {
-    if (isOpen && !selectedCampaignId) {
-      setCurrentStep(0);
-      setFormData(initialState);
-    }
-  }, [isOpen, selectedCampaignId]);
+  //   const onFileChange = (file: File | null) => {
+  //     if(!file) return;
+  //   handleFileUpload(file);
 
-  // Populate formData for edit mode only
-  useEffect(() => {
-    if (!campaign || !selectedCampaignId) return;
-    setFormData({
-      campaignId:campaign?.id,
-      name: campaign?.name ?? null,
-      type: campaign?.type ?? null,
-      start_date: campaign?.start_date ?? null,
-      end_date: campaign?.end_date ?? null,
-      calling_days: campaign?.calling_days ?? [],
-      start_time: campaign?.start_time ?? null,
-      end_time: campaign?.end_time ?? null,
-      time_zone: campaign?.time_zone ?? null,
-    });
-  }, [campaign, selectedCampaignId]);
-
-//   const onFileChange = (file: File | null) => {
-//     if(!file) return;
-//   handleFileUpload(file);
-  
-//   // setTimeout(() => {
-//     handleCloseWithReset();
-//   // }, 500); // slight delay ensures trigger
-// };
-
-  const payload:Omit<CreateCampaignRequest,'campaignId'> = {
-    name: formData.name,
-    type: formData.type,
-
-    start_date: formData.start_date || null,
-    end_date: formData.end_date || null,
-
-    calling_days: formData.calling_days,
-
-    start_time: formData.start_time || null,
-    end_time: formData.end_time || null,
-
-    time_zone: formData.time_zone || null,
-  };
+  //   // setTimeout(() => {
+  //     handleCloseWithReset();
+  //   // }, 500); // slight delay ensures trigger
+  // };
 
   const handleCloseWithReset = () => {
     onClose();
     setCurrentStep(0);
-    setFormData(initialState);
+    reset(initialValues);
     resetState();
-    campaignId.current=null;
+    campaignId.current = null;
   };
 
-  const handleSubmit = async () => {
+  const onSubmit = async (values: CampaignFormValues) => {
+    if (currentStep < 2) return;
+
     try {
       if (selectedCampaignId) {
         await updateCampaign({
           id: selectedCampaignId,
           campaign: {
-            ...formData,
-            campaignId:selectedCampaignId
-          } as Campaigns
+            ...values,
+            campaignId: selectedCampaignId,
+          } as Campaigns,
         });
       } else {
-         const res = await CreateCampaign(payload);
-         campaignId.current=res?.id;
+        const res = await CreateCampaign({
+          ...values,
+        });
+        campaignId.current = res?.id;
       }
       setCurrentStep(3);
     } catch (error) {
       console.error('Campaign submit error:', error);
     }
-  };
-
-  const updateFormData = (updates: Partial<CreateCampaignRequest>) => {
-    setFormData((prev) => ({ ...prev, ...updates }));
-  };
-
-  const toggleDay = (day: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      calling_days: prev?.calling_days?.includes(day)
-        ? prev?.calling_days?.filter((d) => d !== day)
-        : [...(prev?.calling_days || []), day],
-    }));
   };
 
   const getButtonText = () => {
@@ -194,31 +195,6 @@ function CreateCampaignForm({
       onCancel={handleCloseWithReset}
       closeIcon={<CloseCircleOutlined size={24} />}
       destroyOnHidden
-      footer={
-  currentStep === 3 ? null : (
-    <div className={styles.footer}>
-      {currentStep > 0 && (
-        <button className={styles.secondaryButton} onClick={handlePrevious}>
-          Previous Page
-        </button>
-      )}
-      <div className={styles.footerSpacer} />
-      {currentStep < 2 ? (
-        <button className={styles.primaryButton} onClick={handleNext}>
-          Save & Proceed
-        </button>
-      ) : (
-        <button
-          className={styles.primaryButton}
-          onClick={handleSubmit}
-          disabled={isCreating || isUpdating}
-        >
-          {getButtonText()}
-        </button>
-      )}
-    </div>
-  )
-}
       className={styles.modal}
       title={
         <div className={styles.headerContent}>
@@ -230,7 +206,48 @@ function CreateCampaignForm({
           </p>
         </div>
       }
+      footer={
+        currentStep === 3 ? null : (
+          <div className={styles.footer}>
+            {/* Previous Button */}
+            {currentStep > 0 && (
+              <button
+                type="button"
+                className={styles.secondaryButton}
+                onClick={handlePrevious}
+              >
+                Previous Page
+              </button>
+            )}
+
+            <div className={styles.footerSpacer} />
+
+            {/* Next / Save & Proceed */}
+            {currentStep < 2 && (
+              <button
+                type="button"
+                className={styles.primaryButton}
+                onClick={handleNext}
+              >
+                Save & Proceed
+              </button>
+            )}
+            {currentStep === 2 && (
+              // Submit button for final step
+              <button
+                type="submit"
+                form="campaignForm"
+                className={styles.primaryButton}
+                disabled={isCreating || isUpdating}
+              >
+                {getButtonText()}
+              </button>
+            )}
+          </div>
+        )
+      }
     >
+      {/* Stepper */}
       <Steps current={currentStep} onChange={onChangeStep} items={STEPS} />
 
       {/* Content */}
@@ -238,63 +255,50 @@ function CreateCampaignForm({
         {isCreating || isUpdating ? (
           <Skeleton active paragraph={{ rows: 6 }} />
         ) : (
-          <>
-            {currentStep === 0 && (
-              <Step1CampaignBasics
-                formData={formData}
-                updateFormData={updateFormData}
-              />
-            )}
-            {/* {currentStep === 2 && (
-          <Step2LeadsResources
-            formData={formData}
-            updateFormData={updateFormData}
-          />
-        )} */}
-            {currentStep === 1 && (
-              <Step3Scheduling
-                formData={formData}
-                updateFormData={updateFormData}
-                toggleDay={toggleDay}
-              />
-            )}
-            {currentStep === 2 && <Step4Review formData={formData} />}
+          <FormProvider {...methods}>
+            {/* 🔥 ID needed for footer button */}
+            <form onSubmit={handleSubmit(onSubmit)} id="campaignForm">
+              {currentStep === 0 && <Step1CampaignBasics />}
+              {currentStep === 1 && <Step3Scheduling />}
+              {currentStep === 2 && <Step4Review />}
 
-            {currentStep === 3 && (
-              <div className={styles.compactCard}>
-                {!isSuccess && !file && (
-                  <>
-                    <h3 className={styles.cardTitle}>Upload Contacts</h3>
-                    <p className={styles.cardDescription}>
-                      Upload CSV or Excel file.
-                    </p>
-                  </>
-                )}
-                {isUploading ? (
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <Spinner />
-                  </div>
-                ) : (
-                  <UploadFile
-                    file={file}
-                    onFileChange={handleFileUpload}
-                    onRemoveFile={handleTruncateFile}
-                    fileInputRef={fileInputRef}
-                    uploadText="Upload file"
-                    buttonText="Browse"
-                    hintText="CSV: name, phone, appointment"
-                    accept=".csv,.xls,.xlsx"
-                  />
-                )}
-              </div>
-            )}
-          </>
+              {/* Optional step 3 (file upload) */}
+              {currentStep === 3 && (
+                <div className={styles.compactCard}>
+                  {!isSuccess && !file && (
+                    <>
+                      <h3 className={styles.cardTitle}>Upload Contacts</h3>
+                      <p className={styles.cardDescription}>
+                        Upload CSV or Excel file.
+                      </p>
+                    </>
+                  )}
+                  {isUploading ? (
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Spinner />
+                    </div>
+                  ) : (
+                    <UploadFile
+                      file={file}
+                      onFileChange={handleFileUpload}
+                      onRemoveFile={handleTruncateFile}
+                      fileInputRef={fileInputRef}
+                      uploadText="Upload file"
+                      buttonText="Browse"
+                      hintText="CSV: name, phone, appointment"
+                      accept=".csv,.xls,.xlsx"
+                    />
+                  )}
+                </div>
+              )}
+            </form>
+          </FormProvider>
         )}
       </div>
     </Modal>

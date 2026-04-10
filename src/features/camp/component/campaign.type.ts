@@ -1,3 +1,5 @@
+import z from "zod";
+import { campaignSchema } from "../schema/Campaign.schema";
 
 export type CampaignStatus = 'active' | 'paused' | 'completed';
 export type CampaignType = 'onboarding' | 'lead_generation' | 'reminder' | 'survey';
@@ -9,15 +11,9 @@ export interface Campaigns {
   type: CampaignType;
   start_date: string;
   end_date: string;
-  // calls_made?: number;
   conversion_rate?: number;
   spend?: number;
   contacts_count?: number;
-  // ai_assistant_id?: string;
-  // ai_assistant_name?: string;
-  // phone_number_id?: string;
-  // phone_number?: string;
-  // scheduling
   calling_days?: string[];
   start_time?: string;
   end_time?: string;
@@ -87,7 +83,6 @@ export interface CreateCampaignRequest {
   start_time: string | null;
   end_time: string | null;
   time_zone: string | null;
-  csvId?:string | null;
 }
 export interface UploadLeadsRequest {
   campaign_id: string;
@@ -119,3 +114,10 @@ export const getStatusVariant = (status: CampaignStatus): 'success' | 'error' | 
       return 'default';
   }
 };
+
+export const step1Fields = ["name", "type", "start_date", "end_date"];
+export const step2Fields = ["calling_days", "start_time", "end_time", "time_zone"];
+export const step3Fields = []; // Review step has no unique fields to validate
+
+
+export type CampaignFormValues = z.infer<typeof campaignSchema>;
