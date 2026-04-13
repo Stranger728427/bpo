@@ -1,8 +1,8 @@
 .sidebar {
   position: fixed;
-  top: calc(#{$header-height} + #{$spacing-md});
-  left: $spacing-md;
-  height: calc(100vh - (#{$header-height} + #{$spacing-md} * 2));
+  top: calc(#{$header-height} + #{$spacing-sm});
+  left: $spacing-sm;
+  height: calc(100vh - 87px);
   display: flex;
   flex-direction: column;
   background-color: $color-white;

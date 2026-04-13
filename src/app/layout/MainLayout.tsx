@@ -7,23 +7,27 @@ import { MainContent } from '@components/layout/MainContent/MainContent';
 import { useLayout } from '@components/layout/LayoutContext';
 import styles from './MainLayout.module.scss';
 
-import { MdOutlineCampaign } from 'react-icons/md';
-import { BiPhone } from 'react-icons/bi';
 import { RxHamburgerMenu } from 'react-icons/rx';
 import { UserAvatar } from '@/components/Avatar/UserAvatar';
+import { MaterialSymbolsLightDashboardOutlineRounded } from '@/components/icons/DashBoardIcon';
+import { MaterialSymbolsLightCallLogOutlineSharp } from '@/components/icons/CallLogs.icons';
+import { MaterialSymbolsLightCampaignOutline } from '@/components/icons/CampaignIcon';
 
 // Navigation items configuration
 const navItems = [
-  { path: '/', label: 'Call Logs', icon: 'call' },
+  { path: '/', label: 'Dashboard', icon: 'dashboard'},
+  { path: '/call-logs', label: 'Call Logs', icon: 'call' },
   { path: '/campaign', label: 'Campaign', icon: 'campaign' },
 ];
 
 const NavIcon = ({ type }: { type: string }) => {
   switch (type) {
+    case 'dashboard':
+      return <MaterialSymbolsLightDashboardOutlineRounded />;
     case 'call':
-      return <BiPhone size={20} />;
+      return <MaterialSymbolsLightCallLogOutlineSharp />;
     case 'campaign':
-      return <MdOutlineCampaign size={20} />;
+      return <MaterialSymbolsLightCampaignOutline />;
     default:
       return null;
   }

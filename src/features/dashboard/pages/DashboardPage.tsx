@@ -152,6 +152,7 @@ const dateOptions = [
           }
         />
 
+        {/* Credits Left */}
         <div className={styles.creditsCard}>
           <div className={styles.creditsHeader}>
             <span className={styles.creditsTitle}>Credits Left</span>

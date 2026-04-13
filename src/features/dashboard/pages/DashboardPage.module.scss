@@ -3,12 +3,11 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: $spacing-md;
-  padding: $spacing-lg;
-
-  @include media-up('lg') {
-    padding: $spacing-xl;
-  }
+  gap: $spacing-sm;
+  padding: $spacing-lg $spacing-sm $spacing-sm $spacing-md;
+  // @include media-up('lg') {
+  //   padding: $spacing-md;
+  // }
 }
 
 .header {
@@ -30,7 +29,7 @@
   display: flex;
   align-items: center;
   gap: $spacing-sm;
-  padding: $spacing-sm $spacing-md;
+  padding: $spacing-sm $spacing-sm;
   background-color: $color-white;
   border: 1px solid $color-gray-200;
   border-radius: $border-radius-md;
@@ -55,7 +54,7 @@
   border-radius: $border-radius-lg;
   overflow: auto;
   min-height: 0;
-  max-height: calc(100vh - 190px);
+  max-height: calc(100vh - 150px);
   scrollbar-width: none;
   -ms-overflow-style: none;
   &::-webkit-scrollbar {
