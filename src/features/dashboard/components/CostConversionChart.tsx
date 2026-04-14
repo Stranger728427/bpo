@@ -53,6 +53,7 @@ export function CostConversionChart({ data }: CostConversionChartProps) {
       <LineBarChart
         data={chartData}
         height={250}
+        barColor={'#a78bfa'}
         barLabel="Cost"
         lineLabel="Conversion"
         barValueFormatter={(value) => `$${value.toLocaleString()}`}

@@ -7,6 +7,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
+  CartesianGrid,
 } from 'recharts';
 import styles from './LineBarChart.module.scss';
 
@@ -57,6 +58,7 @@ function CustomTooltip({
     return (
       <div className={styles.tooltip}>
         <span className={styles.tooltipLabel}>{label}</span>
+        <div className={styles.tooltipDivider} />
         {payload.map((item, index) => {
           const formatter =
             item.dataKey === 'barValue' ? barFormatter : lineFormatter;
@@ -114,7 +116,7 @@ function CustomLegend({ payload }: CustomLegendProps) {
 export function LineBarChart({
   data,
   height = 250,
-  barColor = '#d4b8ff',
+  barColor = '#a78bfa',
   lineColor = '#8b5cf6',
   barLabel = 'Bar',
   lineLabel = 'Line',
@@ -132,13 +134,25 @@ export function LineBarChart({
       <ResponsiveContainer width="100%" height="100%">
         <ComposedChart
           data={data}
-          margin={{ top: 30, right: 60, left: 60, bottom: 10 }}
+          margin={{ top: 20, right: 30, left: 10, bottom: 20 }}
         >
+          <defs>
+            <linearGradient id="lineGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor={lineColor} stopOpacity={0.1} />
+              <stop offset="95%" stopColor={lineColor} stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid
+            vertical={false}
+            strokeDasharray="3 3"
+            stroke="rgba(0,0,0,0.05)"
+          />
           <XAxis
             dataKey="label"
             axisLine={false}
             tickLine={false}
-            tick={{ fontSize: 12, fill: '#6b7280' }}
+            tick={{ fontSize: 11, fill: '#9ca3af', fontWeight: 500 }}
+            dy={10}
           />
           <YAxis
             yAxisId="left"
@@ -166,18 +180,21 @@ export function LineBarChart({
                 lineFormatter={lineValueFormatter}
               />
             }
-            cursor={{ fill: 'rgba(139, 92, 246, 0.1)' }}
+            cursor={{ fill: 'rgba(0,0,0,0.02)', radius: 4 }}
           />
-          <Legend verticalAlign="top" align="right"  wrapperStyle={{ top: 0, right: 0, marginTop:0 }}  content={<CustomLegend />} />
+          <Legend verticalAlign="top" height={36} content={<CustomLegend />} />
+
           <Bar
             yAxisId="left"
             dataKey="barValue"
-            name={barLabel} 
+            name={barLabel}
             fill={barColor}
             radius={[6, 6, 0, 0]}
             maxBarSize={40}
-            animationDuration={800}
+            animationDuration={1500}
+            animationEasing="ease-in-out"
           />
+
           <Line
             yAxisId="right"
             type="monotone"

@@ -15,10 +15,12 @@
 
 .segment {
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  outline: none;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
   &:hover {
-    opacity: 0.85;
+    filter: saturate(1.2) brightness(1.05);
+    transform: scale(1.05);
   }
 }
 
@@ -29,25 +31,33 @@
   align-items: center;
   justify-content: center;
   pointer-events: none;
+  z-index: 1;
 }
 
 .centerValue {
-  font-size: 1.75rem;
-  font-weight: $font-weight-bold;
+  font-size: 2.75rem;
+  font-weight: 800;
   color: $color-gray-900;
   line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
 }
 
 .centerLabel {
   font-size: $font-size-xs;
-  color: $color-gray-500;
-  margin-top: 2px;
+  font-weight: $font-weight-bold;
+  color: $color-gray-400;
+  margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .tooltip {
-  background-color: $color-gray-900;
-  padding: 6px 10px;
-  border-radius: $border-radius-md;
+  background: $color-white;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 10px 16px;
+  border-radius: $border-radius-xl;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -55,13 +65,17 @@
   box-shadow: $shadow-md;
 }
 
-.tooltipName {
-  font-size: 10px;
-  color: $color-gray-400;
+.tooltipValue {
+  font-size: $font-size-lg;
+  font-weight: 800;
+  color: $color-primary;
+  line-height: 1.2;
 }
 
-.tooltipValue {
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
-  color: $color-white;
+.tooltipName {
+  font-size: 10px;
+  color: $color-gray-500;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.05em;
 }

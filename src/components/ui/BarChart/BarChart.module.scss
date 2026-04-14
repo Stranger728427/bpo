@@ -8,23 +8,28 @@
 }
 
 .tooltip {
-  background-color: $color-gray-900;
-  padding: 6px 10px;
-  border-radius: $border-radius-md;
+  background: $color-white;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 8px 14px;
+  border-radius: $border-radius-lg;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 2px;
   box-shadow: $shadow-md;
 }
 
 .tooltipLabel {
-  font-size: 10px;
-  color: $color-gray-400;
+  font-size: 11px;
+  color: $color-gray-500;
+  font-weight: $font-weight-medium;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
 }
 
 .tooltipValue {
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
-  color: $color-white;
+  font-size: $font-size-base;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
 }

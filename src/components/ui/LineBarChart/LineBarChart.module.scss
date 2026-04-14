@@ -16,19 +16,21 @@
   align-items: center;
   gap: $spacing-xs;
   font-size: $font-size-sm;
-  color: $color-gray-600;
+  color: $color-gray-500;
+  font-weight: $font-weight-medium;
 }
 
 .legendBar {
   width: 12px;
   height: 12px;
-  border-radius: 2px;
+  border-radius: 3px;
 }
 
 .legendLine {
-  width: 12px;
-  height: 2px;
+  width: 16px;
+  height: 3px;
   position: relative;
+  border-radius: 2px;
 
   &::after {
     content: '';
@@ -38,50 +40,61 @@
     transform: translate(-50%, -50%);
     width: 6px;
     height: 6px;
-    background-color: inherit;
+    background-color: #fff;
+    border: 2px solid inherit;
     border-radius: 50%;
   }
 }
 
 .tooltip {
-  background-color: $color-gray-900;
+  background: $color-white;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   padding: $spacing-sm $spacing-md;
-  border-radius: $border-radius-md;
+  border-radius: $border-radius-lg;
   display: flex;
   flex-direction: column;
-  gap: $spacing-xs;
-  box-shadow: $shadow-lg;
-  min-width: 140px;
+  gap: $spacing-sm;
+  box-shadow: $shadow-md;
+  min-width: 160px;
 }
 
 .tooltipLabel {
   font-size: $font-size-sm;
-  color: $color-gray-300;
-  font-weight: $font-weight-medium;
-  margin-bottom: 2px;
+  color: $color-gray-800;
+  font-weight: $font-weight-bold;
+}
+
+.tooltipDivider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.05);
+  width: 100%;
 }
 
 .tooltipRow {
   display: flex;
   align-items: center;
-  gap: $spacing-xs;
+  gap: $spacing-sm;
 }
 
 .tooltipDot {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   flex-shrink: 0;
+  border: 2px solid $color-white;
+  box-shadow: $shadow-sm;
 }
 
 .tooltipName {
   font-size: $font-size-xs;
-  color: $color-gray-400;
+  color: $color-gray-500;
+  font-weight: $font-weight-medium;
 }
 
 .tooltipValue {
   font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
-  color: $color-white;
+  font-weight: $font-weight-bold;
+  color: $color-gray-900;
   margin-left: auto;
 }

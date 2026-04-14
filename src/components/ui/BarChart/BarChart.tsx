@@ -6,6 +6,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   Cell,
+  CartesianGrid,
 } from 'recharts';
 import styles from './BarChart.module.scss';
 
@@ -52,13 +53,13 @@ function CustomTooltip({ active, payload, formatter }: CustomTooltipProps) {
 
 export function BarChart({
   data,
-  height = 80,
+  height = 200,
   barColor = '#d4b8ff',
   highlightColor = '#8b5cf6',
   highlightIndex,
   showLabels = true,
   showYAxis = false,
-  maxBarSize = 20,
+  maxBarSize = 32,
   tooltipFormatter,
 }: BarChartProps) {
   return (
@@ -66,34 +67,49 @@ export function BarChart({
       <ResponsiveContainer width="100%" height={height}>
         <RechartsBarChart
           data={data}
-          margin={{ top: 5, right: 5, left: 5, bottom: showLabels ? 5 : 0 }}
+          margin={{ top: 10, right: 10, left: 0, bottom: showLabels ? 20 : 0 }}
         >
-          {showYAxis && <YAxis hide domain={[0, 'dataMax']} />}
-          {showLabels && (
-            <XAxis
-              dataKey="label"
+          <CartesianGrid
+            vertical={false}
+            strokeDasharray="3 3"
+            stroke="rgba(0,0,0,0.05)  "
+          />
+          <XAxis
+            dataKey="label"
+            axisLine={false}
+            tickLine={false}
+            tick={{ fontSize: 11, fill: '#9ca3af', fontWeight: 500 }}
+            interval={0}
+            dy={10}
+            hide={!showLabels}
+          />
+          {showYAxis && (
+            <YAxis
               axisLine={false}
               tickLine={false}
-              tick={{ fontSize: 10, fill: '#9ca3af' }}
-              interval={0}
-              dy={5}
+              tick={{ fontSize: 11, fill: '#9ca3af' }}
             />
           )}
           <Tooltip
             content={<CustomTooltip formatter={tooltipFormatter} />}
-            cursor={{ fill: 'rgba(139, 92, 246, 0.1)' }}
+            cursor={{ fill: 'rgba(139, 92, 246, 0.05)', radius: 4 }}
+            contentStyle={{ border: 'none', backgroundColor: 'transparent' }}
           />
           <Bar
             dataKey="value"
-            radius={[3, 3, 0, 0]}
+            radius={[6, 6, 0, 0]}
             maxBarSize={maxBarSize}
-            animationDuration={800}
+            animationDuration={1500}
+            animationEasing="ease-in-out"
           >
             {data.map((_, index) => (
               <Cell
                 key={`cell-${index}`}
                 fill={index === highlightIndex ? highlightColor : barColor}
-                style={{ cursor: 'pointer' }}
+                style={{
+                  transition: 'fill 0.3s ease',
+                  cursor: 'pointer',
+                }}
               />
             ))}
           </Bar>

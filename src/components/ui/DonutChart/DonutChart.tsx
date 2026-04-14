@@ -21,8 +21,8 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
   if (active && payload && payload.length) {
     return (
       <div className={styles.tooltip}>
-        <span className={styles.tooltipName}>{payload[0].name}</span>
         <span className={styles.tooltipValue}>{payload[0].value}</span>
+        <span className={styles.tooltipName}>{payload[0].name}</span>
       </div>
     );
   }
@@ -34,29 +34,46 @@ export function DonutChart({
   total,
   centerLabel = 'Today',
   centerValue,
-  size = 120,
-  strokeWidth = 12,
+  size = 200,
+  strokeWidth = 10,
   primaryColor = '#8b5cf6',
-  secondaryColor = '#e9d5ff',
+  secondaryColor = '#f3f4f6',
 }: DonutChartProps) {
   const remaining = total - value;
   const data = [
-    { name: 'Used', value: value },
-    { name: 'Remaining', value: remaining > 0 ? remaining : 0 },
+    { name: 'Used', value: value, fill: primaryColor },
+    {
+      name: 'Remaining',
+      value: remaining > 0 ? remaining : 0,
+      fill: secondaryColor,
+    },
   ];
 
-  // Add padding to prevent clipping
-  const padding = 4;
+  const padding = 20;
   const availableSize = size - padding * 2;
-  const innerRadius = (availableSize - strokeWidth) / 2;
+  const innerRadius = (availableSize - strokeWidth * 2) / 2;
   const outerRadius = availableSize / 2;
 
   return (
     <div className={styles.container}>
-      <div className={styles.chartWrapper} style={{ width: size, height: size }}>
+      <div
+        className={styles.chartWrapper}
+        style={{ width: size, height: size }}
+      >
         <ResponsiveContainer width="100%" height="100%">
-          <PieChart margin={{ top: padding, right: padding, bottom: padding, left: padding }}>
-            <Tooltip content={<CustomTooltip />} />
+          <PieChart
+            margin={{
+              top: padding,
+              right: padding,
+              bottom: padding,
+              left: padding,
+            }}
+          >
+            <Tooltip
+              content={<CustomTooltip />}
+              wrapperStyle={{ outline: 'none', zIndex: 100 }}
+              offset={20}
+            />
             <Pie
               data={data}
               cx="50%"
@@ -68,10 +85,16 @@ export function DonutChart({
               paddingAngle={0}
               dataKey="value"
               animationBegin={0}
-              animationDuration={800}
+              animationDuration={1200}
+              animationEasing="ease-out"
             >
-              <Cell fill={primaryColor} className={styles.segment} />
-              <Cell fill={secondaryColor} className={styles.segment} />
+              {data.map((entry, index) => (
+                <Pie
+                  key={`cell-${index}`}
+                  fill={entry.fill}
+                  className={styles.segment}
+                />
+              ))}
             </Pie>
           </PieChart>
         </ResponsiveContainer>
