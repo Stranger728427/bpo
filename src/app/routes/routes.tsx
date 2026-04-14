@@ -15,12 +15,11 @@ const TenantLogin = lazy(
   () => import('@features/multi-tenancy/pages/TenantLogin')
 );
 
-const Dashboard = lazy(
-  ()=> import('@features/dashboard/pages/DashboardPage')
-)
-
 const MultiTenantRedirect = lazy(
   () => import('@features/multi-tenancy/pages/MultiTenantRedirect')
+);
+const Dashboard = lazy(
+  () => import('@/features/dashboard/pages/DashboardPage')
 );
 const CallLogs = lazy(() => import('@features/call/pages/CallPage'));
 const Campaign = lazy(() => import('@features/camp/pages/Campaign'));
@@ -62,8 +61,8 @@ export const routes: RouteObject[] = [
         element: <MainLayout />,
         children: [
           {
-            index:true,
-            element: withSuspense(Dashboard)
+            index: true,
+            element: withSuspense(Dashboard),
           },
           {
             path: RoutePath.CALL_LOGS,
