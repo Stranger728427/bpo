@@ -2,7 +2,7 @@
   position: fixed;
   top: calc(#{$header-height} + #{$spacing-sm});
   left: $spacing-sm;
-  height: calc(100vh - 87px);
+  height: calc(100dvh - #{$header-height} - #{$spacing-md});
   display: flex;
   flex-direction: column;
   background-color: $color-white;

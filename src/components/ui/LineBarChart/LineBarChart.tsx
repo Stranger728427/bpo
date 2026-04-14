@@ -168,14 +168,14 @@ export function LineBarChart({
             }
             cursor={{ fill: 'rgba(139, 92, 246, 0.1)' }}
           />
-          <Legend content={<CustomLegend />} />
+          <Legend verticalAlign="top" align="right"  wrapperStyle={{ top: 0, right: 0, marginTop:0 }}  content={<CustomLegend />} />
           <Bar
             yAxisId="left"
             dataKey="barValue"
-            name={barLabel}
+            name={barLabel} 
             fill={barColor}
             radius={[6, 6, 0, 0]}
-            maxBarSize={64}
+            maxBarSize={40}
             animationDuration={800}
           />
           <Line

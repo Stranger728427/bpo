@@ -8,6 +8,7 @@ import { StatCard } from '../components/StatCard';
 import { CostOverviewChart } from '../components/CostOverviewChart';
 import { CostConversionChart } from '../components/CostConversionChart';
 import Banner from '@/components/layout/Banner/Banner';
+import { CodiconCreditCard } from '@/components/icons/CreditsIcon';
 
 // Icons for stat cards
 const PhoneIcon = () => (
@@ -24,13 +25,6 @@ const PercentIcon = () => (
   </svg>
 );
 
-const CreditIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="2" y="4" width="16" height="12" rx="2" stroke="currentColor" strokeWidth="1.5"/>
-    <path d="M2 8H18" stroke="currentColor" strokeWidth="1.5"/>
-    <circle cx="14" cy="12" r="2" stroke="currentColor" strokeWidth="1.5"/>
-  </svg>
-);
 
 // Sample data for charts
 const callsChartData = [
@@ -133,7 +127,7 @@ const dateOptions = [
             <BarChart
               data={callsChartData}
               highlightIndex={6}
-              height={80}
+              height={200}
             />
           }
         />
@@ -147,34 +141,27 @@ const dateOptions = [
             <BarChart
               data={conversionChartData}
               highlightIndex={6}
-              height={80}
+              height={200}
             />
           }
         />
 
-        {/* Credits Left */}
-        <div className={styles.creditsCard}>
-          <div className={styles.creditsHeader}>
-            <span className={styles.creditsTitle}>Credits Left</span>
-            <div className={styles.creditsIcon}>
-              <CreditIcon />
-            </div>
-          </div>
-          <div className={styles.creditsContent}>
-            <span className={styles.creditsValue}>12,430</span>
-            <div className={styles.donutWrapper}>
-              <DonutChart
+         <StatCard
+          title="Conversion Rate"
+          value="112"
+          icon={< CodiconCreditCard/>}
+          // highlightText="54%"
+          chart={
+             <DonutChart
                 value={112}
                 total={500}
                 centerValue={112}
                 centerLabel="Today"
-                size={110}
-                strokeWidth={12}
+                size={160}
+                strokeWidth={40}
               />
-              <div className={styles.donutInfo}>23 Credits • Campaign 1</div>
-            </div>
-          </div>
-        </div>
+          }
+        />
       </div>
 
       {/* Charts Grid */}

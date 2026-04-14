@@ -37,9 +37,9 @@ export function CostOverviewChart({ data, totalCost }: CostOverviewChartProps) {
       <div className={styles.chartArea}>
         <BarChart
           data={chartData}
-          height={220}
+          height={250}
           highlightIndex={maxCostIndex}
-          maxBarSize={48}
+          maxBarSize={40}
           tooltipFormatter={(value) => `$${value.toFixed(2)}`}
         />
       </div>
