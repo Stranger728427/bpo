@@ -9,19 +9,46 @@ import {
   BiTargetLock,
   BiRocket,
   BiUserCheck,
+  BiCrown,
+  BiTrendingDown,
+  BiTrendingUp,
 } from 'react-icons/bi';
 import { BarChart } from '@/components/ui/BarChart/BarChart';
 import { VscCalendar } from 'react-icons/vsc';
-import { InsightCard } from '../components/InsightCard';
+// import { InsightCard } from '../components/InsightCard';
 import { Leaderboard } from '../components/Leaderboard';
 import { Sparkline } from '@components/ui/SparkLine/Sparkline';
 
 // Mock Data for Phase 1
 const leaderboardData = [
-  { id: '1', name: 'Holiday Season Sale', value: '24.8%', percentage: 95 },
-  { id: '2', name: 'Real Estate Q1', value: '18.2%', percentage: 70 },
-  { id: '3', name: 'SaaS Outbound', value: '15.4%', percentage: 60 },
-  { id: '4', name: 'Health Checkup', value: '12.1%', percentage: 45 },
+  {
+    id: '1',
+    campaign_name: 'Holiday Season Sale',
+    call_count: '24.8%',
+    conversion_rate: 95,
+    converted_calls: 80,
+  },
+  {
+    id: '2',
+    campaign_name: 'Real Estate Q1',
+    call_count: '18.2%',
+    conversion_rate: 70,
+    converted_calls: 70,
+  },
+  {
+    id: '3',
+    campaign_name: 'SaaS Outbound',
+    call_count: '15.4%',
+    conversion_rate: 60,
+    converted_calls: 60,
+  },
+  {
+    id: '4',
+    campaign_name: 'Health Checkup',
+    call_count: '12.1%',
+    conversion_rate: 45,
+    converted_calls: 50,
+  },
 ];
 
 const callVolumeData = [
@@ -150,13 +177,20 @@ const DashboardPage = () => {
           <Leaderboard
             title="Best Performing Campaigns"
             items={leaderboardData}
+            icon={BiTrendingUp}
           />
-          <InsightCard
+          {/* <InsightCard
             type="worst"
             campaignName="Outbound Cold Leads B"
             description="Lower than average connect rate. Consider refreshing the lead list or script."
             metricLabel="Connect Rate"
             metricValue="8.2%"
+          /> */}
+          <Leaderboard
+            title="Worst Performing Campaigns"
+            items={leaderboardData}
+            icon={BiTrendingDown}
+            variant="worst"
           />
         </div>
 
