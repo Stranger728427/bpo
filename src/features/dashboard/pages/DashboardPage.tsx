@@ -4,62 +4,58 @@ import { useState } from 'react';
 import styles from './DashboardPage.module.scss';
 import Banner from '@/components/layout/Banner/Banner';
 import { StatCard } from '../components/StatCard';
-import { BiPhoneIncoming } from 'react-icons/bi';
+import {
+  BiPhoneCall,
+  BiTargetLock,
+  BiRocket,
+  BiUserCheck,
+} from 'react-icons/bi';
 import { BarChart } from '@/components/ui/BarChart/BarChart';
-import { PercentageOutlined } from '@ant-design/icons';
-import { DonutChart } from '@/components/ui/DonutChart/DonutChart';
-import { CostConversionChart } from '../components/CostConversionChart';
-import { CostOverviewChart } from '../components/CostOverviewChart';
 import { VscCalendar } from 'react-icons/vsc';
-import { CodiconCreditCard } from '@/components/icons/CreditsIcon';
+import { InsightCard } from '../components/InsightCard';
+import { Leaderboard } from '../components/Leaderboard';
+import { Sparkline } from '@components/ui/SparkLine/Sparkline';
 
-// Sample data for charts
-const callsChartData = [
-  { label: '6a', value: 18 },
-  { label: '', value: 22 },
-  { label: '', value: 20 },
-  { label: '9a', value: 28 },
-  { label: '', value: 32 },
-  { label: '', value: 30 },
-  { label: '12p', value: 65 },
-  { label: '', value: 42 },
-  { label: '3p', value: 35 },
-  { label: '', value: 28 },
-  { label: '6p', value: 22 },
+// Mock Data for Phase 1
+const leaderboardData = [
+  { id: '1', name: 'Holiday Season Sale', value: '24.8%', percentage: 95 },
+  { id: '2', name: 'Real Estate Q1', value: '18.2%', percentage: 70 },
+  { id: '3', name: 'SaaS Outbound', value: '15.4%', percentage: 60 },
+  { id: '4', name: 'Health Checkup', value: '12.1%', percentage: 45 },
 ];
 
-const conversionChartData = [
-  { label: '6a', value: 12 },
-  { label: '', value: 15 },
-  { label: '', value: 14 },
-  { label: '9a', value: 20 },
-  { label: '', value: 18 },
-  { label: '', value: 25 },
-  { label: '12p', value: 54 },
-  { label: '', value: 32 },
-  { label: '3p', value: 28 },
-  { label: '', value: 20 },
-  { label: '6p', value: 15 },
+const callVolumeData = [
+  { label: 'Mon', value: 450 },
+  { label: 'Tue', value: 520 },
+  { label: 'Wed', value: 610 },
+  { label: 'Thu', value: 580 },
+  { label: 'Fri', value: 690 },
+  { label: 'Sat', value: 320 },
+  { label: 'Sun', value: 280 },
 ];
 
-const costOverviewData = [
-  { date: '5 Dec', cost: 5.2 },
-  { date: '6 Dec', cost: 8.5 },
-  { date: '7 Dec', cost: 10.3 },
-  { date: '8 Dec', cost: 12.78 },
-  { date: '9 Dec', cost: 7.4 },
-  { date: '10 Dec', cost: 6.8 },
-  { date: '11 Dec', cost: 3.82 },
+const callsSparkData = [
+  { value: 30 },
+  { value: 40 },
+  { value: 35 },
+  { value: 50 },
+  { value: 45 },
+  { value: 60 },
+  { value: 55 },
+  { value: 70 },
 ];
 
-const costConversionData = [
-  { campaign: 'Campaign 1', cost: 5000, conversion: 10 },
-  { campaign: 'Campaign 2', cost: 18000, conversion: 28 },
-  { campaign: 'Campaign 3', cost: 8000, conversion: 24 },
-  { campaign: 'Campaign 4', cost: 6000, conversion: 42 },
+const convSparkData = [
+  { value: 12 },
+  { value: 15 },
+  { value: 14 },
+  { value: 18 },
+  { value: 17 },
+  { value: 22 },
+  { value: 20 },
+  { value: 24 },
 ];
 
-// Filter options
 const dateOptions = [
   { key: 'today', label: 'Today' },
   { key: 'yesterday', label: 'Yesterday' },
@@ -69,10 +65,11 @@ const dateOptions = [
 ];
 
 const DashboardPage = () => {
-  const [dateFilter, setDateFilter] = useState('today');
+  const [dateFilter, setDateFilter] = useState('last_7_days');
 
   const getDateLabel = () =>
     dateOptions.find((o) => o.key === dateFilter)?.label || 'Today';
+
   const dateMenuItems: MenuProps['items'] = dateOptions.map((option) => ({
     key: option.key,
     label: option.label,
@@ -81,21 +78,16 @@ const DashboardPage = () => {
 
   return (
     <div className={styles.container}>
-      {/* Header */}
       <Banner>
         <div className={styles.header}>
-          <h1 className={styles.title}>Dashboard</h1>
+          <div>
+            <h1 className={styles.title}>Performance Analytics</h1>
+          </div>
           <Dropdown items={dateMenuItems} trigger={['click']}>
             <button className={styles.dateFilter}>
               <VscCalendar />
               {getDateLabel()}
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 12 12"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                 <path
                   d="M3 4.5L6 7.5L9 4.5"
                   stroke="currentColor"
@@ -110,54 +102,75 @@ const DashboardPage = () => {
       </Banner>
 
       <div className={styles.content}>
+        {/* Main Metrics Row */}
         <div className={styles.statsGrid}>
           <StatCard
-            title="Calls Today"
-            value="1,248"
-            icon={<BiPhoneIncoming />}
-            highlightText="51 Calls • 23 Credits"
-            chart={
-              <BarChart data={callsChartData} highlightIndex={6} height={200} />
-            }
+            title="Total Calls Made"
+            value="14,285"
+            icon={<BiPhoneCall />}
+            trend="up"
+            trendValue="+12.5%"
+            variant="primary"
+            chart={<Sparkline data={callsSparkData} color="#3b82f6" />}
           />
           <StatCard
-            title="Conversion Rate"
+            title="Overall Conversion"
             value="18.3%"
-            icon={<PercentageOutlined />}
-            highlightText="54%"
-            chart={
-              <BarChart
-                data={conversionChartData}
-                highlightIndex={6}
-                height={200}
-              />
-            }
+            icon={<BiTargetLock />}
+            trend="up"
+            trendValue="+5.2%"
+            variant="accent"
+            chart={<Sparkline data={convSparkData} color="#ec4899" />}
           />
-
           <StatCard
-            title="Conversion Rate"
-            value="18.3%"
-            icon={<CodiconCreditCard />}
-            chart={
-              <div className={styles.donutWrapper}>
-                <DonutChart
-                  value={112}
-                  total={500}
-                  centerValue={112}
-                  centerLabel="Today"
-                  size={200}
-                  strokeWidth={30}
-                />
-                <div className={styles.donutInfo}>23 Credits • Campaign 1</div>
-              </div>
-            }
+            title="Active Campaigns"
+            value="12"
+            icon={<BiRocket />}
+            variant="secondary"
+            highlightText="4 launched this week"
+          />
+          <StatCard
+            title="Total Leads Reached"
+            value="8,492"
+            icon={<BiUserCheck />}
+            variant="warning"
+            highlightText="64% of total database"
           />
         </div>
 
-        <div className={styles.chartsGrid}>
-          <CostOverviewChart data={costOverviewData} totalCost={54.78} />
+        {/* Campaign Insights Row */}
+        <div className={styles.insightsRow}>
+          {/* <InsightCard
+            type="best"
+            campaignName="Holiday Season Sale"
+            description="Exceptional performance in the mid-west region with high engagement rates."
+            metricLabel="Conversion Rate"
+            metricValue="24.8%"
+          /> */}
+          <Leaderboard
+            title="Best Performing Campaigns"
+            items={leaderboardData}
+          />
+          <InsightCard
+            type="worst"
+            campaignName="Outbound Cold Leads B"
+            description="Lower than average connect rate. Consider refreshing the lead list or script."
+            metricLabel="Connect Rate"
+            metricValue="8.2%"
+          />
+        </div>
 
-          <CostConversionChart data={costConversionData} />
+        {/* Volume Charts Row */}
+        <div className={styles.chartsGrid}>
+          <div className={styles.chartWrapper}>
+            <div className={styles.chartHeader}>
+              <h3 className={styles.chartTitle}>Daily Call Volume</h3>
+              <span className={styles.chartLegend}>
+                Total outbound attempts per day
+              </span>
+            </div>
+            <BarChart data={callVolumeData} height={300} />
+          </div>
         </div>
       </div>
     </div>

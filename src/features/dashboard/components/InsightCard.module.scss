@@ -1,0 +1,109 @@
+@use '@/styles/abstracts' as *;
+
+.card {
+  padding: $spacing-xl;
+  border-radius: $border-radius-xl;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  transition: all $transition-normal;
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+  }
+
+  &.best {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(255, 255, 255, 0.7) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    &::before { background: #10b981; }
+    .badge { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+    .actionButton { background: #10b981; color: white; &:hover { background: #059669; } }
+  }
+
+  &.worst {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(255, 255, 255, 0.7) 100%);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    &::before { background: #ef4444; }
+    .badge { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+    .actionButton { background: #ef4444; color: white; &:hover { background: #dc2626; } }
+  }
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  }
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.campaignName {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-gray-900;
+  margin: 0;
+}
+
+.description {
+  font-size: $font-size-sm;
+  color: $color-gray-500;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: $spacing-md;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: $font-size-xs;
+  color: $color-gray-400;
+  text-transform: uppercase;
+  font-weight: $font-weight-medium;
+}
+
+.value {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-gray-900;
+}
+
+.actionButton {
+  padding: 8px 16px;
+  border-radius: $border-radius-md;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  border: none;
+  cursor: pointer;
+  transition: all $transition-fast;
+}
