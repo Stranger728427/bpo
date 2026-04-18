@@ -1,18 +1,10 @@
-import {
-  CampaignType,
-  CreateCampaignRequest,
-} from '@/features/camp/component/campaign.type';
+import { CreateCampaignRequest } from '@/features/camp/component/campaign.type';
 import styles from './CreateCampaignForm.module.scss';
 import { Input, Select, DatePicker } from 'antd';
 import type { SelectProps } from 'antd';
-import dayjs from 'dayjs';
-
+import dayjs, { Dayjs } from 'dayjs';
 import { LuChevronDown, LuCalendar } from 'react-icons/lu';
-
-interface Props {
-  formData: CreateCampaignRequest;
-  updateFormData: (updates: Partial<CreateCampaignRequest>) => void;
-}
+import { Controller, useFormContext } from 'react-hook-form';
 
 const campaignTypeOptions: SelectProps['options'] = [
   { value: 'onboarding', label: 'Onboarding' },
@@ -21,67 +13,125 @@ const campaignTypeOptions: SelectProps['options'] = [
   { value: 'survey', label: 'Survey' },
 ];
 
-function Step1CampaignBasics({ formData, updateFormData }: Props) {
+function Step1CampaignBasics() {
+  const {
+    control,
+    watch,
+    formState: { errors },
+  } = useFormContext<CreateCampaignRequest>();
+
+  const startDate = watch('start_date');
+
+  const disableStartDate = (current: Dayjs) =>
+    current && current < dayjs().startOf('day');
+
+  const disableEndDate = (current: Dayjs | null): boolean => {
+    if (!current) return false;
+    return (
+      current.isBefore(dayjs().startOf('day')) ||
+      (startDate ? current.isBefore(dayjs(startDate).startOf('day')) : false)
+    );
+  };
+
   return (
     <div className={styles.stepContent}>
       <div className={styles.formGrid}>
         {/* Campaign Name */}
         <div className={styles.formGroup}>
           <label className={styles.label}>Campaign Name</label>
-          <Input
-            placeholder="Enter campaign name"
-            value={formData.name!}
-            onChange={(e) => updateFormData({ name: e.target.value })}
-            size="large"
-            required
+          <Controller
+            name="name"
+            control={control}
+            render={({ field }) => (
+              <Input
+                {...field}
+                value={field.value ?? ''}
+                placeholder="Enter campaign name"
+                size="large"
+                status={errors.name ? 'error' : ''}
+              />
+            )}
           />
+          {errors.name && (
+            <span className={styles.errorText}>{errors.name.message}</span>
+          )}
         </div>
 
         {/* Campaign Type */}
         <div className={styles.formGroup}>
           <label className={styles.label}>Type</label>
-          <Select
-            size="large"
-            placeholder="Select type"
-            options={campaignTypeOptions}
-            value={formData.type}
-            onChange={(value) =>
-              updateFormData({ type: value as CampaignType })
-            }
-            suffixIcon={<LuChevronDown />}
+          <Controller
+            name="type"
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                size="large"
+                placeholder="Select type"
+                options={campaignTypeOptions}
+                value={field.value}
+                onChange={field.onChange}
+                suffixIcon={<LuChevronDown />}
+                status={errors.type ? 'error' : ''}
+              />
+            )}
           />
+          {errors.type && (
+            <span className={styles.errorText}>{errors.type.message}</span>
+          )}
         </div>
 
         {/* Start Date */}
         <div className={styles.formGroup}>
           <label className={styles.label}>Start Date</label>
-          <DatePicker
-            size="large"
-            style={{ width: '100%' }}
-            value={formData.start_date ? dayjs(formData.start_date) : null}
-            onChange={(date) =>
-              updateFormData({
-                start_date: date ? date.format('YYYY-MM-DD') : null,
-              })
-            }
-            suffixIcon={<LuCalendar />}
+          <Controller
+            name="start_date"
+            control={control}
+            render={({ field }) => (
+              <DatePicker
+                size="large"
+                style={{ width: '100%' }}
+                value={field.value ? dayjs(field.value) : null}
+                onChange={(date) =>
+                  field.onChange(date ? date.format('YYYY-MM-DD') : '')
+                }
+                disabledDate={disableStartDate}
+                suffixIcon={<LuCalendar />}
+                status={errors.start_date ? 'error' : ''}
+              />
+            )}
           />
+          {errors.start_date && (
+            <span className={styles.errorText}>
+              {errors.start_date.message}
+            </span>
+          )}
         </div>
 
         {/* End Date */}
         <div className={styles.formGroup}>
           <label className={styles.label}>End Date</label>
-          <DatePicker
-            size="large"
-            style={{ width: '100%' }}
-            value={formData.end_date ? dayjs(formData.end_date) : null}
-            onChange={(date) =>
-              updateFormData({
-                end_date: date ? date.format('YYYY-MM-DD') : null,
-              })
-            }
-            suffixIcon={<LuCalendar />}
+          <Controller
+            name="end_date"
+            control={control}
+            render={({ field }) => (
+              <DatePicker
+                size="large"
+                style={{ width: '100%' }}
+                value={field.value ? dayjs(field.value) : null}
+                onChange={(date) =>
+                  field.onChange(date ? date.format('YYYY-MM-DD') : '')
+                }
+                disabled={!startDate}
+                disabledDate={disableEndDate}
+                suffixIcon={<LuCalendar />}
+                status={errors.end_date ? 'error' : ''}
+              />
+            )}
           />
+          {errors.end_date && (
+            <span className={styles.errorText}>{errors.end_date.message}</span>
+          )}
         </div>
       </div>
     </div>

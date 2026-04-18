@@ -33,6 +33,7 @@ export default function UploadFile({
   isRemoving = false,
   onRemoveFile,
 }: UploadFileProps) {
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0] || null;
     onFileChange(selectedFile);
@@ -43,6 +44,7 @@ export default function UploadFile({
       fileInputRef.current?.click();
     }
   };
+  
 
   return (
     <>
