@@ -8,14 +8,13 @@ import { TbTimezone } from 'react-icons/tb';
 import { TimePicker } from 'antd';
 import dayjs from 'dayjs';
 import { TIME_ZONES } from '@/components/constants/Constant';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 function Step3Scheduling() {
   const {
-    register,
     control,
     watch,
     setValue,
