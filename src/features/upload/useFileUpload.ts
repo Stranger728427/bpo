@@ -14,15 +14,6 @@ export const useFileUpload = ({ campaignId }: UseFileUploadProps) => {
   const fileMutation = useUploadContactsMutation();
   const truncateFileMutation = useTruncateFileMutation();
 
-  // upload progress event
-   useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prev) => (prev < 100 ? prev + 1 : 100));
-    }, 50);
-
-    return () => clearInterval(interval);
-  }, []);
-
   const resetState = useCallback(() => {
     setFile(null);
     fileMutation.reset();
