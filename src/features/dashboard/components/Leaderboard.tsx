@@ -1,17 +1,10 @@
 import React from 'react';
 import styles from './Leaderboard.module.scss';
-
-interface LeaderboardItem {
-  id: string;
-  campaign_name: string;
-  call_count: string | number;
-  converted_calls: number;
-  conversion_rate: number;
-}
+import { CampaignPerformance } from '@/service/Types/Analytics';
 
 interface LeaderboardProps {
   title: string;
-  items: LeaderboardItem[];
+  items: CampaignPerformance[];
   icon: React.ElementType;
   variant?: 'best' | 'worst';
 }
@@ -33,7 +26,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
 
       <div className={styles.list}>
         {items.map((item, index) => (
-          <div key={item.id} className={styles.item}>
+          <div key={item.campaign_name} className={styles.item}>
             <div className={styles.rank}>{index + 1}</div>
 
             <div className={styles.mainContent}>

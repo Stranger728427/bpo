@@ -1,5 +1,5 @@
 import { Dropdown } from '@/components/ui/Dropdown/Dropdown';
-import { MenuProps } from 'antd';
+import { MenuProps, message } from 'antd';
 import { useState } from 'react';
 import styles from './DashboardPage.module.scss';
 import Banner from '@/components/layout/Banner/Banner';
@@ -18,48 +18,51 @@ import { VscCalendar } from 'react-icons/vsc';
 // import { InsightCard } from '../components/InsightCard';
 import { Leaderboard } from '../components/Leaderboard';
 import { Sparkline } from '@components/ui/SparkLine/Sparkline';
+import { useMutation } from '@tanstack/react-query';
+import { AnalyticsService } from '@/service/Analytics.service';
+import { AnalyticsResponse, CampaignMetricsRequest } from '@/service/Types/Analytics';
 
 // Mock Data for Phase 1
-const leaderboardData = [
-  {
-    id: '1',
-    campaign_name: 'Holiday Season Sale',
-    call_count: '24.8%',
-    conversion_rate: 95,
-    converted_calls: 80,
-  },
-  {
-    id: '2',
-    campaign_name: 'Real Estate Q1',
-    call_count: '18.2%',
-    conversion_rate: 70,
-    converted_calls: 70,
-  },
-  {
-    id: '3',
-    campaign_name: 'SaaS Outbound',
-    call_count: '15.4%',
-    conversion_rate: 60,
-    converted_calls: 60,
-  },
-  {
-    id: '4',
-    campaign_name: 'Health Checkup',
-    call_count: '12.1%',
-    conversion_rate: 45,
-    converted_calls: 50,
-  },
-];
+// const leaderboardData = [
+//   {
+//     id: '1',
+//     campaign_name: 'Holiday Season Sale',
+//     call_count: '24.8%',
+//     conversion_rate: 95,
+//     converted_calls: 80,
+//   },
+//   {
+//     id: '2',
+//     campaign_name: 'Real Estate Q1',
+//     call_count: '18.2%',
+//     conversion_rate: 70,
+//     converted_calls: 70,
+//   },
+//   {
+//     id: '3',
+//     campaign_name: 'SaaS Outbound',
+//     call_count: '15.4%',
+//     conversion_rate: 60,
+//     converted_calls: 60,
+//   },
+//   {
+//     id: '4',
+//     campaign_name: 'Health Checkup',
+//     call_count: '12.1%',
+//     conversion_rate: 45,
+//     converted_calls: 50,
+//   },
+// ];
 
-const callVolumeData = [
-  { label: 'Mon', value: 450 },
-  { label: 'Tue', value: 520 },
-  { label: 'Wed', value: 610 },
-  { label: 'Thu', value: 580 },
-  { label: 'Fri', value: 690 },
-  { label: 'Sat', value: 320 },
-  { label: 'Sun', value: 280 },
-];
+// const callVolumeData = [
+//   { label: 'Mon', value: 450 },
+//   { label: 'Tue', value: 520 },
+//   { label: 'Wed', value: 610 },
+//   { label: 'Thu', value: 580 },
+//   { label: 'Fri', value: 690 },
+//   { label: 'Sat', value: 320 },
+//   { label: 'Sun', value: 280 },
+// ];
 
 const callsSparkData = [
   { value: 30 },
@@ -93,6 +96,8 @@ const dateOptions = [
 
 const DashboardPage = () => {
   const [dateFilter, setDateFilter] = useState('last_7_days');
+  const analyticsService = AnalyticsService();
+  const [analytics, setAnalytics] = useState<AnalyticsResponse | null>(null);
 
   const getDateLabel = () =>
     dateOptions.find((o) => o.key === dateFilter)?.label || 'Today';
@@ -102,6 +107,33 @@ const DashboardPage = () => {
     label: option.label,
     onClick: () => setDateFilter(option.key),
   }));
+
+  const requestMetric = useMutation({
+  mutationFn: async (payload: CampaignMetricsRequest) => {
+    return await analyticsService.requestMetrics(payload);
+  },
+
+  onSuccess: (data) => {
+    message.success("Metrics Received");
+    setAnalytics(data);
+    console.log("Metrics Response:", data);
+  },
+
+  onError: () => {
+    message.error("Metrics Failed to receive");
+  },
+});
+
+const callVolumeData = analytics?.["Daily Call Volume"].map((item) => ({
+  label: item.date,
+  value: item.count,
+}));
+
+const bestPerformingCampaign = analytics?.["Best Performing Campaign"]?.[0]?.campaign_name; 
+
+const worstPerformingCampaign = analytics?.["Worst Performing Campaign"]?.[0]?.campaign_name;
+
+
 
   return (
     <div className={styles.container}>
@@ -176,7 +208,7 @@ const DashboardPage = () => {
           /> */}
           <Leaderboard
             title="Best Performing Campaigns"
-            items={leaderboardData}
+            items={bestPerformingCampaign}
             icon={BiTrendingUp}
           />
           {/* <InsightCard
@@ -188,7 +220,7 @@ const DashboardPage = () => {
           /> */}
           <Leaderboard
             title="Worst Performing Campaigns"
-            items={leaderboardData}
+            items={worstPerformingCampaign}
             icon={BiTrendingDown}
             variant="worst"
           />
