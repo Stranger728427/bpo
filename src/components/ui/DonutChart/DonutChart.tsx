@@ -1,23 +1,21 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import styles from './DonutChart.module.scss';
 
-interface DonutChartProps {
+interface DataItem {
+  name: string;
   value: number;
-  total: number;
+  fill: string;
+}
+
+interface DonutChartProps {
+  data: DataItem[];
   centerLabel?: string;
   centerValue?: string | number;
   size?: number;
   strokeWidth?: number;
-  primaryColor?: string;
-  secondaryColor?: string;
 }
 
-interface CustomTooltipProps {
-  active?: boolean;
-  payload?: Array<{ name: string; value: number }>;
-}
-
-function CustomTooltip({ active, payload }: CustomTooltipProps) {
+function CustomTooltip({ active, payload }: any) {
   if (active && payload && payload.length) {
     return (
       <div className={styles.tooltip}>
@@ -30,24 +28,13 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
 }
 
 export function DonutChart({
-  value,
-  total,
-  centerLabel = 'Today',
+  data,
+  centerLabel = 'Total',
   centerValue,
   size = 200,
-  strokeWidth = 10,
-  primaryColor = '#8b5cf6',
-  secondaryColor = '#f3f4f6',
+  strokeWidth = 20,
 }: DonutChartProps) {
-  const remaining = total - value;
-  const data = [
-    { name: 'Used', value: value, fill: primaryColor },
-    {
-      name: 'Remaining',
-      value: remaining > 0 ? remaining : 0,
-      fill: secondaryColor,
-    },
-  ];
+  const total = data?.reduce((sum, item) => sum + item.value, 0);
 
   const padding = 20;
   const availableSize = size - padding * 2;
@@ -100,7 +87,9 @@ export function DonutChart({
         </ResponsiveContainer>
 
         <div className={styles.centerContent}>
-          <span className={styles.centerValue}>{centerValue ?? value}</span>
+          <span className={styles.centerValue}>
+            {centerValue ?? total}
+          </span>
           <span className={styles.centerLabel}>{centerLabel}</span>
         </div>
       </div>

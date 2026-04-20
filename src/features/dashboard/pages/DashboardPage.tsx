@@ -19,6 +19,15 @@ import { Sparkline } from '@components/ui/SparkLine/Sparkline';
 
 import { useAnalyticMetrics } from '@/components/Hooks/useAnalyticMetrics';
 
+const callVolumeData = [
+  { label: 'Mon', value: 450 },
+  { label: 'Tue', value: 520 },
+  { label: 'Wed', value: 610 },
+  { label: 'Thu', value: 580 },
+  { label: 'Fri', value: 690 },
+  { label: 'Sat', value: 320 },
+  { label: 'Sun', value: 280 },
+];
 
 const callsSparkData = [
   { value: 30 },
@@ -55,7 +64,7 @@ const DashboardPage = () => {
   const getDateLabel = () =>
     dateOptions.find((o) => o.key === dateFilter)?.label || 'Today';
   const {
-    callVolumeData,
+    // callVolumeData,
     bestPerformingCampaign,
     worstPerformingCampaign,
     totalCallsMade,
@@ -122,14 +131,14 @@ const DashboardPage = () => {
             value={totalActiveCampaign}
             icon={<BiRocket />}
             variant="secondary"
-            highlightText="4 launched this week"
+            // highlightText="4 launched this week"
           />
           <StatCard
             title="Total Leads Reached"
             value={totalLeadsReached}
             icon={<BiUserCheck />}
             variant="warning"
-            highlightText="64% of total database"
+            // highlightText="64% of total database"
           />
         </div>
 

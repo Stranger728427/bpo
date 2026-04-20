@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { DailyCallVolume, enableAllMetrics } from '@/service/Types/Analytics';
+import { DailyCallVolume, enableCampaignMetrics, enableDashboardMetrics } from '@/service/Types/Analytics';
 import { message } from 'antd';
 import { AnalyticsService } from '@/service/Analytics.service';
 
@@ -20,7 +20,7 @@ export const useAnalyticMetrics = (campaign_id?: string) => {
     // Always call, but pass campaign_id only if available
     requestMetrics.mutateAsync({
       ...(campaign_id ? { campaign_id } : {}),
-      metrics: enableAllMetrics(),
+      metrics: campaign_id ? enableCampaignMetrics(): enableDashboardMetrics(),
     });
   }, [campaign_id]);
 
@@ -40,16 +40,29 @@ const overAllConversion = metric?.overall_conversion_rate ?? 0;
 const totalActiveCampaign = metric?.total_active_campaigns ?? 0;
 const totalLeadsReached = metric?.total_leads_reached ?? 0;
 
-console.log('metric:', metric);
+// Campaign Metrics
+const callsMade = metric?.calls_made;
+const conversionRate = metric?.conversion_rate;
+const avgCallDuration = metric?.campaign_avg_call_duration;
+const campaignProgrss = metric?.campaign_progress;
+const leadStatusDistribution = metric?.lead_status_distribution;
+const CallStatusBreakDown = metric?.call_status_breakdown;
+
 
   return {
-    ...requestMetrics,
+    requestMetrics,
     callVolumeData,
     bestPerformingCampaign,
     worstPerformingCampaign,
     totalCallsMade,
     overAllConversion,
     totalActiveCampaign,
-    totalLeadsReached
+    totalLeadsReached,
+    callsMade,
+    conversionRate,
+    avgCallDuration,
+    campaignProgrss,
+    leadStatusDistribution,
+    CallStatusBreakDown
   };
 };

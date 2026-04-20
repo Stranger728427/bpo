@@ -6,7 +6,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
-  Pie,
+  Cell,
 } from 'recharts';
 import styles from './BarChart.module.scss';
 
@@ -103,7 +103,7 @@ export function BarChart({
             animationEasing="ease-in-out"
           >
             {data?.map((_, index) => (
-              <Pie
+              <Cell
                 key={`cell-${index}`}
                 fill={index === highlightIndex ? highlightColor : barColor}
                 style={{

@@ -4,7 +4,15 @@ import styles from './CampaignDetailModal.module.scss';
 import { useCampaignById } from '@/features/camp/component/api/useCampaignById';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { Modal } from '@/components/ui/Modal/Modal';
-import { Descriptions, Card, Tag } from 'antd';
+import { Tag, Statistic } from 'antd';
+import { HugeiconsCall02 } from '@/components/icons/CallLogs.icons';
+import { StreamlineFlexDollarIncrease } from '@/components/icons/ConversionRateIcon';
+import { IoTimeOutline } from 'react-icons/io5';
+import { AiOutlineDollarCircle } from 'react-icons/ai';
+import { useAnalyticMetrics } from '@/components/Hooks/useAnalyticMetrics';
+import { DonutChart } from '@/components/ui/DonutChart/DonutChart';
+import { CallStatus, LeadStatus } from '@/service/Types/Analytics';
+import dayjs, { Dayjs } from 'dayjs';
 
 interface CampaignDetailModalProps {
   isOpen: boolean;
@@ -40,6 +48,53 @@ export function CampaignDetailModal({
   const { data } = useCampaignById(campaignId!);
   const campaign = data?.campaign || data;
 
+  const {
+    callsMade,
+    conversionRate,
+    avgCallDuration,
+    // leadStatusDistribution,
+    // CallStatusBreakDown,
+  } = useAnalyticMetrics(campaignId!);
+
+  // mock data for donut chart
+  const leadStatusDistribution: LeadStatus[] = [
+    { label: 'positive', count: 45 },
+    { label: 'neutral', count: 25 },
+    { label: 'negative', count: 30 },
+  ];
+
+  const CallStatusBreakDown: CallStatus[] = [
+    { label: 'completed', count: 60 },
+    { label: 'voicemail', count: 20 },
+    { label: 'missed', count: 20 },
+  ];
+
+  const leadChartData = leadStatusDistribution?.map((item: LeadStatus) => ({
+    name: item.label,
+    value: item.count,
+    fill:
+      item.label === 'positive'
+        ? '#4CAF50'
+        : item.label === 'neutral'
+          ? '#FFC107'
+          : '#F44336',
+  }));
+
+  const callStatusChart = CallStatusBreakDown?.map((item: CallStatus) => ({
+    name: item.label,
+    value: item.count,
+    fill:
+      item.label === 'completed'
+        ? '#4CAF50'
+        : item.label === 'voicemail'
+          ? '#FFC107'
+          : '#F44336',
+  }));
+
+  const formatWithMonthWord = (date: Dayjs) => {
+    return dayjs(date).format('DD MMMM YYYY');
+  };
+
   return (
     <Modal
       open={isOpen}
@@ -70,7 +125,26 @@ export function CampaignDetailModal({
               <span>
                 Type: <strong>{campaign?.type}</strong>
               </span>
+              <span>
+                Contacts: <strong>{campaign?.contacts_count}</strong>
+              </span>
             </div>
+             <span className={styles.infoMeta}>
+              Calling Days:{' '}
+              {campaign?.calling_days?.length
+                ? campaign.calling_days.map((day: string) => (
+                    <Tag color="blue" key={day}>
+                      {day}
+                    </Tag>
+                  ))
+                : 'None'}
+            </span>
+           <div className={styles.infoMeta}>
+             <span>
+              {`Created ${formatWithMonthWord(campaign?.start_date)} - Last Updated ${formatWithMonthWord(campaign?.end_date)}`}
+            </span>
+    
+           </div>
           </div>
           <Badge
             variant={getStatusVariant(campaign?.status)}
@@ -95,55 +169,48 @@ export function CampaignDetailModal({
           </div> */}
 
           {/* Calls Made */}
-          {/* <div className={styles.statCard}>
+          <div className={styles.statCard}>
             <div className={styles.statHeader}>
               <span className={styles.statLabel}>Calls made</span>
               <HugeiconsCall02 />
             </div>
-            <Statistic
-              value={campaign?.calls_made ?? 0}
-              className={styles.statValue}
-            />
-          </div> */}
+            <Statistic value={callsMade ?? 0} className={styles.statValue} />
+          </div>
 
           {/* Conversion Rate */}
-          {/* <div className={styles.statCard}>
+          <div className={styles.statCard}>
             <div className={styles.statHeader}>
               <span className={styles.statLabel}>Conversion rate</span>
               <StreamlineFlexDollarIncrease />
             </div>
             <Statistic
-              value={campaign?.conversion_rate ?? 0}
+              value={conversionRate ?? 0}
               suffix="%"
               valueStyle={{ fontSize: 28, fontWeight: 700 }}
               className={styles.statValue}
             />
 
-             <div className={styles.statChange}>
-              {performance?.conversion_rate_change ?? 0}%
-            </div>
-          </div> */}
+            <div className={styles.statChange}>{conversionRate ?? 0}%</div>
+          </div>
 
           {/* Spend */}
-          {/* <div className={styles.statCard}>
+          <div className={styles.statCard}>
             <div className={styles.statHeader}>
               <span className={styles.statLabel}>Avg call duration</span>
               <IoTimeOutline size={24} />
             </div>
 
             <Statistic
-              value={performance?.avg_call_duration ?? '00:00'}
+              value={avgCallDuration ?? '00:00'}
               valueStyle={{ fontSize: 28, fontWeight: 700 }}
               className={styles.statValue}
             />
 
-            <div className={styles.statChange}>
-              {performance?.avg_call_duration_change ?? 0}%
-            </div>
-          </div> */}
+            <div className={styles.statChange}>{avgCallDuration ?? 0}%</div>
+          </div>
 
           {/* Average Cost */}
-          {/* <div className={styles.statCard}>
+          <div className={styles.statCard}>
             <div className={styles.statHeader}>
               <span className={styles.statLabel}>Average cost</span>
               <AiOutlineDollarCircle size={24} />
@@ -154,50 +221,65 @@ export function CampaignDetailModal({
               valueStyle={{ fontSize: 24, fontWeight: 700 }}
               className={styles.statValue}
             />
-          </div> */}
+          </div>
         </div>
 
-        {/* Configuration Details */}
-        <Card
-          title="Scheduling & Configuration"
-          bordered={false}
-          style={{
-            borderRadius: 12,
-            border: '1px solid #f0f0f0',
-            marginTop: 8,
-          }}
-        >
-          <Descriptions
-            column={{ xxl: 3, xl: 3, lg: 2, md: 2, sm: 1, xs: 1 }}
-            labelStyle={{ color: '#8c8c8c' }}
-          >
-            <Descriptions.Item label="Start Date">
-              {campaign?.start_date || 'N/A'}
-            </Descriptions.Item>
-            <Descriptions.Item label="End Date">
-              {campaign?.end_date || 'N/A'}
-            </Descriptions.Item>
-            <Descriptions.Item label="Time Zone">
-              {campaign?.time_zone || 'N/A'}
-            </Descriptions.Item>
+        <div className={styles.chartSection}>
+          {/* <h3 className={styles.sectionTitle}>Performance Breakdown</h3> */}
 
-            <Descriptions.Item label="Start Time">
-              {campaign?.start_time || 'N/A'}
-            </Descriptions.Item>
-            <Descriptions.Item label="End Time">
-              {campaign?.end_time || 'N/A'}
-            </Descriptions.Item>
-            <Descriptions.Item label="Calling Days">
-              {campaign?.calling_days?.length
-                ? campaign.calling_days.map((day: string) => (
-                    <Tag color="blue" key={day}>
-                      {day}
-                    </Tag>
-                  ))
-                : 'None'}
-            </Descriptions.Item>
-          </Descriptions>
-        </Card>
+          <div className={styles.chartGrid}>
+            {/* Lead Status */}
+            <div className={styles.chartCard}>
+              <h4>Lead Status</h4>
+              <div className={styles.chartContent}>
+                <DonutChart
+                  data={leadChartData}
+                  centerLabel="Leads"
+                  centerValue={leadChartData?.reduce((a, b) => a + b.value, 0)}
+                />
+                <div className={styles.legend}>
+                  {leadChartData?.map((item) => (
+                    <div key={item?.name} className={styles.legendItem}>
+                      <span
+                        className={styles.colorDot}
+                        style={{ backgroundColor: item.fill }}
+                      />
+                      {item?.name}
+                      <strong>{item.value}</strong>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Call Status */}
+            <div className={styles.chartCard}>
+              <h4>Call Status</h4>
+              <div className={styles.chartContent}>
+                <DonutChart
+                  data={callStatusChart}
+                  centerLabel="Calls"
+                  centerValue={callStatusChart?.reduce(
+                    (a, b) => a + b.value,
+                    0
+                  )}
+                />
+                <div className={styles.legend}>
+                  {callStatusChart?.map((item) => (
+                    <div key={item?.name} className={styles.legendItem}>
+                      <span
+                        className={styles.colorDot}
+                        style={{ backgroundColor: item.fill }}
+                      />
+                      {item?.name}
+                      <strong>{item?.value}</strong>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </Modal>
   );
