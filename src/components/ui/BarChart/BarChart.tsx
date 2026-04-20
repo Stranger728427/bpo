@@ -5,8 +5,8 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
-  Cell,
   CartesianGrid,
+  Pie,
 } from 'recharts';
 import styles from './BarChart.module.scss';
 
@@ -102,8 +102,8 @@ export function BarChart({
             animationDuration={1500}
             animationEasing="ease-in-out"
           >
-            {data.map((_, index) => (
-              <Cell
+            {data?.map((_, index) => (
+              <Pie
                 key={`cell-${index}`}
                 fill={index === highlightIndex ? highlightColor : barColor}
                 style={{

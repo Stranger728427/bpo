@@ -7,7 +7,7 @@ export const AnalyticsService = () => {
   const requestMetrics = async (
     payload: CampaignMetricsRequest
   ): Promise<any> => {
-    const result = await baseApi().post("/api/analytics/metric", payload);
+    const result = await baseApi().post("/api/analytics/metrics", payload);
     return result.data;
   };
 

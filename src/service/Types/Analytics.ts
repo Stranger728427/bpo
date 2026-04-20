@@ -60,23 +60,23 @@ export interface CallStatus {
 }
 
 export interface AnalyticsResponse {
-  // PART A - OVERALL DASHBOARD
-  "Total Calls Made": number;
-  "Overall Conversion Rate": number;
-  "Total Active Campaigns": number;
-  "Total Leads Reached": number;
+  // OVERALL DASHBOARD
+  total_calls_made: number;
+  total_active_campaigns: number;
+  overall_conversion_rate: number;
+  total_leads_reached: number;
 
-  "Daily Call Volume": DailyCallVolume[];
-  "Best Performing Campaign": CampaignPerformance[];
-  "Worst Performing Campaign": CampaignPerformance[];
+  daily_call_volume: DailyCallVolume[];
+  best_performing_campaign: CampaignPerformance[];
+  worst_performing_campaign: CampaignPerformance[];
 
-  // PART B - CAMPAIGN DETAIL
-  "Calls Made": number;
-  "Conversion Rate": number;
-  "Avg Call Duration": string;
+  // CAMPAIGN DETAIL
+  calls_made: number;
+  conversion_rate: number;
+  campaign_avg_call_duration: string;
 
-  "Campaign Progress": CampaignProgress;
+  campaign_progress: CampaignProgress | null;
 
-  "Lead Status Distribution": LeadStatus[];
-  "Call Status Breakdown": CallStatus[];
+  lead_status_distribution: LeadStatus[];
+  call_status_breakdown: CallStatus[];
 }

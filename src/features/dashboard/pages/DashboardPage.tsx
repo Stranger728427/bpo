@@ -1,5 +1,5 @@
 import { Dropdown } from '@/components/ui/Dropdown/Dropdown';
-import { MenuProps, message } from 'antd';
+import { MenuProps } from 'antd';
 import { useState } from 'react';
 import styles from './DashboardPage.module.scss';
 import Banner from '@/components/layout/Banner/Banner';
@@ -9,60 +9,16 @@ import {
   BiTargetLock,
   BiRocket,
   BiUserCheck,
-  BiCrown,
   BiTrendingDown,
   BiTrendingUp,
 } from 'react-icons/bi';
 import { BarChart } from '@/components/ui/BarChart/BarChart';
 import { VscCalendar } from 'react-icons/vsc';
-// import { InsightCard } from '../components/InsightCard';
 import { Leaderboard } from '../components/Leaderboard';
 import { Sparkline } from '@components/ui/SparkLine/Sparkline';
-import { useMutation } from '@tanstack/react-query';
-import { AnalyticsService } from '@/service/Analytics.service';
-import { AnalyticsResponse, CampaignMetricsRequest } from '@/service/Types/Analytics';
 
-// Mock Data for Phase 1
-// const leaderboardData = [
-//   {
-//     id: '1',
-//     campaign_name: 'Holiday Season Sale',
-//     call_count: '24.8%',
-//     conversion_rate: 95,
-//     converted_calls: 80,
-//   },
-//   {
-//     id: '2',
-//     campaign_name: 'Real Estate Q1',
-//     call_count: '18.2%',
-//     conversion_rate: 70,
-//     converted_calls: 70,
-//   },
-//   {
-//     id: '3',
-//     campaign_name: 'SaaS Outbound',
-//     call_count: '15.4%',
-//     conversion_rate: 60,
-//     converted_calls: 60,
-//   },
-//   {
-//     id: '4',
-//     campaign_name: 'Health Checkup',
-//     call_count: '12.1%',
-//     conversion_rate: 45,
-//     converted_calls: 50,
-//   },
-// ];
+import { useAnalyticMetrics } from '@/components/Hooks/useAnalyticMetrics';
 
-// const callVolumeData = [
-//   { label: 'Mon', value: 450 },
-//   { label: 'Tue', value: 520 },
-//   { label: 'Wed', value: 610 },
-//   { label: 'Thu', value: 580 },
-//   { label: 'Fri', value: 690 },
-//   { label: 'Sat', value: 320 },
-//   { label: 'Sun', value: 280 },
-// ];
 
 const callsSparkData = [
   { value: 30 },
@@ -96,11 +52,17 @@ const dateOptions = [
 
 const DashboardPage = () => {
   const [dateFilter, setDateFilter] = useState('last_7_days');
-  const analyticsService = AnalyticsService();
-  const [analytics, setAnalytics] = useState<AnalyticsResponse | null>(null);
-
   const getDateLabel = () =>
     dateOptions.find((o) => o.key === dateFilter)?.label || 'Today';
+  const {
+    callVolumeData,
+    bestPerformingCampaign,
+    worstPerformingCampaign,
+    totalCallsMade,
+    overAllConversion,
+    totalActiveCampaign,
+    totalLeadsReached,
+  } = useAnalyticMetrics();
 
   const dateMenuItems: MenuProps['items'] = dateOptions.map((option) => ({
     key: option.key,
@@ -108,39 +70,13 @@ const DashboardPage = () => {
     onClick: () => setDateFilter(option.key),
   }));
 
-  const requestMetric = useMutation({
-  mutationFn: async (payload: CampaignMetricsRequest) => {
-    return await analyticsService.requestMetrics(payload);
-  },
-
-  onSuccess: (data) => {
-    message.success("Metrics Received");
-    setAnalytics(data);
-    console.log("Metrics Response:", data);
-  },
-
-  onError: () => {
-    message.error("Metrics Failed to receive");
-  },
-});
-
-const callVolumeData = analytics?.["Daily Call Volume"].map((item) => ({
-  label: item.date,
-  value: item.count,
-}));
-
-const bestPerformingCampaign = analytics?.["Best Performing Campaign"]?.[0]?.campaign_name; 
-
-const worstPerformingCampaign = analytics?.["Worst Performing Campaign"]?.[0]?.campaign_name;
-
-
 
   return (
     <div className={styles.container}>
       <Banner>
         <div className={styles.header}>
           <div>
-            <h1 className={styles.title}>Performance Analytics</h1>
+            <h1 className={styles.title}>Dashboard</h1>
           </div>
           <Dropdown items={dateMenuItems} trigger={['click']}>
             <button className={styles.dateFilter}>
@@ -165,7 +101,7 @@ const worstPerformingCampaign = analytics?.["Worst Performing Campaign"]?.[0]?.c
         <div className={styles.statsGrid}>
           <StatCard
             title="Total Calls Made"
-            value="14,285"
+            value={totalCallsMade}
             icon={<BiPhoneCall />}
             trend="up"
             trendValue="+12.5%"
@@ -174,7 +110,7 @@ const worstPerformingCampaign = analytics?.["Worst Performing Campaign"]?.[0]?.c
           />
           <StatCard
             title="Overall Conversion"
-            value="18.3%"
+            value={overAllConversion}
             icon={<BiTargetLock />}
             trend="up"
             trendValue="+5.2%"
@@ -183,14 +119,14 @@ const worstPerformingCampaign = analytics?.["Worst Performing Campaign"]?.[0]?.c
           />
           <StatCard
             title="Active Campaigns"
-            value="12"
+            value={totalActiveCampaign}
             icon={<BiRocket />}
             variant="secondary"
             highlightText="4 launched this week"
           />
           <StatCard
             title="Total Leads Reached"
-            value="8,492"
+            value={totalLeadsReached}
             icon={<BiUserCheck />}
             variant="warning"
             highlightText="64% of total database"
@@ -199,25 +135,11 @@ const worstPerformingCampaign = analytics?.["Worst Performing Campaign"]?.[0]?.c
 
         {/* Campaign Insights Row */}
         <div className={styles.insightsRow}>
-          {/* <InsightCard
-            type="best"
-            campaignName="Holiday Season Sale"
-            description="Exceptional performance in the mid-west region with high engagement rates."
-            metricLabel="Conversion Rate"
-            metricValue="24.8%"
-          /> */}
           <Leaderboard
             title="Best Performing Campaigns"
             items={bestPerformingCampaign}
             icon={BiTrendingUp}
           />
-          {/* <InsightCard
-            type="worst"
-            campaignName="Outbound Cold Leads B"
-            description="Lower than average connect rate. Consider refreshing the lead list or script."
-            metricLabel="Connect Rate"
-            metricValue="8.2%"
-          /> */}
           <Leaderboard
             title="Worst Performing Campaigns"
             items={worstPerformingCampaign}
