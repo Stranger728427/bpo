@@ -7,23 +7,23 @@ export const UploadService = () => {
 const uploadContacts = async (
   file: File,
   campaignId: string,
-  // csvId: string
+  onProgress?: (percent: number) => void
 ) => {
   const formData = new FormData();
+  formData.append("file", file);
+  formData.append("campaign_id", campaignId);
 
-  formData.append('file', file);
-  formData.append('campaign_id', campaignId);
-  // formData.append('csvId', csvId);
-
-  return baseApi().post(
-    `/campaigns/upload-leads`,
-    formData,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }
-  );
+  return baseApi().post(`/campaigns/upload-leads`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    onUploadProgress: (event) => {
+      if (onProgress && event.total) {
+        const percent = Math.round((event.loaded * 100) / event.total);
+        onProgress(percent);
+      }
+    },
+  });
 };
 
 const deleteFile = async (id: string) => {

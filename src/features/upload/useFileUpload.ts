@@ -9,7 +9,6 @@ type UseFileUploadProps = {
 export const useFileUpload = ({ campaignId }: UseFileUploadProps) => {
   const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
   const fileMutation = useUploadContactsMutation();
   const truncateFileMutation = useTruncateFileMutation();
 
@@ -30,7 +29,7 @@ export const useFileUpload = ({ campaignId }: UseFileUploadProps) => {
         return;
       }
 
-      fileMutation.mutate(
+      fileMutation.mutateAsync(
         { file: selectedFile, campaignId },
         {
           onSuccess: () => {

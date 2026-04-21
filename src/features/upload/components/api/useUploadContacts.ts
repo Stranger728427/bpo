@@ -5,6 +5,7 @@ import { message } from 'antd';
 type UploadContactsPayload = {
   file: File;
   campaignId: string;
+  onProgress?: (percent: number) => void;
 };
 
 export const useUploadContactsMutation = () => {
@@ -15,6 +16,7 @@ export const useUploadContactsMutation = () => {
       uploadService.uploadContacts(
         data.file,
         data.campaignId!,
+        data.onProgress,
       ),
 
     onSuccess: () => {
