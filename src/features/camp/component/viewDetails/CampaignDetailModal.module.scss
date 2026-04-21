@@ -74,17 +74,17 @@
   &::-webkit-scrollbar {
     display: none;
   }
-  padding: $spacing-md;
+  padding: $spacing-sm;
   display: flex;
   flex-direction: column;
-  gap: $spacing-md; 
+  gap: $spacing-sm; 
 }
 
 // Info Card
 .infoCard {
   background-color: $color-white;
   border-radius: $border-radius-lg;
-  padding: $spacing-md;
+  padding: $spacing-sm;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -107,7 +107,7 @@
 .infoMeta {
   display: flex;
   flex-wrap: wrap;
-  gap: $spacing-md;
+  gap: $spacing-sm;
   font-size: $font-size-sm;
   color: $color-gray-500;
 
@@ -150,7 +150,6 @@
     grid-template-columns: 1fr;
   }
 }
-
 .statCard {
   background-color: $color-white;
   border-radius: $border-radius-lg;
@@ -158,6 +157,18 @@
   display: flex;
   flex-direction: column;
   gap: $spacing-sm;
+
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Hover animation */
+.statCard:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.statCard {
+  animation: fadeInUp 0.5s ease forwards;
 }
 
 .statHeader {
@@ -172,8 +183,8 @@
 }
 
 .statIcon {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -202,7 +213,7 @@
 }
 
 // Charts Grid
-.chartsGrid {
+.chartGrid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: $spacing-md;
@@ -255,18 +266,6 @@
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 16px;
-}
-
-.chartGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-.chartCard {
-  background: $color-white;
-  border: 1px solid #f0f0f0;
-  border-radius: 14px;
 }
 
 .chartContent {

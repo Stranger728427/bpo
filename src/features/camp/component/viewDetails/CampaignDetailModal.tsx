@@ -172,21 +172,20 @@ export function CampaignDetailModal({
           <div className={styles.statCard}>
             <div className={styles.statHeader}>
               <span className={styles.statLabel}>Calls made</span>
-              <HugeiconsCall02 />
+              <HugeiconsCall02 className={styles.statIcon} />
             </div>
-            <Statistic value={callsMade ?? 0} className={styles.statValue} />
+            <Statistic value={callsMade ?? 0} className={styles.statValue} classNames={styles.statValue} />
           </div>
 
           {/* Conversion Rate */}
           <div className={styles.statCard}>
             <div className={styles.statHeader}>
               <span className={styles.statLabel}>Conversion rate</span>
-              <StreamlineFlexDollarIncrease />
+              <StreamlineFlexDollarIncrease className={styles.statIcon} />
             </div>
             <Statistic
               value={conversionRate ?? 0}
               suffix="%"
-              valueStyle={{ fontSize: 28, fontWeight: 700 }}
               className={styles.statValue}
             />
 
@@ -197,12 +196,11 @@ export function CampaignDetailModal({
           <div className={styles.statCard}>
             <div className={styles.statHeader}>
               <span className={styles.statLabel}>Avg call duration</span>
-              <IoTimeOutline size={24} />
+              <IoTimeOutline className={styles.statIcon} />
             </div>
 
             <Statistic
               value={avgCallDuration ?? '00:00'}
-              valueStyle={{ fontSize: 28, fontWeight: 700 }}
               className={styles.statValue}
             />
 
@@ -213,12 +211,11 @@ export function CampaignDetailModal({
           <div className={styles.statCard}>
             <div className={styles.statHeader}>
               <span className={styles.statLabel}>Average cost</span>
-              <AiOutlineDollarCircle size={24} />
+              <AiOutlineDollarCircle className={styles.statIcon} />
             </div>
             <Statistic
               value={campaign?.spend ?? 0}
               suffix=" credits"
-              valueStyle={{ fontSize: 24, fontWeight: 700 }}
               className={styles.statValue}
             />
           </div>

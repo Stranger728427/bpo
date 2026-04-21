@@ -10,7 +10,6 @@ import {
   getStatusLabel,
   getStatusVariant,
 } from '../component/campaign.type';
-import { CampaignDetailModal } from '@/features/campaigns/components/CampaignDetailModal';
 import { useGetAllCampaign } from '../component/api/useGetAllCampaign';
 import CreateCampaignForm from '../component/Forms/CreateCampaignForm';
 import { PiMagnifyingGlass } from 'react-icons/pi';
@@ -19,6 +18,7 @@ import { SEARCH_TYPE, SearchType } from '@/features/call/components/call.types';
 import { useDebounce } from '@/components/Hooks/useDebounce';
 import { DEBOUNCE_TIMEOUT } from '@/components/constants/Constant';
 import { TableSkeleton } from '@/components/TableSkeleton/TableSkeleton';
+import { CampaignDetailModal } from '../component/viewDetails/CampaignDetailModal';
 
 function Campaign() {
   const [currentPage, setCurrentPage] = useState(1);
