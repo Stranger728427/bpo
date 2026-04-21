@@ -75,7 +75,7 @@ export function DonutChart({
               animationDuration={1200}
               animationEasing="ease-out"
             >
-              {data.map((entry, index) => (
+              {data?.map((entry, index) => (
                 <Pie
                   key={`cell-${index}`}
                   fill={entry.fill}
