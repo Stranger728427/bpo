@@ -256,7 +256,7 @@ function CreateCampaignForm({
           <Skeleton active paragraph={{ rows: 6 }} />
         ) : (
           <FormProvider {...methods}>
-            {/* 🔥 ID needed for footer button */}
+            {/* ID needed for footer button */}
             <form onSubmit={handleSubmit(onSubmit)} id="campaignForm">
               {currentStep === 0 && <Step1CampaignBasics />}
               {currentStep === 1 && <Step3Scheduling />}

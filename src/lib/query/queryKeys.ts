@@ -19,5 +19,19 @@ export const queryKeys = {
     details: () => [...queryKeys.call.all, 'detail'] as const,
     detail: (id: string) => [...queryKeys.call.details(), id] as const,
   },
+
+ analytics: {
+    dashboard: ['analytics', 'dashboard'] as const,
+
+    dashboardMetrics: (filters?: any) =>
+      ['analytics', 'dashboard', 'metrics', filters] as const,
+  },
+
+  campaignAnalytics: {
+    campaign: ['analytics', 'campaign'] as const,
+
+    campaignMetrics: (campaignId: string, filters?: any) =>
+      ['analytics', 'campaign', campaignId, 'metrics', filters] as const,
+  },
 } as const;
 

@@ -10,6 +10,14 @@ $color-success: #007F2F;
 $color-warning: #E4B600;
 $color-error: #E00000;
 $color-info: #0ea5e9;
+$color-fallback:#999;
+
+:root {
+  --color-success: #{$color-success};
+  --color-warning: #{$color-warning};
+  --color-error: #{$color-error};
+  --color-fallback: #{$color-fallback};
+}
 
 // Dashboard specific colors
 $color-sidebar-bg: #faf8ff;

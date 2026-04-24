@@ -1,3 +1,14 @@
+import { COLORS } from "@/components/constants/Constant";
+
+export type LeadStatusType = 'positive' | 'neutral' | 'negative';
+
+export type CallStatusType =
+  | 'interested'
+  | 'not_interested'
+  | 'callback'
+  | 'no_answer'
+  | 'completed';
+
 export enum MetricKey {
   TOTAL_CALLS_MADE = "total_calls_made",
   TOTAL_ACTIVE_CAMPAIGNS = "total_active_campaigns",
@@ -84,12 +95,14 @@ export interface CampaignProgress {
   progress_percentage: number;
 }
 
-export interface LeadStatus {
+export interface LeadStatusItem {
+  status: LeadStatusType;
   label: string;
   count: number;
 }
 
-export interface CallStatus {
+export interface CallStatusItem {
+  status: CallStatusType;
   label: string;
   count: number;
 }
@@ -112,6 +125,22 @@ export interface AnalyticsResponse {
 
   campaign_progress: CampaignProgress | null;
 
-  lead_status_distribution: LeadStatus[];
-  call_status_breakdown: CallStatus[];
+  lead_status_distribution: LeadStatusItem[];
+  call_status_breakdown: CallStatusItem[];
 }
+
+export const CALL_COLORS: Record<CallStatusType, string> = {
+  interested: COLORS.success,
+  completed: COLORS.success,
+
+  callback: COLORS.warning,
+  no_answer: COLORS.warning,
+
+  not_interested: COLORS.error,
+};
+
+export const LEAD_COLORS: Record<LeadStatusType, string> = {
+  positive: COLORS.success,
+  neutral: COLORS.warning,
+  negative: COLORS.error,
+};

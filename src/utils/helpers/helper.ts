@@ -1,3 +1,4 @@
+import { DATE_FORMAT } from "@/components/constants/Constant";
 import dayjs, { Dayjs } from "dayjs";
 
 // Formats a call timestamp into a readable string format: "DD MMM YYYY, hh:mm A"
@@ -20,5 +21,10 @@ export const getSubDomain = (url: string) => {
  * Example: 21 April 2026
  */
 export const formatWithMonthWord = (date: Dayjs) => {
-  return dayjs(date).format('DD MMMM YYYY');
+  return dayjs(date).format(DATE_FORMAT.AbbreviatedMonthDayYear);
+};
+
+export const formatTime12hr = (time: string) => {
+	if (!time) return '';
+	return dayjs(time, DATE_FORMAT.USA_24_HR_TIME).format(DATE_FORMAT.USA_TIME);
 };

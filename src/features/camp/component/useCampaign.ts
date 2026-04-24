@@ -1,4 +1,6 @@
-import { useMemo } from "react";
+import { COLORS } from '@/components/constants/Constant';
+import { CALL_COLORS, LEAD_COLORS } from '@/service/Types/Analytics';
+import { useMemo } from 'react';
 
 export type LeadStatus = {
   label: string;
@@ -16,41 +18,29 @@ export type StatusBreakDownType = {
   fill: string;
 };
 
-const LEAD_COLORS: Record<string, string> = {
-  positive: "#4CAF50",
-  neutral: "#FFC107",
-  negative: "#F44336",
-};
-
-const CALL_COLORS: Record<string, string> = {
-  completed: "#4CAF50",
-  voicemail: "#FFC107",
-  failed: "#F44336",
-};
-
 export const useCampaign = (
   leadStatusDistribution?: LeadStatus[],
   callStatusBreakDown?: CallStatus[]
 ) => {
-  const leadChart: StatusBreakDownType[] = useMemo(() => {
-    return (
-      leadStatusDistribution?.map((item) => ({
-        name: item.label,
-        value: item.count,
-        fill: LEAD_COLORS[item.label] ?? "#999",
-      })) ?? []
-    );
-  }, [leadStatusDistribution]);
+  const mapChartData = (
+    data: { label: string; count: number }[] | undefined,
+    colorMap: Record<string, string>
+  ): StatusBreakDownType[] =>
+    data?.map((item) => ({
+      name: item.label,
+      value: item.count,
+      fill: colorMap[item.label] ?? COLORS.fallBack,
+    })) ?? [];
 
-  const callStatusChart: StatusBreakDownType[] = useMemo(() => {
-    return (
-      callStatusBreakDown?.map((item) => ({
-        name: item.label,
-        value: item.count,
-        fill: CALL_COLORS[item.label] ?? "#999",
-      })) ?? []
-    );
-  }, [callStatusBreakDown]);
+  const leadChart = useMemo(
+    () => mapChartData(leadStatusDistribution, LEAD_COLORS),
+    [leadStatusDistribution]
+  );
+
+  const callStatusChart = useMemo(
+    () => mapChartData(callStatusBreakDown, CALL_COLORS),
+    [callStatusBreakDown]
+  );
 
   const leadCenterValue: number = useMemo(() => {
     return leadChart.reduce((sum, item) => sum + item.value, 0);

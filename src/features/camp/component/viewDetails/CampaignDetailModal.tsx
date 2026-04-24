@@ -177,8 +177,6 @@ export function CampaignDetailModal({
         </div>
 
         <div className={styles.chartSection}>
-          {/* <h3 className={styles.sectionTitle}>Performance Breakdown</h3> */}
-
           <div className={styles.chartGrid}>
             {/* Lead Status */}
             <div className={styles.chartCard}>

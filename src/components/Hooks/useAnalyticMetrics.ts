@@ -1,40 +1,27 @@
-import { useEffect } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import {
   DailyCallVolume,
   enableCampaignMetrics,
   enableDashboardMetrics,
 } from '@/service/Types/Analytics';
-import { message } from 'antd';
 import { AnalyticsService } from '@/service/Analytics.service';
+import { queryKeys } from '@/lib/query/queryKeys';
 
 export const useAnalyticMetrics = (campaignId?: string) => {
   const analyticsService = AnalyticsService();
-  const requestMetrics = useMutation({
-    mutationFn: analyticsService.requestMetrics,
-    onSuccess: () => {
-  const successMessage = campaignId
-    ? 'Track Campaign insights.'
-    : 'Track Overall Performance insights.';
 
-  message.success(successMessage);
-},
-onError: () => {
-  const errorMessage = campaignId
-    ? 'Failed to load campaign insights. Please try again.'
-    : 'Failed to load performance insights. Please try again.';
-
-  message.error(errorMessage);
-},
+  const requestMetrics = useQuery({
+    queryKey: campaignId
+      ? queryKeys.campaignAnalytics.campaignMetrics(campaignId)
+      : queryKeys.analytics.dashboardMetrics(),
+    queryFn: () =>
+      analyticsService.requestMetrics({
+        ...(campaignId ? { campaign_id: campaignId } : {}),
+        metrics: campaignId
+          ? enableCampaignMetrics()
+          : enableDashboardMetrics(),
+      }),
   });
-
-  useEffect(() => {
-    // Always call, but pass campaign_id only if available
-    requestMetrics.mutateAsync({
-      ...(campaignId ? { campaignId } : {}),
-      metrics: campaignId ? enableCampaignMetrics() : enableDashboardMetrics(),
-    });
-  }, [campaignId]);
 
   const metric = requestMetrics?.data;
 
