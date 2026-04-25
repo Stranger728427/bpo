@@ -1,14 +1,9 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: $spacing-md;
-  padding: $spacing-lg;
+  gap: $spacing-sm;
+  padding: $spacing-lg $spacing-sm $spacing-sm $spacing-md;
   height: 100%;
-  // max-width: 1400px;
-  
-  @include media-up('lg') {
-    padding: $spacing-xl;
-  }
 }
 
 // Header
@@ -91,7 +86,7 @@
   border-radius: $border-radius-lg;
   overflow: auto;
   min-height: 0;
-  max-height: calc(100vh - 250px);
+  max-height: calc(100vh - 200px);
   scrollbar-width: none;
   -ms-overflow-style: none;
   &::-webkit-scrollbar {
@@ -109,6 +104,7 @@
 
   :global(.ant-table-container) {
     border: none;
+    height: calc(100vh - 190px);
   }
 
   :global(.ant-table-thead > tr > th) {

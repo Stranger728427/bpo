@@ -1,4 +1,6 @@
+import React from 'react';
 import styles from './StatCard.module.scss';
+import { IoMdArrowDropup, IoMdArrowDropdown } from 'react-icons/io';
 
 interface StatCardProps {
   title: string;
@@ -6,6 +8,9 @@ interface StatCardProps {
   icon: React.ReactNode;
   chart?: React.ReactNode;
   highlightText?: string;
+  trend?: 'up' | 'down' | 'neutral';
+  trendValue?: string;
+  variant?: 'primary' | 'secondary' | 'accent' | 'warning' | 'danger';
 }
 
 export function StatCard({ 
@@ -14,24 +19,44 @@ export function StatCard({
   icon, 
   chart,
   highlightText,
+  trend,
+  trendValue,
+  variant = 'primary'
 }: StatCardProps) {
+  const getTrendIcon = () => {
+    if (trend === 'up') return <IoMdArrowDropup className={styles.trendIconUp} />;
+    if (trend === 'down') return <IoMdArrowDropdown className={styles.trendIconDown} />;
+    return null;
+  };
+
   return (
-    <div className={styles.card}>
+    <div className={`${styles.card} ${styles[variant]}`}>
       <div className={styles.header}>
-        <span className={styles.title}>{title}</span>
-        <div className={styles.iconWrapper}>
-          {icon}
+        <div className={styles.titleGroup}>
+          <span className={styles.title}>{title}</span>
+          <div className={styles.iconWrapper}>
+            {icon}
+          </div>
         </div>
       </div>
       
       <div className={styles.content}>
-        <span className={styles.value}>{value}</span>
+        <div className={styles.mainInfo}>
+          <span className={styles.value}>{value}</span>
+          {trendValue && (
+            <div className={`${styles.trend} ${trend ? styles[trend] : ''}`}>
+              {getTrendIcon()}
+              <span>{trendValue}</span>
+            </div>
+          )}
+        </div>
         
+        {highlightText && (
+          <div className={styles.highlightText}>{highlightText}</div>
+        )}
+
         {chart && (
           <div className={styles.chartSection}>
-            {highlightText && (
-              <div className={styles.highlightText}>{highlightText}</div>
-            )}
             {chart}
           </div>
         )}

@@ -18,15 +18,42 @@ export function CostConversionChart({ data }: CostConversionChartProps) {
     lineValue: d.conversion,
   }));
 
+ 
+
+//  const legendItems = [
+//   { label: "Cost", type: "bar"},
+//   { label: "Conversion", type: "line" },
+// ];
+
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <h3 className={styles.title}>Cost vs Conversion</h3>
+     <div className={styles.header}>
+  <h3 className={styles.title}>Cost vs Conversion</h3>
+
+  {/* <div className={styles.legend}>
+    {legendItems.map((item, i) => (
+      <div key={i} className={styles.legendItem}>
+        {item.type === 'bar' ? (
+          <span
+            className={styles.legendBar}
+            
+          />
+        ) : (
+          <span
+            className={styles.legendLine}
+         
+          />
+        )}
+        <span>{item.label}</span>
       </div>
+    ))}
+  </div> */}
+</div>
 
       <LineBarChart
         data={chartData}
         height={250}
+        barColor={'#a78bfa'}
         barLabel="Cost"
         lineLabel="Conversion"
         barValueFormatter={(value) => `$${value.toLocaleString()}`}
@@ -41,3 +68,6 @@ export function CostConversionChart({ data }: CostConversionChartProps) {
     </div>
   );
 }
+
+
+

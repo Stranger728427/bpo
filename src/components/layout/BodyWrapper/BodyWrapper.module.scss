@@ -2,6 +2,6 @@
   display: flex;
   flex: 1;
   margin-top: $header-height - $spacing-md;
-  min-height: calc(100vh - #{$header-height}-#{$spacing-md});
-  min-height: calc(100dvh - #{$header-height}-#{$spacing-md}-#{$spacing-md});
+  min-height: calc(100dvh - #{$header-height} - #{$spacing-md});
+
 }

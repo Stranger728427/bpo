@@ -14,8 +14,12 @@ import { PublicRoute } from './guard/PublicRoutes';
 const TenantLogin = lazy(
   () => import('@features/multi-tenancy/pages/TenantLogin')
 );
+
 const MultiTenantRedirect = lazy(
   () => import('@features/multi-tenancy/pages/MultiTenantRedirect')
+);
+const Dashboard = lazy(
+  () => import('@/features/dashboard/pages/DashboardPage')
 );
 const CallLogs = lazy(() => import('@features/call/pages/CallPage'));
 const Campaign = lazy(() => import('@features/camp/pages/Campaign'));
@@ -58,6 +62,10 @@ export const routes: RouteObject[] = [
         children: [
           {
             index: true,
+            element: withSuspense(Dashboard),
+          },
+          {
+            path: RoutePath.CALL_LOGS,
             element: withSuspense(CallLogs),
           },
           {
