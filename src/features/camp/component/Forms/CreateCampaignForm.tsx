@@ -1,33 +1,20 @@
-import { useEffect, useRef, useState } from 'react';
-import {
-  CampaignFormValues,
-  Campaigns,
-  CampaignType,
-  step1Fields,
-  step2Fields,
-  step3Fields,
-} from '../campaign.type';
 import Step1CampaignBasics from './Step1CampaignBasics';
 import Step3Scheduling from './Step3Scheduling';
 import Step4Review from './Step4Review';
 import styles from './CreateCampaignForm.module.scss';
 import { CloseCircleOutlined } from '@ant-design/icons';
-import { useCampaignCreate } from '../api/useCreateCampaign';
 import { Modal } from '@/components/ui/Modal/Modal';
-import { useUpdateCampaign } from '../api/useUpdateCampaign';
-import { useCampaignById } from '../api/useCampaignById';
 import { Skeleton, Steps, Tooltip } from 'antd';
 import { useFileUpload } from '@/features/upload/useFileUpload';
 import UploadFile from '@/components/upload/UploadFile';
 import { Spinner } from '@/components/ui/Spinner/Spinner';
-import { FormProvider, useForm } from 'react-hook-form';
-import { campaignSchema } from '../../schema/Campaign.schema';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { FormProvider } from 'react-hook-form';
+import { useCreateCampaign } from '../../Hooks/useCreateCampaign';
 
 interface CreateCampaignModalProps {
   isOpen: boolean;
   onClose: () => void;
-  selectedCampaignId: string | null | undefined;
+  selectedCampaignId: string | null;
 }
 
 function CreateCampaignForm({
@@ -35,25 +22,25 @@ function CreateCampaignForm({
   onClose,
   selectedCampaignId,
 }: CreateCampaignModalProps) {
-  const [currentStep, setCurrentStep] = useState(0);
-  const campaignId = useRef<string | null>(null);
+  
+  const {
+    isCreateCampaignCompleted,
+    handleCloseWithReset,
+    handleNext,
+    handlePrevious,
+    handleSubmit,
+    onChangeStep,
+    onSubmit,
+    campaignIdRef,
+    getButtonText,
+    currentStep,
+    isCreating,
+    isUpdating,
+    methods
 
-  const initialValues: CampaignFormValues = {
-    campaignId: '',
-    name: '',
-    type: '' as CampaignType,
-    start_date: '',
-    end_date: '',
-    calling_days: [],
-    start_time: '',
-    end_time: '',
-    time_zone: '',
-  };
-
-  // React Hook Form setup
-  const methods = useForm<CampaignFormValues>({
-    resolver: zodResolver(campaignSchema),
-    defaultValues: initialValues,
+  } = useCreateCampaign({
+    selectedCampaignId,
+    onClose,
   });
 
   const {
@@ -64,61 +51,14 @@ function CreateCampaignForm({
     isUploading,
     resetState,
     isSuccess,
-  } = useFileUpload({ campaignId: campaignId.current || selectedCampaignId! });
+  } = useFileUpload({
+    campaignId: campaignIdRef.current || selectedCampaignId!,
+  });
 
-  const { handleSubmit, reset } = methods;
-
-  const {
-    mutateAsync: CreateCampaign,
-    isPending: isCreating,
-    isSuccess: isCreateCampaignCompleted,
-  } = useCampaignCreate();
-
-  const { mutateAsync: updateCampaign, isPending: isUpdating } =
-    useUpdateCampaign();
-
-  const { data } = useCampaignById(selectedCampaignId!);
-
-  const campaign = data?.campaign;
-
-  // Populate formData for edit mode only
-  useEffect(() => {
-    if (!campaign || !selectedCampaignId) return;
-
-    reset({
-      campaignId: campaign?.id,
-      name: campaign?.name ?? '',
-      type: campaign?.type ?? '',
-      start_date: campaign?.start_date ?? '',
-      end_date: campaign?.end_date ?? '',
-      calling_days: campaign?.calling_days ?? [],
-      start_time: campaign?.start_time ?? '',
-      end_time: campaign?.end_time ?? '',
-      time_zone: campaign?.time_zone ?? '',
-    });
-  }, [campaign, selectedCampaignId, reset]);
-
-  const handleNext = async () => {
-    let fieldsToValidate = [] as any;
-
-    if (currentStep === 0) fieldsToValidate = step1Fields;
-    if (currentStep === 1) fieldsToValidate = step2Fields;
-    if (currentStep === 2) fieldsToValidate = step3Fields;
-
-    const isValid = await methods.trigger(fieldsToValidate);
-
-    if (isValid) {
-      setCurrentStep((prev) => prev + 1);
-    }
-  };
-
-  const handlePrevious = () => {
-    if (currentStep > 0) setCurrentStep(currentStep - 1);
-  };
-
-  const onChangeStep = (value: number) => {
-    setCurrentStep(value);
-  };
+  const handleClose = () => {
+    handleCloseWithReset();
+    resetState();
+  }
 
   const STEPS = [
     { title: 'Campaign Basics' },
@@ -140,59 +80,11 @@ function CreateCampaignForm({
     },
   ];
 
-  //   const onFileChange = (file: File | null) => {
-  //     if(!file) return;
-  //   handleFileUpload(file);
-
-  //   // setTimeout(() => {
-  //     handleCloseWithReset();
-  //   // }, 500); // slight delay ensures trigger
-  // };
-
-  const handleCloseWithReset = () => {
-    onClose();
-    setCurrentStep(0);
-    reset(initialValues);
-    resetState();
-    campaignId.current = null;
-  };
-
-  const onSubmit = async (values: CampaignFormValues) => {
-    if (currentStep < 2) return;
-
-    try {
-      if (selectedCampaignId) {
-        await updateCampaign({
-          id: selectedCampaignId,
-          campaign: {
-            ...values,
-            campaignId: selectedCampaignId,
-          } as Campaigns,
-        });
-      } else {
-        const res = await CreateCampaign({
-          ...values,
-        });
-        campaignId.current = res?.id;
-      }
-      setCurrentStep(3);
-    } catch (error) {
-      console.error('Campaign submit error:', error);
-    }
-  };
-
-  const getButtonText = () => {
-    if (isCreating || isUpdating) {
-      return selectedCampaignId ? 'Updating...' : 'Creating...';
-    }
-    return selectedCampaignId ? 'Update Campaign' : 'Create Campaign';
-  };
-
   return (
     <Modal
       open={isOpen}
       width={900}
-      onCancel={handleCloseWithReset}
+      onCancel={handleClose}
       closeIcon={<CloseCircleOutlined size={24} />}
       destroyOnHidden
       className={styles.modal}
@@ -256,7 +148,7 @@ function CreateCampaignForm({
           <Skeleton active paragraph={{ rows: 6 }} />
         ) : (
           <FormProvider {...methods}>
-            {/* ID needed for footer button */}
+            {/* ID needed to submit form by button */}
             <form onSubmit={handleSubmit(onSubmit)} id="campaignForm">
               {currentStep === 0 && <Step1CampaignBasics />}
               {currentStep === 1 && <Step3Scheduling />}

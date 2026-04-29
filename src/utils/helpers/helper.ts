@@ -4,7 +4,7 @@ import dayjs, { Dayjs } from "dayjs";
 // Formats a call timestamp into a readable string format: "DD MMM YYYY, hh:mm A"
 // Example: 21 Apr 2026, 03:45 PM
 export const formatCallTriggeredAt = (call_triggered_at: string) =>
-  dayjs(call_triggered_at).format('DD MMM YYYY, hh:mm A');
+  dayjs(call_triggered_at).format(DATE_FORMAT.AbbreviatedDayMonthYear);
 
 
 export const tenantName = window.location.host.split('.')[0];

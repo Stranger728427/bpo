@@ -11,8 +11,8 @@ import { IoTimeOutline } from 'react-icons/io5';
 import { AiOutlineDollarCircle } from 'react-icons/ai';
 import { useAnalyticMetrics } from '@/components/Hooks/useAnalyticMetrics';
 import { DonutChart } from '@/components/ui/DonutChart/DonutChart';
-import { useCampaign } from '../useCampaign';
 import { formatWithMonthWord } from '@/utils/helpers/helper';
+import { useCampaignCharts } from '../../Hooks/useCampaignCharts';
 
 interface CampaignDetailModalProps {
   isOpen: boolean;
@@ -45,7 +45,7 @@ export function CampaignDetailModal({
 }: CampaignDetailModalProps) {
   if (!isOpen) return null;
 
-  const { data, isPending } = useCampaignById(campaignId!);
+  const { data } = useCampaignById(campaignId!);
   const campaign = data?.campaign || data;
 
   const {
@@ -57,7 +57,7 @@ export function CampaignDetailModal({
   } = useAnalyticMetrics(campaignId!);
 
   const { leadChart, callStatusChart, leadCenterValue, callCenterValue } =
-    useCampaign(leadStatusDistribution, CallStatusBreakDown);
+    useCampaignCharts(leadStatusDistribution, CallStatusBreakDown);
 
   return (
     <Modal

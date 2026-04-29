@@ -21,17 +21,17 @@ export const queryKeys = {
   },
 
  analytics: {
-    dashboard: ['analytics', 'dashboard'] as const,
+    dashboard: ['dashboard'] as const,
 
     dashboardMetrics: (filters?: any) =>
-      ['analytics', 'dashboard', 'metrics', filters] as const,
+      ['dashboard', filters] as const,
   },
 
   campaignAnalytics: {
-    campaign: ['analytics', 'campaign'] as const,
+    campaign: ['campaign'] as const,
 
-    campaignMetrics: (campaignId: string, filters?: any) =>
-      ['analytics', 'campaign', campaignId, 'metrics', filters] as const,
+    campaignMetrics: (campaignId: string) =>
+      ['campaign', campaignId] as const,
   },
 } as const;
 

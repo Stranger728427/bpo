@@ -106,13 +106,13 @@ const DashboardPage = () => {
             chart={<Sparkline data={callsSparkData} color="#3b82f6" />}
           />
           <StatCard
-            title="Overall Conversion"
+            title="Overall Conversion Rate"
             value={overAllConversion}
             icon={<BiTargetLock />}
             trend="up"
             trendValue="+5.2%"
             variant="accent"
-            chart={<Sparkline data={convSparkData} color="#ec4899" />}
+            chart={<Sparkline data={convSparkData} color="" />}
           />
           <StatCard
             title="Active Campaigns"
@@ -126,7 +126,7 @@ const DashboardPage = () => {
             value={totalLeadsReached}
             icon={<BiUserCheck />}
             variant="warning"
-            // highlightText="64% of total database"
+            // highlightText="64% of total leads"
           />
         </div>
 

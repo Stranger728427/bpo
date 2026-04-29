@@ -18,7 +18,7 @@ export type StatusBreakDownType = {
   fill: string;
 };
 
-export const useCampaign = (
+export const useCampaignCharts = (
   leadStatusDistribution?: LeadStatus[],
   callStatusBreakDown?: CallStatus[]
 ) => {
