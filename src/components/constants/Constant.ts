@@ -44,7 +44,7 @@ export const DATE_FORMAT = {
 	MM_DD: 'MM/DD',
 	DATE_FORMAT_DAY_MM_DD: 'ddd, MM/DD',
 	MMDDYY: 'MM/DD/YY',
-	AbbreviatedDayMonthYear: 'DD MMM YYYY, hh:mm A'
+	AbbreviatedDayMonthYear:'DD MMM YYYY, hh:mm A'
 };
 
 export const timeFormat = {

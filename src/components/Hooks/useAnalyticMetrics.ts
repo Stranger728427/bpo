@@ -1,28 +1,36 @@
 import { useQuery } from '@tanstack/react-query';
 import {
+  AnalyticsResponse,
   DailyCallVolume,
   enableCampaignMetrics,
   enableDashboardMetrics,
 } from '@/service/Types/Analytics';
 import { AnalyticsService } from '@/service/Analytics.service';
 import { queryKeys } from '@/lib/query/queryKeys';
+import { useState } from 'react';
+import useDateUtils from './useDateUtils';
+import { DATE_FORMAT } from '../constants/Constant';
 
 export const useAnalyticMetrics = (campaignId?: string) => {
+
+  const [dateFilter, setDateFilter] = useState('last_7_days');
+  const {getLocal} = useDateUtils();
   const analyticsService = AnalyticsService();
 
-  const requestDashboardMetrics = useQuery({
-    queryKey: queryKeys.analytics.dashboardMetrics(),
+  const requestDashboardMetrics = useQuery<AnalyticsResponse>({
+    queryKey: queryKeys.analytics.dashboardMetrics(dateFilter),
     queryFn: () =>
       analyticsService.requestMetrics({
         metrics: enableDashboardMetrics(),
+        filter_type: dateFilter
       }),
   });
 
-   const requestCampaignMetrics = useQuery({
+   const requestCampaignMetrics = useQuery<AnalyticsResponse>({
     queryKey:  queryKeys.campaignAnalytics.campaignMetrics(campaignId!),
     queryFn: () =>
       analyticsService.requestMetrics({
-        metrics: enableCampaignMetrics()
+      metrics: enableCampaignMetrics()
     }),
   });
 
@@ -33,16 +41,16 @@ export const useAnalyticMetrics = (campaignId?: string) => {
   // Dashboard Metrics
   const callVolumeData =
     dashboardMetrics?.daily_call_volume?.map((item: DailyCallVolume) => ({
-      label: item.date,
+      label: getLocal(item.date).format(DATE_FORMAT.AbbreviatedMonthDayYear),
       value: item.count,
     })) ?? [];
 
   const bestPerformingCampaign = dashboardMetrics?.best_performing_campaign ?? [];
   const worstPerformingCampaign = dashboardMetrics?.worst_performing_campaign ?? [];
 
-  const totalCallsMade = dashboardMetrics?.total_calls_made ?? 0;
-  const overAllConversion = dashboardMetrics?.overall_conversion_rate ?? 0;
-  const totalActiveCampaign = dashboardMetrics?.total_active_campaigns ?? 0;
+  const totalCallsMade = dashboardMetrics?.total_calls_made;
+  const overAllConversion = dashboardMetrics?.overall_conversion_rate;
+  const totalActiveCampaign = dashboardMetrics?.total_active_campaigns;
   const totalLeadsReached = dashboardMetrics?.total_leads_reached ?? 0;
 
   // Campaign Metrics
@@ -68,5 +76,7 @@ export const useAnalyticMetrics = (campaignId?: string) => {
     campaignProgrss,
     leadStatusDistribution,
     CallStatusBreakDown,
+    dateFilter,
+    setDateFilter
   };
 };

@@ -94,7 +94,7 @@ export const getStatusLabel = (status: CampaignStatus): string => {
     case 'active':
       return 'Active';
     case 'paused':
-      return 'Paused';
+      return 'Paused';  
     case 'completed':
       return 'Completed';
     default:
@@ -118,6 +118,5 @@ export const getStatusVariant = (status: CampaignStatus): 'success' | 'error' | 
 export const step1Fields = ["name", "type", "start_date", "end_date"];
 export const step2Fields = ["calling_days", "start_time", "end_time", "time_zone"];
 export const step3Fields = []; // Review step has no unique fields to validate
-
 
 export type CampaignFormValues = z.infer<typeof campaignSchema>;

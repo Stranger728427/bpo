@@ -9,7 +9,7 @@ interface StatCardProps {
   chart?: React.ReactNode;
   highlightText?: string;
   trend?: 'up' | 'down' | 'neutral';
-  trendValue?: string;
+  trendValue?: number | string;
   variant?: 'primary' | 'secondary' | 'accent' | 'warning' | 'danger';
 }
 

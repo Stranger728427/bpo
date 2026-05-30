@@ -28,3 +28,8 @@ export const formatTime12hr = (time: string) => {
 	if (!time) return '';
 	return dayjs(time, DATE_FORMAT.USA_24_HR_TIME).format(DATE_FORMAT.USA_TIME);
 };
+
+export const combineDateTime = (date: string, time: string) => {
+  if (!date || !time) return null;
+  return dayjs(`${date} ${time}`, 'YYYY-MM-DD HH:mm');
+};

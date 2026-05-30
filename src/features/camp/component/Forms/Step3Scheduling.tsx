@@ -179,7 +179,7 @@ function Step3Scheduling() {
           render={({ field }) => (
             <Select
               placeholder="Select Time Zone"
-              value={field.value}
+              value={field.value ?? ''}
               size="large"
               options={TIME_ZONES}
               onChange={field.onChange}

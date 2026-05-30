@@ -16,9 +16,10 @@ import { PiMagnifyingGlass } from 'react-icons/pi';
 import { Select } from '@/components/ui/Select/Select';
 import { SEARCH_TYPE, SearchType } from '@/features/call/components/call.types';
 import { useDebounce } from '@/components/Hooks/useDebounce';
-import { DEBOUNCE_TIMEOUT } from '@/components/constants/Constant';
+import { DATE_FORMAT, DEBOUNCE_TIMEOUT } from '@/components/constants/Constant';
 import { TableSkeleton } from '@/components/TableSkeleton/TableSkeleton';
 import { CampaignDetailModal } from '../component/viewDetails/CampaignDetailModal';
+import useGlobalDate from '@/components/Hooks/useDateUtils';
 
 function Campaign() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -32,10 +33,13 @@ function Campaign() {
     campaignId: null,
   });
 
-  const [searchType, setSearchType] = useState<SearchType>(SEARCH_TYPE.CAMPAIGN);
+  const [searchType, setSearchType] = useState<SearchType>(
+    SEARCH_TYPE.CAMPAIGN
+  );
   const [searchValue, setSearchValue] = useState<string>('');
 
   const debouncedSearchValue = useDebounce(searchValue, DEBOUNCE_TIMEOUT);
+  const { getLocal } = useGlobalDate();
 
   const param = useMemo(() => {
     return {
@@ -139,11 +143,17 @@ function Campaign() {
       key: 'type',
     },
     {
-      title: 'Start / End',
+      title: 'Start Date - End Date',
       key: 'date',
       render: (_: any, record: Campaigns) => (
         <>
-          {record.start_date} - {record.end_date}
+          {getLocal(record.start_date).format(
+            DATE_FORMAT.AbbreviatedDayMonthYear
+          )}{' '}
+          -{' '}
+          {getLocal(record.end_date).format(
+            DATE_FORMAT.AbbreviatedDayMonthYear
+          )}
         </>
       ),
     },
@@ -178,23 +188,25 @@ function Campaign() {
           <div className={styles.actions}>
             <div className={styles.filters}>
               <Flex gap="small">
-               <Select
-  value={searchType}
-  onChange={(value: SearchType) => handleSearchTypeChange(value)}
-  options={[
-    { label: 'Campaign', value: SEARCH_TYPE.CAMPAIGN },
-    { label: 'Status', value: SEARCH_TYPE.STATUS },
-    { label: 'Type', value: SEARCH_TYPE.TYPE },
-  ]}
-/>
+                <Select
+                  value={searchType}
+                  onChange={(value: SearchType) =>
+                    handleSearchTypeChange(value)
+                  }
+                  options={[
+                    { label: 'Campaign', value: SEARCH_TYPE.CAMPAIGN },
+                    { label: 'Status', value: SEARCH_TYPE.STATUS },
+                    { label: 'Type', value: SEARCH_TYPE.TYPE },
+                  ]}
+                />
 
-<Input
-  allowClear
-  placeholder={`Search by ${searchType}`}
-  value={searchValue}
-  onChange={(e) => onSearch(e.target.value)}
-  suffix={<PiMagnifyingGlass />}
-/>
+                <Input
+                  allowClear
+                  placeholder={`Search by ${searchType}`}
+                  value={searchValue}
+                  onChange={(e) => onSearch(e.target.value)}
+                  suffix={<PiMagnifyingGlass />}
+                />
               </Flex>
             </div>
 

@@ -5,26 +5,25 @@ import styles from '../pages/ViewCall.module.scss';
 import { AiOutlineUser } from 'react-icons/ai';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { LucideBot } from '@/components/icons/CallLogs.icons';
-import dayjs from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { Badge } from '@/components/ui/Badge/Badge';
 import { getStatusLabel, getStatusVariant } from '../components/call.types';
+import { DATE_FORMAT } from '@/components/constants/Constant';
 
 interface CallLogDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   selectedCallId: string | null;
+  getLocal: (input?: string | number | Dayjs | Date | null | undefined) => Dayjs
 }
 
-const ViewCall = ({ isOpen, onClose, selectedCallId }: CallLogDrawerProps) => {
+const ViewCall = ({ isOpen, onClose, selectedCallId, getLocal }: CallLogDrawerProps) => {
   const { getCallLogsById } = useCall(selectedCallId as string, {
     page: 1,
     page_size: 10,
   });
 
   const call = getCallLogsById?.data;
-
-  const formatCallTriggeredAt = (call_triggered_at: string) =>
-    dayjs(call_triggered_at).format('DD MMM YYYY, hh:mm A');
 
   const infoFields = [
     { label: 'Patient Name', value: call?.patient_name },
@@ -35,7 +34,7 @@ const ViewCall = ({ isOpen, onClose, selectedCallId }: CallLogDrawerProps) => {
     { label: 'Intent', value: call?.intent },
     {
       label: 'Triggered At',
-      value: formatCallTriggeredAt(call?.call_triggered_at as string),
+      value: getLocal(call?.call_triggered_at).format(DATE_FORMAT.AbbreviatedDayMonthYear),
     },
   ];
 
