@@ -1,18 +1,36 @@
 import { useEffect, useRef, useState } from 'react';
+import { useForm, Path } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   CampaignFormValues,
-  Campaigns,
   CampaignType,
+  CreateCampaignRequest,
   step1Fields,
   step2Fields,
   step3Fields,
 } from '../component/campaign.type';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { campaignSchema } from '../schema/Campaign.schema';
 import { useCampaignCreate } from '../component/api/useCreateCampaign';
-import { useUpdateCampaign } from '../component/api/useUpdateCampaign';
 import { useCampaignById } from '../component/api/useCampaignById';
+
+ const INITIAL_VALUES: CampaignFormValues = {
+    campaignId: '',
+    name: '',
+    type: '' as CampaignType
+    ,
+    start_date: '',
+    end_date: '',
+    calling_days: [],
+    start_time: '',
+    end_time: '',
+    time_zone: '',
+  };
+
+const STEP_FIELDS: Record<number, Path<CampaignFormValues>[]> = {
+  0: step1Fields as Path<CampaignFormValues>[],
+  1: step2Fields as Path<CampaignFormValues>[],
+  2: step3Fields as Path<CampaignFormValues>[],
+};
 
 type CampaignPropsType = {
   selectedCampaignId: string | null;
@@ -27,19 +45,6 @@ export const useCreateCampaign = ({
   const [currentStep, setCurrentStep] = useState(0);
   const campaignIdRef = useRef<string | null>(null);
 
-  const initialValues: CampaignFormValues = {
-    campaignId: '',
-    name: '',
-    type: '' as CampaignType,
-    start_date: '',
-    end_date: '',
-    calling_days: [],
-    start_time: '',
-    end_time: '',
-    time_zone: '',
-  };
-
-  // React Hook Form setup
   const methods = useForm<CampaignFormValues>({
     resolver: zodResolver(campaignSchema),
     defaultValues: INITIAL_VALUES,
@@ -48,16 +53,12 @@ export const useCreateCampaign = ({
   const { handleSubmit, reset, trigger } = methods;
 
   const {
-    mutateAsync: CreateCampaign,
+    mutateAsync: createCampaign,
     isPending: isCreating,
     isSuccess: isCreateCampaignCompleted,
   } = useCampaignCreate();
 
-  const { mutateAsync: updateCampaign, isPending: isUpdating } =
-    useUpdateCampaign();
-
   const { data } = useCampaignById(selectedCampaignId!);
-
   const campaign = data?.campaign;
 
   // Populate form in edit mode — only when campaign data is actually loaded
@@ -109,12 +110,12 @@ export const useCreateCampaign = ({
     campaignIdRef.current = null;
   };
 
-  const onSubmit = async (values: CampaignFormValues) => {
-    if (currentStep < 2) return;
+const onSubmit = async (values: CampaignFormValues) => {
+  if (currentStep < 2) return;
 
-    try {
+  try {
     const payload: CreateCampaignRequest = {
-            ...values,
+       ...values,
         ...(selectedCampaignId && { campaignId: selectedCampaignId }),
     };
 
@@ -122,12 +123,12 @@ export const useCreateCampaign = ({
 
     if (!selectedCampaignId && res?.id) {
       campaignIdRef.current = res.id;
-      }
-      setCurrentStep(3);
-    } catch (error) {
-      console.error('Campaign submit error:', error);
     }
-  };
+    setCurrentStep(3);
+  } catch (error) {
+    console.error('Campaign submit error:', error);
+  }
+};
 
   const getButtonText = () => {
     if (isCreating) return selectedCampaignId ? 'Updating...' : 'Creating...';
@@ -147,8 +148,5 @@ export const useCreateCampaign = ({
     campaignIdRef,
     currentStep,
     isCreating,
-    isUpdating,
-    methods
-
   };
 };
