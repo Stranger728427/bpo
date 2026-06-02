@@ -11,7 +11,6 @@ import { IoTimeOutline } from 'react-icons/io5';
 import { AiOutlineDollarCircle } from 'react-icons/ai';
 import { useAnalyticMetrics } from '@/components/Hooks/useAnalyticMetrics';
 import { DonutChart } from '@/components/ui/DonutChart/DonutChart';
-import { formatWithMonthWord } from '@/utils/helpers/helper';
 import { useCampaignCharts } from '../../Hooks/useCampaignCharts';
 import { DATE_FORMAT } from '@/components/constants/Constant';
 import useDateUtils from '@/components/Hooks/useDateUtils';
