@@ -1,7 +1,6 @@
 import { useApi } from '@/lib/axios/interceptors';
 import {
   CampaignListFilters,
-  Campaigns,
   CreateCampaignRequest,
 } from './campaign.type';
 import { LLM_TYPE } from '@/components/constants/Constant';

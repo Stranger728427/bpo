@@ -35,7 +35,6 @@ function CreateCampaignForm({
     getButtonText,
     currentStep,
     isCreating,
-    isUpdating,
     methods
 
   } = useCreateCampaign({
@@ -130,7 +129,7 @@ function CreateCampaignForm({
                 type="submit"
                 form="campaignForm"
                 className={styles.primaryButton}
-                disabled={isCreating || isUpdating}
+                disabled={isCreating}
               >
                 {getButtonText()}
               </button>
@@ -144,7 +143,7 @@ function CreateCampaignForm({
 
       {/* Content */}
       <div className={styles.content}>
-        {isCreating || isUpdating ? (
+        {isCreating ? (
           <Skeleton active paragraph={{ rows: 6 }} />
         ) : (
           <FormProvider {...methods}>
