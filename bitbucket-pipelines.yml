@@ -2,7 +2,7 @@ image: node:20
 
 pipelines:
   branches:
-    certs3:
+    main:
       - step:
           name: Build & Deploy STAGE
           caches:
