@@ -98,7 +98,6 @@ export interface CampaignProgress {
 }
 
 export interface LeadStatusItem {
-  status: LeadStatusType;
   label: string;
   count: number;
 }

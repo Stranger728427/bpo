@@ -24,10 +24,12 @@ export const CampaignService = () => {
     return response.data;
   }
 
-  const updateCampaignService= async (payload: Campaigns) => {
-    const response = await baseApi().put(`/campaigns/update`, payload,{params:{model:LLM_TYPE}});
-    return response.data;
-  }
+const updateCampaignService = async (payload: CreateCampaignRequest) => {
+  const response = await baseApi().put(`/campaigns/update`, payload, {
+    params: { model: LLM_TYPE },
+  });
+  return response.data;
+};
   return{
     createCampaign,
     getAllCampaignsService,

@@ -4,8 +4,17 @@ import { campaignSchema } from "../schema/Campaign.schema";
 export type CampaignStatus = 'active' | 'paused' | 'completed';
 export type CampaignType = 'onboarding' | 'lead_generation' | 'reminder' | 'survey';
 
+export const CAMPAIGN_FILTERS = {
+  NAME:'name',
+  STATUS:'status',
+  TYPE:'type',
+} as const;
+
+export type CAMPAIGN_FILTERS = (typeof CAMPAIGN_FILTERS)[keyof typeof CAMPAIGN_FILTERS];
+
+
 export interface Campaigns {
-  campaignId: string | null;
+  id: string | null;
   name: string;
   status: CampaignStatus;
   type: CampaignType;
@@ -74,7 +83,7 @@ export interface CampaignDetailResponse {
 }
 
 export interface CreateCampaignRequest {
-  campaignId?:string;
+  campaignId?:string | null;
   name: string | null;
   type: CampaignType | null;
   start_date: string | null;

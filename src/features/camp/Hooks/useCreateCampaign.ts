@@ -42,10 +42,10 @@ export const useCreateCampaign = ({
   // React Hook Form setup
   const methods = useForm<CampaignFormValues>({
     resolver: zodResolver(campaignSchema),
-    defaultValues: initialValues,
+    defaultValues: INITIAL_VALUES,
   });
 
-  const { handleSubmit, reset } = methods;
+  const { handleSubmit, reset, trigger } = methods;
 
   const {
     mutateAsync: CreateCampaign,
@@ -60,39 +60,33 @@ export const useCreateCampaign = ({
 
   const campaign = data?.campaign;
 
-  // Populate formData for edit mode only
+  // Populate form in edit mode — only when campaign data is actually loaded
   useEffect(() => {
-    if (!campaign || !selectedCampaignId) return;
+    if (!selectedCampaignId || !campaign) return;
 
     reset({
-      campaignId: campaign?.id,
-      name: campaign?.name ?? '',
-      type: campaign?.type ?? '',
-      start_date: campaign?.start_date ?? '',
-      end_date: campaign?.end_date ?? '',
-      calling_days: campaign?.calling_days ?? [],
-      start_time: campaign?.start_time ?? '',
-      end_time: campaign?.end_time ?? '',
-      time_zone: campaign?.time_zone ?? '',
+      campaignId: campaign.id,
+      name: campaign.name ?? '',
+      type: campaign.type ?? undefined,
+      start_date: campaign.start_date ?? '',
+      end_date: campaign.end_date ?? '',
+      calling_days: campaign.calling_days ?? [],
+      start_time: campaign.start_time ?? '',
+      end_time: campaign.end_time ?? '',
+      time_zone: campaign.time_zone ?? undefined,
     });
-  }, [campaign, selectedCampaignId, reset]);
+  }, [selectedCampaignId, campaign, reset]);
 
   const handleNext = async () => {
-    let fieldsToValidate = [] as any;
+    const fields = STEP_FIELDS[currentStep];
+    if (!fields) return;
 
-    if (currentStep === 0) fieldsToValidate = step1Fields;
-    if (currentStep === 1) fieldsToValidate = step2Fields;
-    if (currentStep === 2) fieldsToValidate = step3Fields;
-
-    const isValid = await methods.trigger(fieldsToValidate);
-
-    if (isValid) {
-      setCurrentStep((prev) => prev + 1);
-    }
+    const isValid = await trigger(fields);
+    if (isValid) setCurrentStep((prev) => prev + 1);
   };
 
   const handlePrevious = () => {
-    if (currentStep > 0) setCurrentStep(currentStep - 1);
+    setCurrentStep((prev) => Math.max(prev - 1, 0));
   };
 
   const onChangeStep = (value: number) => {
@@ -111,7 +105,7 @@ export const useCreateCampaign = ({
   const handleCloseWithReset = () => {
     onClose();
     setCurrentStep(0);
-    reset(initialValues);
+    reset(INITIAL_VALUES);
     campaignIdRef.current = null;
   };
 
@@ -119,19 +113,15 @@ export const useCreateCampaign = ({
     if (currentStep < 2) return;
 
     try {
-      if (selectedCampaignId) {
-        await updateCampaign({
-          id: selectedCampaignId,
-          campaign: {
+    const payload: CreateCampaignRequest = {
             ...values,
-            campaignId: selectedCampaignId,
-          } as Campaigns,
-        });
-      } else {
-        const res = await CreateCampaign({
-          ...values,
-        });
-        campaignIdRef.current = res?.id;
+        ...(selectedCampaignId && { campaignId: selectedCampaignId }),
+    };
+
+    const res = await createCampaign(payload);
+
+    if (!selectedCampaignId && res?.id) {
+      campaignIdRef.current = res.id;
       }
       setCurrentStep(3);
     } catch (error) {
@@ -140,13 +130,12 @@ export const useCreateCampaign = ({
   };
 
   const getButtonText = () => {
-    if (isCreating || isUpdating) {
-      return selectedCampaignId ? 'Updating...' : 'Creating...';
-    }
+    if (isCreating) return selectedCampaignId ? 'Updating...' : 'Creating...';
     return selectedCampaignId ? 'Update Campaign' : 'Create Campaign';
   };
 
   return {
+    methods,
     handleSubmit,
     handleNext,
     handlePrevious,

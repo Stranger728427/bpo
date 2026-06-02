@@ -3,11 +3,13 @@ import styles from './CreateCampaignForm.module.scss';
 import { Badge } from 'antd';
 import { useFormContext } from 'react-hook-form';
 import { CreateCampaignRequest } from '../campaign.type';
+import useDateUtils from '@/components/Hooks/useDateUtils';
+import { DATE_FORMAT } from '@/components/constants/Constant';
 
 function Step4Review() {
   const { watch } = useFormContext<CreateCampaignRequest>();
+  const {getLocal} = useDateUtils();
 
-  // Watch all relevant fields
   const {
     name,
     start_date,
@@ -18,6 +20,10 @@ function Step4Review() {
     end_time,
     time_zone,
   } = watch();
+
+  const startDate = getLocal(start_date).format(DATE_FORMAT.USA_DATE)
+  const endDate = getLocal(end_date).format(DATE_FORMAT.USA_DATE)
+
 
   return (
     <div className={styles.stepContent}>
@@ -46,7 +52,7 @@ function Step4Review() {
                 <div className={styles.summaryRow}>
                   <span className={styles.summaryLabel}>Date:</span>
                   <span className={styles.summaryValue}>
-                    {[start_date, end_date].filter(Boolean).join(' - ') || '-'}
+                    {[startDate, endDate].filter(Boolean).join(' - ') || '-'}
                   </span>
                 </div>
                 <div className={styles.summaryRow}>
