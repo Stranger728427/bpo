@@ -2,7 +2,7 @@ image: node:20
 
 pipelines:
   branches:
-    dashboad/enhance:
+    certs3:
       - step:
           name: Build & Deploy STAGE
           caches:
