@@ -1,5 +1,4 @@
 import { COLORS } from "@/components/constants/Constant";
-import { Dayjs } from "dayjs";
 
 export type LeadStatusType = 'positive' | 'neutral' | 'negative';
 
@@ -80,7 +79,7 @@ export const enableCampaignMetrics = (): Metrics => {
 // };
 
 export interface DailyCallVolume {
-  date: Dayjs;
+  date: string;
   count: number;
 }
 

@@ -126,7 +126,7 @@ const onSubmit = async (values: CampaignFormValues) => {
     }
     setCurrentStep(3);
   } catch (error) {
-    console.error('Campaign submit error:', error);
+    // error is already handled in mutation
   }
 };
 

@@ -11,11 +11,10 @@ import {
 import styles from './BarChart.module.scss';
 import { Dayjs } from 'dayjs';
 
-interface DataPoint{
-    label: Dayjs | string;
-    value: number;
-}[]
-
+interface DataPoint {
+  label: string;
+  value: number;
+}
 interface BarChartProps {
   data: DataPoint[];
   height?: number;
@@ -27,7 +26,6 @@ interface BarChartProps {
   maxBarSize?: number;
   tooltipFormatter?: (value: number, label: Dayjs | string) => string;
 }
-
 interface CustomTooltipProps {
   active?: boolean;
   payload?: Array<{ value: number; payload: DataPoint }>;

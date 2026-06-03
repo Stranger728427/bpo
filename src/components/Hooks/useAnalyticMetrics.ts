@@ -14,29 +14,36 @@ import { DATE_FORMAT } from '../constants/Constant';
 export const useAnalyticMetrics = (campaignId?: string) => {
 
   const [dateFilter, setDateFilter] = useState('last_7_days');
-  const {getLocal} = useDateUtils();
+  const { getLocal } = useDateUtils();
   const analyticsService = AnalyticsService();
 
   const requestDashboardMetrics = useQuery<AnalyticsResponse>({
     queryKey: queryKeys.analytics.dashboardMetrics(dateFilter),
-    queryFn: () =>
-      analyticsService.requestMetrics({
-        metrics: enableDashboardMetrics(),
-        filter_type: dateFilter
-      }),
+    queryFn: ({ signal }) =>
+      analyticsService.requestMetrics(
+        {
+          metrics: enableDashboardMetrics(),
+          filter_type: dateFilter,
+        },
+        signal
+      ),
   });
 
-   const requestCampaignMetrics = useQuery<AnalyticsResponse>({
-    queryKey:  queryKeys.campaignAnalytics.campaignMetrics(campaignId!),
-    queryFn: () =>
-      analyticsService.requestMetrics({
-      metrics: enableCampaignMetrics()
-    }),
+  const requestCampaignMetrics = useQuery<AnalyticsResponse>({
+    queryKey: queryKeys.campaignAnalytics.campaignMetrics(campaignId!),
+    queryFn: ({ signal }) =>
+      analyticsService.requestMetrics(
+        {
+          metrics: enableCampaignMetrics(),
+        },
+        signal
+      ),
+
+    enabled: !!campaignId,
   });
 
   const dashboardMetrics = requestDashboardMetrics?.data;
   const campaignMetrics = requestCampaignMetrics?.data;
-
 
   // Dashboard Metrics
   const callVolumeData =
@@ -45,8 +52,10 @@ export const useAnalyticMetrics = (campaignId?: string) => {
       value: item.count,
     })) ?? [];
 
-  const bestPerformingCampaign = dashboardMetrics?.best_performing_campaign ?? [];
-  const worstPerformingCampaign = dashboardMetrics?.worst_performing_campaign ?? [];
+  const bestPerformingCampaign =
+    dashboardMetrics?.best_performing_campaign ?? [];
+  const worstPerformingCampaign =
+    dashboardMetrics?.worst_performing_campaign ?? [];
 
   const totalCallsMade = dashboardMetrics?.total_calls_made;
   const overAllConversion = dashboardMetrics?.overall_conversion_rate;
@@ -77,6 +86,6 @@ export const useAnalyticMetrics = (campaignId?: string) => {
     leadStatusDistribution,
     CallStatusBreakDown,
     dateFilter,
-    setDateFilter
+    setDateFilter,
   };
 };

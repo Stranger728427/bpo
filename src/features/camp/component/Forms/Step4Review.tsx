@@ -21,8 +21,8 @@ function Step4Review() {
     time_zone,
   } = watch();
 
-  const startDate = getLocal(start_date).format(DATE_FORMAT.USA_DATE)
-  const endDate = getLocal(end_date).format(DATE_FORMAT.USA_DATE)
+  const startDate = start_date ? getLocal(start_date).format(DATE_FORMAT.USA_DATE) : '';
+  const endDate = end_date ? getLocal(end_date).format(DATE_FORMAT.USA_DATE) : '';
 
 
   return (
