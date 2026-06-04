@@ -12,6 +12,7 @@ import useDateUtils from './useDateUtils';
 import { DATE_FORMAT } from '../constants/Constant';
 
 export const useAnalyticMetrics = (campaignId?: string) => {
+  
 
   const [dateFilter, setDateFilter] = useState('last_7_days');
   const { getLocal } = useDateUtils();
@@ -34,6 +35,7 @@ export const useAnalyticMetrics = (campaignId?: string) => {
     queryFn: ({ signal }) =>
       analyticsService.requestMetrics(
         {
+          campaign_id:campaignId,
           metrics: enableCampaignMetrics(),
         },
         signal

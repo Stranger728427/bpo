@@ -34,18 +34,24 @@ const CLOSED_ACTION: CampaignAction = { type: null, campaignId: null };
 function Campaign() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
-  const [campaignAction, setCampaignAction] = useState<CampaignAction>(CLOSED_ACTION);
-  const [searchType, setSearchType] = useState<CAMPAIGN_FILTERS>(CAMPAIGN_FILTERS.NAME);
+  const [campaignAction, setCampaignAction] =
+    useState<CampaignAction>(CLOSED_ACTION);
+  const [searchType, setSearchType] = useState<CAMPAIGN_FILTERS>(
+    CAMPAIGN_FILTERS.NAME
+  );
   const [searchValue, setSearchValue] = useState('');
 
   const debouncedSearchValue = useDebounce(searchValue, DEBOUNCE_TIMEOUT);
   const { getLocal } = useGlobalDate();
 
-  const param = useMemo(() => ({
-    page: currentPage,
-    page_size: pageSize,
-    ...(debouncedSearchValue && { [searchType]: debouncedSearchValue }),
-  }), [currentPage, pageSize, debouncedSearchValue, searchType]);
+  const param = useMemo(
+    () => ({
+      page: currentPage,
+      page_size: pageSize,
+      ...(debouncedSearchValue && { [searchType]: debouncedSearchValue }),
+    }),
+    [currentPage, pageSize, debouncedSearchValue, searchType]
+  );
 
   const { data: campaigns, isPending } = useGetAllCampaign(param);
 
@@ -67,79 +73,91 @@ function Campaign() {
     {
       key: 'view',
       label: 'View Details',
-      onClick: () => setCampaignAction({ type: 'view', campaignId: campaign?.id }),
+      onClick: () =>
+        setCampaignAction({ type: 'view', campaignId: campaign?.id }),
     },
     {
       key: 'edit',
       label: 'Edit',
-      onClick: () => setCampaignAction({ type: 'edit', campaignId: campaign?.id }),
+      onClick: () =>
+        setCampaignAction({ type: 'edit', campaignId: campaign?.id }),
     },
   ];
 
-  const pagination = useMemo(() => ({
-    current: currentPage,
-    total: totalCampaigns,
-    pageSize,
-    showSizeChanger: true,
-    pageSizeOptions: [20, 50, 100],
-    onChange: (page: number, size: number) => {
-      setCurrentPage(page);
-      setPageSize(size);
-    },
-  }), [currentPage, totalCampaigns, pageSize]);
+  const pagination = useMemo(
+    () => ({
+      current: currentPage,
+      total: totalCampaigns,
+      pageSize,
+      showSizeChanger: true,
+      pageSizeOptions: [20, 50, 100],
+      onChange: (page: number, size: number) => {
+        setCurrentPage(page);
+        setPageSize(size);
+      },
+    }),
+    [currentPage, totalCampaigns, pageSize]
+  );
 
-  const columns = useMemo(() => [
-    {
-      title: 'Campaign',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-      render: (status: string) => (
-        <Badge variant={getStatusVariant(status as CampaignStatus)}>
-          {getStatusLabel(status as CampaignStatus)}
-        </Badge>
-      ),
-    },
-    {
-      title: 'Type',
-      dataIndex: 'type',
-      key: 'type',
-    },
-    {
-      title: 'Start Date - End Date',
-      key: 'date',
-      render: (_: unknown, record: Campaigns) => (
-        <>
-          {getLocal(record.start_date).format(DATE_FORMAT.AbbreviatedDayMonthYear)}
-          {' - '}
-          {getLocal(record.end_date).format(DATE_FORMAT.AbbreviatedDayMonthYear)}
-        </>
-      ),
-    },
-    {
-      title: 'Conversion rate',
-      dataIndex: 'conversion_rate',
-      key: 'conversion_rate',
-      render: (value: number) => `${value}%`,
-    },
-    {
-      title: 'Spend',
-      dataIndex: 'spend',
-      key: 'spend',
-      render: (value: number) => `${value?.toLocaleString()} credits`,
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (_: unknown, record: Campaigns) => (
-        <ActionMenu items={getActionItems(record)} />
-      ),
-    },
-  ], [getLocal]);
+  const formatDate = (date?: string) =>
+    date ? getLocal(date).format(DATE_FORMAT.AbbreviatedMonthDayYear) : '-';
+
+  const columns = useMemo(
+    () => [
+      {
+        title: 'Campaign',
+        dataIndex: 'name',
+        key: 'name',
+      },
+      {
+        title: 'Status',
+        dataIndex: 'status',
+        key: 'status',
+        render: (status: string) => (
+          <Badge variant={getStatusVariant(status as CampaignStatus)}>
+            {getStatusLabel(status as CampaignStatus)}
+          </Badge>
+        ),
+      },
+      {
+        title: 'Type',
+        dataIndex: 'type',
+        key: 'type',
+      },
+      {
+        title: 'Start Date - End Date',
+        key: 'date',
+        render: (_: unknown, record: Campaigns) => {
+          const start = record?.start_date && formatDate(record.start_date);
+          const end = record?.end_date && formatDate(record.end_date);
+
+          return start || end
+            ? `${start ?? ''}${start && end ? ' - ' : ''}${end ?? ''}`
+            : '-';
+        },
+      },
+      {
+        title: 'Conversion rate',
+        dataIndex: 'conversion_rate',
+        key: 'conversion_rate',
+        render: (value: number) => `${value}%`,
+      },
+      {
+        title: 'Spend',
+        dataIndex: 'spend',
+        key: 'spend',
+        render: (value: number) => `${value?.toLocaleString()} credits`,
+      },
+      {
+        title: 'Action',
+        key: 'action',
+        render: (_: unknown, record: Campaigns) => (
+          <ActionMenu items={getActionItems(record)} />
+        ),
+      },
+    ],
+    [getLocal]
+  );
 
   return (
     <div className={styles.container}>
