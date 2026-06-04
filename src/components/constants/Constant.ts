@@ -25,8 +25,12 @@ export const COLORS = {
   success: 'var(--color-success)',
   warning: 'var(--color-warning)',
   error: 'var(--color-error)',
-  fallBack: 'var(--color-fallback)',
-};
+  fallback: 'var(--color-fallback)',
+
+  primary: 'var(--color-primary-blue)',
+  accent: 'var(--color-accent)',
+  danger: 'var(--color-danger)',
+} as const;
 
 export const DATE_FORMAT = {
 	USA_DATE: 'MM/DD/YYYY',

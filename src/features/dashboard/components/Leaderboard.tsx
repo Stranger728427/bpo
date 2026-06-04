@@ -70,8 +70,6 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
           })
         )}
       </div>
-
-      {/* <button className={styles.viewAll}>View Details</button> */}
     </div>
   );
 };

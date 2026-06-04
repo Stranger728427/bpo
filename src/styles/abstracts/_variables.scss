@@ -11,12 +11,20 @@ $color-warning: #E4B600;
 $color-error: #E00000;
 $color-info: #0ea5e9;
 $color-fallback:#999;
+$color-blue:#3b82f6;
+$color-light-blue:#60a5fa;
 
 :root {
   --color-success: #{$color-success};
   --color-warning: #{$color-warning};
   --color-error: #{$color-error};
   --color-fallback: #{$color-fallback};
+  --color-primary: #{$color-primary};
+  --color-primary-lighter: #{$color-primary-lighter};
+  --accent-purple: #ae3bf6;
+  --color-primary-blue: #3b82f6;
+  --color-accent: #ae3bf6;
+  --color-danger: #ef4444;
 }
 
 // Dashboard specific colors

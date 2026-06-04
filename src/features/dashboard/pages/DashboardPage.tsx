@@ -22,6 +22,7 @@ import {
   convSparkData,
   dateOptions,
 } from '../constants/constant';
+import { COLORS } from '@/components/constants/Constant';
 
 const DashboardPage = () => {
   const getDateLabel = () =>
@@ -82,9 +83,10 @@ const DashboardPage = () => {
             trend={totalCallsMadeTrend}
             trendValue={totalCallsMade?.trend_percentage}
             variant="primary"
-             highlightText={totalCallsMade?.sub_text}
-            chart={<Sparkline data={callsSparkData} color="#3b82f6" />}
+            highlightText={totalCallsMade?.sub_text}
+            chart={<Sparkline data={callsSparkData} color={COLORS.primary} />}
           />
+
           <StatCard
             title="Overall Conversion Rate"
             value={overAllConversion?.main_value ?? 0}
@@ -93,7 +95,7 @@ const DashboardPage = () => {
             trendValue={overAllConversion?.trend_value}
             variant="accent"
             highlightText={overAllConversion?.sub_text}
-            chart={<Sparkline data={convSparkData} color="#ae3bf6" />}
+            chart={<Sparkline data={convSparkData} color={COLORS.accent} />}
           />
           <StatCard
             title="Active Campaigns"
