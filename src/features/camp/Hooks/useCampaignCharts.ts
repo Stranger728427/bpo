@@ -29,7 +29,7 @@ export const useCampaignCharts = (
     data?.map((item) => ({
       name: item.label,
       value: item.count,
-      fill: colorMap[item.label] ?? COLORS.fallBack,
+      fill: colorMap[item.label] ?? COLORS.fallback,
     })) ?? [];
 
   const leadChart = useMemo(
