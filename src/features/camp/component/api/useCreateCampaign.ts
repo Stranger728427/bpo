@@ -26,7 +26,6 @@ export const useCampaignCreate = () => {
       );
     },
     onError: (error: AxiosError<{ detail?: string }>) => {
-      console.error('Failed to save campaign', error);
       message.error(error.response?.data?.detail ?? 'Failed to save campaign');
     },
   });

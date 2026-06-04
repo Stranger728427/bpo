@@ -48,8 +48,8 @@ export const useAnalyticMetrics = (campaignId?: string) => {
   // Dashboard Metrics
   const callVolumeData =
     dashboardMetrics?.daily_call_volume?.map((item: DailyCallVolume) => ({
-      label: getLocal(item.date).format(DATE_FORMAT.AbbreviatedMonthDayYear),
-      value: item.count,
+      label: getLocal(item?.date).format(DATE_FORMAT.AbbreviatedMonthDayYear),
+      value: item?.count,
     })) ?? [];
 
   const bestPerformingCampaign =

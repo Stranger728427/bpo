@@ -9,7 +9,7 @@ import { useFileUpload } from '@/features/upload/useFileUpload';
 import UploadFile from '@/components/upload/UploadFile';
 import { Spinner } from '@/components/ui/Spinner/Spinner';
 import { FormProvider } from 'react-hook-form';
-import { useCreateCampaign } from '../../Hooks/useCreateCampaign';
+import { useCreateCampaign } from '../../Hooks/useCampaign';
 
 interface CreateCampaignModalProps {
   isOpen: boolean;
