@@ -1,6 +1,5 @@
 import { Dropdown } from '@/components/ui/Dropdown/Dropdown';
 import { MenuProps } from 'antd';
-import { useState } from 'react';
 import styles from './DashboardPage.module.scss';
 import Banner from '@/components/layout/Banner/Banner';
 import { StatCard } from '../components/StatCard';
@@ -18,41 +17,17 @@ import { Leaderboard } from '../components/Leaderboard';
 import { Sparkline } from '@components/ui/SparkLine/Sparkline';
 
 import { useAnalyticMetrics } from '@/components/Hooks/useAnalyticMetrics';
-
-const callsSparkData = [
-  { value: 30 },
-  { value: 40 },
-  { value: 35 },
-  { value: 50 },
-  { value: 45 },
-  { value: 60 },
-  { value: 55 },
-  { value: 70 },
-];
-
-const convSparkData = [
-  { value: 12 },
-  { value: 15 },
-  { value: 14 },
-  { value: 18 },
-  { value: 17 },
-  { value: 22 },
-  { value: 20 },
-  { value: 24 },
-];
-
-const dateOptions = [
-  { key: 'today', label: 'Today' },
-  { key: 'yesterday', label: 'Yesterday' },
-  { key: 'last_7_days', label: 'Last 7 Days' },
-  { key: 'last_30_days', label: 'Last 30 Days' },
-  { key: 'all_time', label: 'All Time' },
-];
+import {
+  callsSparkData,
+  convSparkData,
+  dateOptions,
+} from '../constants/constant';
+import { COLORS } from '@/components/constants/Constant';
 
 const DashboardPage = () => {
-  const [dateFilter, setDateFilter] = useState('last_7_days');
   const getDateLabel = () =>
     dateOptions.find((o) => o.key === dateFilter)?.label || 'Today';
+
   const {
     callVolumeData,
     bestPerformingCampaign,
@@ -61,6 +36,8 @@ const DashboardPage = () => {
     overAllConversion,
     totalActiveCampaign,
     totalLeadsReached,
+    dateFilter,
+    setDateFilter,
   } = useAnalyticMetrics();
 
   const dateMenuItems: MenuProps['items'] = dateOptions.map((option) => ({
@@ -68,6 +45,9 @@ const DashboardPage = () => {
     label: option.label,
     onClick: () => setDateFilter(option.key),
   }));
+
+  const totalCallsMadeTrend = totalCallsMade?.is_increase ? 'up' : 'down';
+  const overAllConversionTrend = overAllConversion?.is_increase ? 'up' : 'down';
 
   return (
     <div className={styles.container}>
@@ -98,35 +78,38 @@ const DashboardPage = () => {
         <div className={styles.statsGrid}>
           <StatCard
             title="Total Calls Made"
-            value={totalCallsMade}
+            value={totalCallsMade?.main_value ?? 0}
             icon={<BiPhoneCall />}
-            trend="up"
-            trendValue="+12.5%"
+            trend={totalCallsMadeTrend}
+            trendValue={totalCallsMade?.trend_percentage}
             variant="primary"
-            chart={<Sparkline data={callsSparkData} color="#3b82f6" />}
+            highlightText={totalCallsMade?.sub_text}
+            chart={<Sparkline data={callsSparkData} color={COLORS.primary} />}
           />
+
           <StatCard
             title="Overall Conversion Rate"
-            value={overAllConversion}
+            value={overAllConversion?.main_value ?? 0}
             icon={<BiTargetLock />}
-            trend="up"
-            trendValue="+5.2%"
+            trend={overAllConversionTrend}
+            trendValue={overAllConversion?.trend_value}
             variant="accent"
-            chart={<Sparkline data={convSparkData} color="" />}
+            highlightText={overAllConversion?.sub_text}
+            chart={<Sparkline data={convSparkData} color={COLORS.accent} />}
           />
           <StatCard
             title="Active Campaigns"
-            value={totalActiveCampaign}
+            value={totalActiveCampaign?.main_value ?? 0}
             icon={<BiRocket />}
             variant="secondary"
-            // highlightText="4 launched this week"
+            highlightText={totalActiveCampaign?.sub_text}
           />
           <StatCard
             title="Total Leads Reached"
             value={totalLeadsReached}
             icon={<BiUserCheck />}
             variant="warning"
-            // highlightText="64% of total leads"
+            highlightText="Total unique leads"
           />
         </div>
 

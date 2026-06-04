@@ -9,12 +9,12 @@ import {
   Cell,
 } from 'recharts';
 import styles from './BarChart.module.scss';
+import { Dayjs } from 'dayjs';
 
 interface DataPoint {
   label: string;
   value: number;
 }
-
 interface BarChartProps {
   data: DataPoint[];
   height?: number;
@@ -24,13 +24,12 @@ interface BarChartProps {
   showLabels?: boolean;
   showYAxis?: boolean;
   maxBarSize?: number;
-  tooltipFormatter?: (value: number, label: string) => string;
+  tooltipFormatter?: (value: number, label: Dayjs | string) => string;
 }
-
 interface CustomTooltipProps {
   active?: boolean;
   payload?: Array<{ value: number; payload: DataPoint }>;
-  formatter?: (value: number, label: string) => string;
+  formatter?: (value: number, label: Dayjs | string) => string;
 }
 
 function CustomTooltip({ active, payload, formatter }: CustomTooltipProps) {
@@ -42,7 +41,7 @@ function CustomTooltip({ active, payload, formatter }: CustomTooltipProps) {
     return (
       <div className={styles.tooltip}>
         {data.payload.label && (
-          <span className={styles.tooltipLabel}>{data.payload.label}</span>
+          <span className={styles.tooltipLabel}>{data.payload.label.toString()}</span>
         )}
         <span className={styles.tooltipValue}>{displayValue}</span>
       </div>

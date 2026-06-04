@@ -16,9 +16,9 @@ import { TableSkeleton } from '@/components/TableSkeleton/TableSkeleton';
 import { Badge } from '@/components/ui/Badge/Badge';
 import { Select } from '@/components/ui/Select/Select';
 import { useDebounce } from '@/components/Hooks/useDebounce';
-import { DEBOUNCE_TIMEOUT } from '@/components/constants/Constant';
-import { formatCallTriggeredAt } from '@/utils/helpers/helper';
+import { DATE_FORMAT, DEBOUNCE_TIMEOUT } from '@/components/constants/Constant';
 import { Table } from '@/components/ui/Table/Table';
+import useDateUtils from '@/components/Hooks/useDateUtils';
 
 const CallPage = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -26,6 +26,7 @@ const CallPage = () => {
   const [pageSize, setPageSize] = useState<number>(10);
   const [searchType, setSearchType] = useState<SearchType>(SEARCH_TYPE.PATIENT);
   const [searchValue, setSearchValue] = useState<string>('');
+  const {getLocal} = useDateUtils();
 
   const debouncedSearchValue = useDebounce(searchValue, DEBOUNCE_TIMEOUT);
 
@@ -107,7 +108,7 @@ const CallPage = () => {
       title: 'Triggered At',
       dataIndex: 'call_triggered_at',
       key: 'call_triggered_at',
-      render: (value: string) => formatCallTriggeredAt(value),
+      render: (value: string) => getLocal(value).format(DATE_FORMAT.AbbreviatedDayMonthYear),
     },
     {
       title: 'Action',
@@ -184,6 +185,7 @@ const CallPage = () => {
         isOpen={!!selectedCallId}
         onClose={() => setSelectedCallId(null)}
         selectedCallId={selectedCallId as string}
+        getLocal={getLocal}
       />
     </div>
   );

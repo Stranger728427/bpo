@@ -51,6 +51,7 @@ export type Metrics = Partial<Record<MetricKey, boolean>>;
 export interface CampaignMetricsRequest {
   campaign_id?: string;
   metrics: Metrics;
+  filter_type?: string;
 }
 
 export const enableDashboardMetrics = (): Metrics => {
@@ -96,7 +97,6 @@ export interface CampaignProgress {
 }
 
 export interface LeadStatusItem {
-  status: LeadStatusType;
   label: string;
   count: number;
 }
@@ -107,11 +107,30 @@ export interface CallStatusItem {
   count: number;
 }
 
+export interface TotalCallsMade {
+    main_value: number;
+    trend_percentage: number;
+    is_increase: boolean;
+    sub_text: string;
+};
+
+export interface OverallConversionRate {
+    main_value: number;
+    trend_value: number;
+    is_increase: boolean;
+    sub_text: string;
+};
+
+export interface TotalActiveCampaigns {
+    main_value: number;
+    sub_text: string;
+};
+
 export interface AnalyticsResponse {
   // OVERALL DASHBOARD
-  total_calls_made: number;
-  total_active_campaigns: number;
-  overall_conversion_rate: number;
+  total_calls_made: TotalCallsMade;
+  total_active_campaigns: TotalActiveCampaigns;
+  overall_conversion_rate: OverallConversionRate;
   total_leads_reached: number;
 
   daily_call_volume: DailyCallVolume[];

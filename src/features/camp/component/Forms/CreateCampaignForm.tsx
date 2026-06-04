@@ -9,7 +9,7 @@ import { useFileUpload } from '@/features/upload/useFileUpload';
 import UploadFile from '@/components/upload/UploadFile';
 import { Spinner } from '@/components/ui/Spinner/Spinner';
 import { FormProvider } from 'react-hook-form';
-import { useCreateCampaign } from '../../Hooks/useCreateCampaign';
+import { useCreateCampaign } from '../../Hooks/useCampaign';
 
 interface CreateCampaignModalProps {
   isOpen: boolean;
@@ -35,7 +35,6 @@ function CreateCampaignForm({
     getButtonText,
     currentStep,
     isCreating,
-    isUpdating,
     methods
 
   } = useCreateCampaign({
@@ -130,7 +129,7 @@ function CreateCampaignForm({
                 type="submit"
                 form="campaignForm"
                 className={styles.primaryButton}
-                disabled={isCreating || isUpdating}
+                disabled={isCreating}
               >
                 {getButtonText()}
               </button>
@@ -144,7 +143,7 @@ function CreateCampaignForm({
 
       {/* Content */}
       <div className={styles.content}>
-        {isCreating || isUpdating ? (
+        {isCreating ? (
           <Skeleton active paragraph={{ rows: 6 }} />
         ) : (
           <FormProvider {...methods}>

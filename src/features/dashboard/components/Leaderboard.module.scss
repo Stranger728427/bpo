@@ -31,13 +31,11 @@
 }
 
 .best .icon {
-  // color: #f59e0b; 
-  color: #10b981;
+  color: $color-success;
 }
 
 .worst .icon {
-  // color: #ef4444; // Red color for worst
-  color: #ef4444;
+  color: $color-error;
 }
 
 .list {
@@ -60,7 +58,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f1f5f9;
+  background: $color-white;
   border-radius: 8px;
   font-size: $font-size-xs;
   font-weight: $font-weight-bold;
@@ -100,19 +98,17 @@
 
 .progressTrack {
   height: 8px;
-  background: #f1f5f9;
+  background: $color-white;
   border-radius: 4px;
   overflow: hidden;
 }
 
 .best .progressBar {
-  background: linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%);
-  // background: linear-gradient(90deg, #10b981 0%, #60a5fa 100%);
+  background: linear-gradient(90deg, $color-blue 0%, $color-light-blue 100%);
 }
 
 .worst .progressBar {
-  //background: linear-gradient(90deg, #ef4444 0%, #fca5a5 100%);
-  background: linear-gradient(90deg, #f64aac 0%, #fca5a5 100%);
+  background: linear-gradient(90deg, $color-primary 0%, $color-primary-light 100%);
 
 }
 

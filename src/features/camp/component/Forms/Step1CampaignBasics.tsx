@@ -69,7 +69,7 @@ function Step1CampaignBasics() {
                 size="large"
                 placeholder="Select type"
                 options={campaignTypeOptions}
-                value={field.value}
+                value={field.value ?? ''}
                 onChange={field.onChange}
                 suffixIcon={<LuChevronDown />}
                 status={errors.type ? 'error' : ''}

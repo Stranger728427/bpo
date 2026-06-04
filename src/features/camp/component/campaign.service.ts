@@ -1,7 +1,6 @@
 import { useApi } from '@/lib/axios/interceptors';
 import {
   CampaignListFilters,
-  Campaigns,
   CreateCampaignRequest,
 } from './campaign.type';
 import { LLM_TYPE } from '@/components/constants/Constant';
@@ -24,10 +23,12 @@ export const CampaignService = () => {
     return response.data;
   }
 
-  const updateCampaignService= async (payload: Campaigns) => {
-    const response = await baseApi().put(`/campaigns/update`, payload,{params:{model:LLM_TYPE}});
-    return response.data;
-  }
+const updateCampaignService = async (payload: CreateCampaignRequest) => {
+  const response = await baseApi().put(`/campaigns/update`, payload, {
+    params: { model: LLM_TYPE },
+  });
+  return response.data;
+};
   return{
     createCampaign,
     getAllCampaignsService,

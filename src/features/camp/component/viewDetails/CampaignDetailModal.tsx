@@ -11,8 +11,9 @@ import { IoTimeOutline } from 'react-icons/io5';
 import { AiOutlineDollarCircle } from 'react-icons/ai';
 import { useAnalyticMetrics } from '@/components/Hooks/useAnalyticMetrics';
 import { DonutChart } from '@/components/ui/DonutChart/DonutChart';
-import { formatWithMonthWord } from '@/utils/helpers/helper';
 import { useCampaignCharts } from '../../Hooks/useCampaignCharts';
+import { DATE_FORMAT } from '@/components/constants/Constant';
+import useDateUtils from '@/components/Hooks/useDateUtils';
 
 interface CampaignDetailModalProps {
   isOpen: boolean;
@@ -47,6 +48,7 @@ export function CampaignDetailModal({
 
   const { data } = useCampaignById(campaignId!);
   const campaign = data?.campaign || data;
+  const { getLocal } = useDateUtils();
 
   const {
     callsMade,
@@ -105,7 +107,7 @@ export function CampaignDetailModal({
             </span>
             <div className={styles.infoMeta}>
               <span>
-                {`Created ${formatWithMonthWord(campaign?.start_date)} - Last Updated ${formatWithMonthWord(campaign?.end_date)}`}
+                {`Created ${getLocal(campaign?.start_date).format(DATE_FORMAT.AbbreviatedDayMonthYear)} - Last Updated ${getLocal(campaign?.end_date).format(DATE_FORMAT.AbbreviatedDayMonthYear)}`}
               </span>
             </div>
           </div>

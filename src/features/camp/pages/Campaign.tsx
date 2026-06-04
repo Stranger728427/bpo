@@ -5,54 +5,54 @@ import styles from './Campaign.module.scss';
 import Banner from '@/components/layout/Banner/Banner';
 import { Flex, Input, Pagination, Table } from 'antd';
 import { HiOutlinePlus } from 'react-icons/hi';
+import { PiMagnifyingGlass } from 'react-icons/pi';
 import {
+  CAMPAIGN_FILTERS,
   Campaigns,
+  CampaignStatus,
   getStatusLabel,
   getStatusVariant,
 } from '../component/campaign.type';
 import { useGetAllCampaign } from '../component/api/useGetAllCampaign';
 import CreateCampaignForm from '../component/Forms/CreateCampaignForm';
-import { PiMagnifyingGlass } from 'react-icons/pi';
 import { Select } from '@/components/ui/Select/Select';
-import { SEARCH_TYPE, SearchType } from '@/features/call/components/call.types';
 import { useDebounce } from '@/components/Hooks/useDebounce';
-import { DEBOUNCE_TIMEOUT } from '@/components/constants/Constant';
+import { DATE_FORMAT, DEBOUNCE_TIMEOUT } from '@/components/constants/Constant';
 import { TableSkeleton } from '@/components/TableSkeleton/TableSkeleton';
 import { CampaignDetailModal } from '../component/viewDetails/CampaignDetailModal';
+import useGlobalDate from '@/components/Hooks/useDateUtils';
+
+type CampaignActionType = 'view' | 'edit' | 'create';
+
+type CampaignAction = {
+  type: CampaignActionType | null;
+  campaignId: string | null;
+};
+
+const CLOSED_ACTION: CampaignAction = { type: null, campaignId: null };
 
 function Campaign() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
-
-  const [campaignAction, setCampaignAction] = useState<{
-    type: 'view' | 'edit' | 'create' | 'upload' | null;
-    campaignId: string | null;
-  }>({
-    type: null,
-    campaignId: null,
-  });
-
-  const [searchType, setSearchType] = useState<SearchType>(SEARCH_TYPE.CAMPAIGN);
-  const [searchValue, setSearchValue] = useState<string>('');
+  const [campaignAction, setCampaignAction] = useState<CampaignAction>(CLOSED_ACTION);
+  const [searchType, setSearchType] = useState<CAMPAIGN_FILTERS>(CAMPAIGN_FILTERS.NAME);
+  const [searchValue, setSearchValue] = useState('');
 
   const debouncedSearchValue = useDebounce(searchValue, DEBOUNCE_TIMEOUT);
+  const { getLocal } = useGlobalDate();
 
-  const param = useMemo(() => {
-    return {
-      page: currentPage,
-      page_size: pageSize,
-      ...(debouncedSearchValue && {
-        [searchType]: debouncedSearchValue,
-      }),
-    };
-  }, [currentPage, pageSize, debouncedSearchValue, searchType]);
+  const param = useMemo(() => ({
+    page: currentPage,
+    page_size: pageSize,
+    ...(debouncedSearchValue && { [searchType]: debouncedSearchValue }),
+  }), [currentPage, pageSize, debouncedSearchValue, searchType]);
 
   const { data: campaigns, isPending } = useGetAllCampaign(param);
 
   const campaignData = campaigns?.data;
-  const totalCampaigns = campaigns?.total;
+  const totalCampaigns = campaigns?.total ?? 0;
 
-  const handleSearchTypeChange = (value: SearchType) => {
+  const handleSearchTypeChange = (value: CAMPAIGN_FILTERS) => {
     setSearchType(value);
     setSearchValue('');
     setCurrentPage(1);
@@ -63,61 +63,32 @@ function Campaign() {
     setCurrentPage(1);
   };
 
-  const getActionItems = (campaign: any) => {
-    const id = campaign?.id || campaign?.campaignId;
-    return [
-      {
-        key: 'view',
-        label: 'View Details',
-        onClick: () => {
-          if (!id) return;
+  const getActionItems = (campaign: Campaigns) => [
+    {
+      key: 'view',
+      label: 'View Details',
+      onClick: () => setCampaignAction({ type: 'view', campaignId: campaign?.id }),
+    },
+    {
+      key: 'edit',
+      label: 'Edit',
+      onClick: () => setCampaignAction({ type: 'edit', campaignId: campaign?.id }),
+    },
+  ];
 
-          setCampaignAction({
-            type: 'view',
-            campaignId: id,
-          });
-        },
-      },
-      {
-        key: 'edit',
-        label: 'Edit',
-        onClick: () => {
-          if (!id) return;
-
-          setCampaignAction({
-            type: 'edit',
-            campaignId: id,
-          });
-        },
-      },
-      // {
-      //   key: 'upload',
-      //   label: 'Upload Csv',
-      //   onClick: () => {
-      //     if (!id) return;
-
-      //     setCampaignAction({
-      //       type: 'upload',
-      //       campaignId: id,
-      //     });
-      //   },
-      // },
-    ];
-  };
-
-  const pagination = {
+  const pagination = useMemo(() => ({
     current: currentPage,
     total: totalCampaigns,
-    pageSize: pageSize,
+    pageSize,
     showSizeChanger: true,
     pageSizeOptions: [20, 50, 100],
-    onChange: (page: number, pageSize: number) => {
+    onChange: (page: number, size: number) => {
       setCurrentPage(page);
-      setPageSize(pageSize);
+      setPageSize(size);
     },
-  };
+  }), [currentPage, totalCampaigns, pageSize]);
 
-  const columns = [
+  const columns = useMemo(() => [
     {
       title: 'Campaign',
       dataIndex: 'name',
@@ -128,8 +99,8 @@ function Campaign() {
       dataIndex: 'status',
       key: 'status',
       render: (status: string) => (
-        <Badge variant={getStatusVariant(status as any)}>
-          {getStatusLabel(status as any)}
+        <Badge variant={getStatusVariant(status as CampaignStatus)}>
+          {getStatusLabel(status as CampaignStatus)}
         </Badge>
       ),
     },
@@ -139,11 +110,13 @@ function Campaign() {
       key: 'type',
     },
     {
-      title: 'Start / End',
+      title: 'Start Date - End Date',
       key: 'date',
-      render: (_: any, record: Campaigns) => (
+      render: (_: unknown, record: Campaigns) => (
         <>
-          {record.start_date} - {record.end_date}
+          {getLocal(record.start_date).format(DATE_FORMAT.AbbreviatedDayMonthYear)}
+          {' - '}
+          {getLocal(record.end_date).format(DATE_FORMAT.AbbreviatedDayMonthYear)}
         </>
       ),
     },
@@ -162,39 +135,38 @@ function Campaign() {
     {
       title: 'Action',
       key: 'action',
-      render: (_: any, record: Campaigns) => (
+      render: (_: unknown, record: Campaigns) => (
         <ActionMenu items={getActionItems(record)} />
       ),
     },
-  ];
+  ], [getLocal]);
 
   return (
     <div className={styles.container}>
       <Banner>
-        {/* Header */}
         <div className={styles.header}>
           <h1 className={styles.title}>Campaign</h1>
 
           <div className={styles.actions}>
             <div className={styles.filters}>
               <Flex gap="small">
-               <Select
-  value={searchType}
-  onChange={(value: SearchType) => handleSearchTypeChange(value)}
-  options={[
-    { label: 'Campaign', value: SEARCH_TYPE.CAMPAIGN },
-    { label: 'Status', value: SEARCH_TYPE.STATUS },
-    { label: 'Type', value: SEARCH_TYPE.TYPE },
-  ]}
-/>
+                <Select
+                  value={searchType}
+                  onChange={handleSearchTypeChange}
+                  options={[
+                    { label: 'Campaign', value: CAMPAIGN_FILTERS.NAME },
+                    { label: 'Status', value: CAMPAIGN_FILTERS.STATUS },
+                    { label: 'Type', value: CAMPAIGN_FILTERS.TYPE },
+                  ]}
+                />
 
-<Input
-  allowClear
-  placeholder={`Search by ${searchType}`}
-  value={searchValue}
-  onChange={(e) => onSearch(e.target.value)}
-  suffix={<PiMagnifyingGlass />}
-/>
+                <Input
+                  allowClear
+                  placeholder={`Search by ${searchType}`}
+                  value={searchValue}
+                  onChange={(e) => onSearch(e.target.value)}
+                  suffix={<PiMagnifyingGlass />}
+                />
               </Flex>
             </div>
 
@@ -241,23 +213,20 @@ function Campaign() {
       <CampaignDetailModal
         isOpen={campaignAction.type === 'view' && !!campaignAction.campaignId}
         campaignId={campaignAction.campaignId}
-        onClose={() => setCampaignAction({ type: null, campaignId: null })}
+        onClose={() => setCampaignAction(CLOSED_ACTION)}
       />
 
       {/* Create / Edit Campaign */}
       <CreateCampaignForm
         isOpen={
           campaignAction.type === 'create' ||
-          (campaignAction.type === 'edit' && !!campaignAction?.campaignId)
+          (campaignAction.type === 'edit' && !!campaignAction.campaignId)
         }
-        selectedCampaignId={campaignAction.campaignId}
-        onClose={() => setCampaignAction({ type: null, campaignId: null })}
+        selectedCampaignId={
+          campaignAction.type === 'edit' ? campaignAction.campaignId : null
+        }
+        onClose={() => setCampaignAction(CLOSED_ACTION)}
       />
-      {/* <UploadPage
-  open={campaignAction.type === 'upload' && !!campaignAction.campaignId}
-  selectedCampaignId={campaignAction.campaignId}
-  onClose={() => setCampaignAction({ type: null, campaignId: null })}
-/> */}
     </div>
   );
 }
