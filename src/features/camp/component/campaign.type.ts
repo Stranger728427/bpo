@@ -20,17 +20,17 @@ export interface Campaigns {
   type: CampaignType;
   start_date: string;
   end_date: string;
-  conversion_rate?: number;
-  spend?: number;
-  contacts_count?: number;
-  calling_days?: string[];
-  start_time?: string;
-  end_time?: string;
-  retry_attempts?: number;
-  retry_interval?: number;
-  time_zone?: string;
-  created_at?: string;
-  updated_at?: string;
+  conversion_rate: number;
+  spend: number;
+  contacts_count: number;
+  calling_days: string[];
+  start_time: string;
+  end_time: string;
+  retry_attempts: number;
+  retry_interval: number;
+  time_zone: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface CampaignDetail extends Campaigns {
