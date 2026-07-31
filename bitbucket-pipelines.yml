@@ -1,0 +1,19 @@
+image: node:20
+
+pipelines:
+  branches:
+    newui:
+      - step:
+          name: Build & Deploy STAGE
+          caches:
+            - node
+          script:
+            - npm install
+            - export VITE_API_BASE_URL=$STAGE_BASE_URL
+            - npm run build
+            - apt-get update && apt-get install -y awscli
+            - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+            - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+            - export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
+            - aws s3 sync ./dist/ s3://mynx-use1-stage-myai/ --delete
+            - aws s3 cp ./dist/index.html s3://mynx-use1-stage-myai/index.html --cache-control "no-cache, no-store, must-revalidate" --content-type "text/html"
