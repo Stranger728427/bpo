@@ -2,7 +2,7 @@ image: node:20
 
 pipelines:
   branches:
-    main:
+    newui:
       - step:
           name: Build & Deploy STAGE
           caches:
